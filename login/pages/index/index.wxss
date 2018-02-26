@@ -1,0 +1,67 @@
+
+.center {
+  text-align: center;
+}
+
+.title {
+  color: #353535;
+  font-size: 20px;
+}
+
+.logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  margin-top: 20px;
+}
+
+.input-user {
+  margin-top: 60px;
+  margin-left: 20px;
+  margin-right: 20px; 
+  font-size: 28px;
+   /* background-color: red;    */
+  height: 44px;
+}
+
+.input-pwd {
+  margin-top: 10px;
+  margin-left: 20px;
+  margin-right: 20px;
+  opacity: 0.0;
+  font-size: 28px;
+  height: 44px;
+  /* background-color: red;   */
+}
+
+.input-placeholder{
+  font-size: 14px;
+  color: #999999;
+}
+
+.separation-line {
+  /* height: 1px; */
+  height: 0.5px;
+  margin-top: -49px;
+  margin-left: 20px;
+  margin-right: 20px;
+  background-color: #1fb8ff;
+  border-radius: 4px;
+  overflow: hidden;
+  justify-content:center; 
+  display: flex;
+}
+
+.login-text {
+  color: white;
+  font-size: 22px;
+  /* background-color: red; */
+  line-height: 44px;
+  font-weight: normal;
+}
+
+page{
+  background-color: white;
+  height:100%;
+  text-align: center;
+}
