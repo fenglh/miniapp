@@ -7,13 +7,17 @@ Page({
     userName:'',
     pwd:'',
     pwdInputDisabled:true,
+    pwdInputFocus:false,
+    userInputFocus: true,
+    userInputDisabled: false,
     loginBtndisable: true,
+    animating:false,
   },
   //页面初次渲染完成，先后顺序:onLoad->onShow->onReady
   onReady:function () {
     console.log('onReady')
     //初始化动画
-    this.animation = wx.createAnimation({
+    this.pwdInputAnimation = wx.createAnimation({
       duration:400,
       timingFunction:'ease',
       delay:0,
@@ -51,69 +55,128 @@ Page({
     })
 
     var opacity = 0;
-    var pwdInputDisabled = this.data.pwdInputDisabled;
     
     if (this.data.userName.length >= 8){
       opacity = 1;
-      pwdInputDisabled = false;
     }else {
-      opacity = 0
-      pwdInputDisabled = true;
+      opacity = 0;
+      //清空密码
       this.setData({ pwd: '' })
     }
 
-    this.animation.opacity(opacity).step()
+    this.pwdInputAnimation.opacity(opacity).step()
     this.setData({
-      animation: this.animation.export(),
-      pwdInputDisabled: pwdInputDisabled
+      pwdInputAnimation: this.pwdInputAnimation.export(),
     })
  
-
-
-
   },
 
-  userInputBindfocus:function(e){
-    if (this.data.userName.length >= 8) {
-      this.userInputAnimation.translateY(0).scale(1).opacity(1).step()
-      this.setData({
-        userInputAnimation: this.userInputAnimation.export()
-      })
+
+  bindUserInputTap:function(){
+
+    if (this.data.animating) {
+      setTimeout(function () {
+        this.bindUserInputTap()
+      }.bind(this), 100)
+      console.log('动画中，延时执行')
+      return;
+    }
+    //屏蔽所有
+    this.disableAllInput()
+
+    if (this.data.pwdInputFocus) {
+      console.log('密码input聚焦')
     }
 
-    this.animation.translateY(0).step()
-    this.setData({
-      animation: this.animation.export()
-    })
+    if (this.data.userInputFocus) {
+      console.log('用户input聚焦')
+    }
 
+    //用户输入框： Y轴移动，并缩放，以及透明度--还原
+    this.userInputAnimation.translateY(0).opacity(1).step()
+
+    //密码输入框：Y轴移动
+    this.pwdInputAnimation.translateY(0).step()
+    //登录按钮：高度变化
     this.loginAnimation.height(0.5).step()
     this.setData({
+      // animating:true,
+      userInputAnimation: this.userInputAnimation.export(),
+      pwdInputAnimation: this.pwdInputAnimation.export(),
       loginAnimation: this.loginAnimation.export()
     })
+    setTimeout(function () {
+      this.setData({
+        userInputDisabled: false,
+        userInputFocus: true,
+  
+      })
+
+    }.bind(this), 400)
+
+    setTimeout(function () {
+      this.setData({
+        animating: false,
+      })
+
+    }.bind(this), 1300)
 
   },
 
-  // userInputBindblur: function (e) {
-  //   if (this.data.userName.length >=8){
-  //     this.userInputAnimation.translateY(-40).scale(0.75).opacity(0.75).step()
-  //     this.setData({
-  //       userInputAnimation: this.userInputAnimation.export()
-  //     })
-  //   }
+  bindPwdInputTap:function(){
 
-  // },
+    if (this.data.animating) {
+      setTimeout(function () {
+        this.bindPwdInputTap()
+      }.bind(this), 100)
+      console.log('动画中，延时执行')
+      return;
+    }
 
-  //获取焦点
-  pwdInputBindfocus: function (e) {
+    if (this.data.userName.length <8){
+      return;
+    }
+    //屏蔽所有
+    this.disableAllInput()
 
-    this.userInputAnimation.translateY(-40).scale(0.75).opacity(0.75).step()
-    this.animation.translateY(-54).step()
+    if (this.data.pwdInputFocus) {
+      console.log('密码input聚焦')
+    }
+
+    if (this.data.userInputFocus) {
+      console.log('用户input聚焦')
+    }
+
+
+    //用户输入框：Y轴移动、缩放、透明度
+    this.userInputAnimation.translateY(-50).opacity(0.65).step()
+    //密码输入框：Y轴移动
+    this.pwdInputAnimation.translateY(-54).step()
     this.setData({
-      animation: this.animation.export(),
+      // animating: true,
+      pwdInputAnimation: this.pwdInputAnimation.export(),
       userInputAnimation: this.userInputAnimation.export()
     })
     this.autoLoginBtnHeightAdjust();
+
+    setTimeout(function(){
+      this.setData({
+        pwdInputDisabled: false,
+        pwdInputFocus: true,
+
+      })
+
+    }.bind(this),400)
+
+    setTimeout(function () {
+      this.setData({
+        animating: false,
+      })
+
+    }.bind(this), 1300)
+
   },
+
 
   //自动调整高度
   autoLoginBtnHeightAdjust:function(){
@@ -128,6 +191,16 @@ Page({
         loginAnimation: this.loginAnimation.export()
       })
     }
+  },
+
+  disableAllInput:function(){
+    this.setData({
+      pwdInputFocus: false,
+      userInputFocus: false,
+      userInputDisabled: true,
+      pwdInputDisabled: true,
+      animating:true,
+    })
   },
 
   //密码输入事件

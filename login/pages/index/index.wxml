@@ -1,9 +1,10 @@
 
 <view class='center'><text class='title'>登录</text></view>
 <image class='logo' src='../images/icon@2x.png' ></image>
-<input  animation='{{userInputAnimation}}' class='input-user'  value='{{userName}}'type='number' bindinput='userInputEvent'  bindblur='userInputBindblur' bindfocus='userInputBindfocus' placeholder='输入员工账号' confirm-type='next' maxlength='8'></input>
 
-<input disabled='{{pwdInputDisabled}}' animation='{{animation}}' bindfocus='pwdInputBindfocus' class='input-pwd' value='{{pwd}}' password='true' bindinput='pwdInputEvent' placeholder='输入员工密码' confirm-type='done'></input>
+<input focus='{{userInputFocus}}' bindtap='bindUserInputTap' disabled='{{userInputDisabled}}'  animation='{{userInputAnimation}}' class='input-user'  value='{{userName}}'type='number' bindinput='userInputEvent'   placeholder='输入员工账号' confirm-type='next' maxlength='8'></input>
+
+<input bindtap='bindPwdInputTap' disabled='{{pwdInputDisabled}}' animation='{{pwdInputAnimation}}'  class='input-pwd' value='{{pwd}}' focus='{{pwdInputFocus}}' password='true' bindinput='pwdInputEvent' placeholder='输入员工密码' confirm-type='done'></input>
 
   <view  animation='{{loginAnimation}}' class='separation-line'>
   <text class='login-text'>登录</text>
