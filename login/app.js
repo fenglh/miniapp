@@ -5,7 +5,7 @@ const userManager = require('./utils/userManager.js');
 const systemInfo = require('./utils/systemInfo.js');
 const request = require('./utils/request.js')
 
-
+import { LoginStatusNormal, LoginStatusUnLogin, LoginStatusTokenInvalid } from './utils/userManager.js'
 
 App({
   onLaunch: function () {
@@ -28,16 +28,11 @@ App({
       console.log("用户缓存数据被清空，请重新登录");
     }
 
-  //获取用户信息
-    request.getUserInfo({
-      token:userManager.userInfo.token,
-      success:function(){
-        console.log(userManager.userInfo);
-      },
-      fail:function(){
-        console.log('获取用户信息失败')
-      },
-    })
+    if (userManager.userInfo.loginStatus == LoginStatusNormal){
+      console.log('用户已经登录，获取用户信息')
+      request.getUserInfo({ token: userManager.userInfo.token})
+    }
+
 
   },
 

@@ -2,12 +2,13 @@
 //获取应用实例
 
 const request = require('../../utils/request.js')
+const userManager = require('../../utils/userManager.js');
 const app     = getApp()
 
 
 Page({
   data: {
-    user:'',
+    user: userManager.userInfo.account,
     pwd:'',
     pwdInputDisabled:true,
     pwdInputFocus:false,
@@ -51,32 +52,42 @@ Page({
       delay: 0,
     })
 
+    this.adjustInputUI();
   },
 
 
-
-  //用户名输入事件
-  userBindinput:function(e){
-    this.setData({
-      user:e.detail.value,
-    })
+  showPwdInput:function(show){
 
     var opacity = 0;
-    if (this.data.user.length >= 8){
+    if (show) {
       opacity = 1;
-    }else {
+    } else {
       opacity = 0;
-      //清空密码
-      this.setData({ pwd: '' })
     }
 
     this.pwdInputAnimation.opacity(opacity).step()
     this.setData({
       pwdInputAnimation: this.pwdInputAnimation.export(),
     })
- 
   },
 
+  //用户名输入事件
+  userBindinput:function(e){
+    this.setData({
+      user:e.detail.value,
+    })
+    this.adjustInputUI();
+  },
+
+  adjustInputUI:function(){
+    if (this.data.user.length >= 8) {
+      this.showPwdInput(true)
+    } else {
+      this.showPwdInput(false)
+      //清空密码
+      this.setData({ pwd: '' })
+    }
+  },
 
   userBindtap:function(){
 

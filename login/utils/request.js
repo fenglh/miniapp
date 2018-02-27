@@ -113,6 +113,7 @@ var request = {
           userManager.cacheUserInfo()
 
           //获取用户信息
+          this.getUserInfo({token: token})
         }
         if(success){
           success(res)
@@ -148,6 +149,7 @@ var request = {
             userManager.userInfo.mobileNo = res.data.user.mobileNo
             userManager.userInfo.realName = res.data.user.realName
             userManager.userInfo.sex = res.data.user.sex
+            userManager.cacheUserInfo()
         }
         if(success){success(res)}
       },
