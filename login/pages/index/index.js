@@ -1,10 +1,11 @@
 //index.js
 //获取应用实例
+const des = require('../../utils/des.js')
 const app = getApp()
 
 Page({
   data: {
-    userName:'',
+    user:'',
     pwd:'',
     pwdInputDisabled:true,
     pwdInputFocus:false,
@@ -16,6 +17,7 @@ Page({
   //页面初次渲染完成，先后顺序:onLoad->onShow->onReady
   onReady:function () {
     console.log('onReady')
+
     //初始化动画
     this.pwdInputAnimation = wx.createAnimation({
       duration:400,
@@ -49,14 +51,13 @@ Page({
   },
 
   //用户名输入事件
-  userInputEvent:function(e){
+  userBindinput:function(e){
     this.setData({
-      userName:e.detail.value,
+      user:e.detail.value,
     })
 
     var opacity = 0;
-    
-    if (this.data.userName.length >= 8){
+    if (this.data.user.length >= 8){
       opacity = 1;
     }else {
       opacity = 0;
@@ -72,7 +73,7 @@ Page({
   },
 
 
-  bindUserInputTap:function(){
+  userBindtap:function(){
 
     if (this.data.animating) {
       setTimeout(function () {
@@ -83,14 +84,6 @@ Page({
     }
     //屏蔽所有
     this.disableAllInput()
-
-    if (this.data.pwdInputFocus) {
-      console.log('密码input聚焦')
-    }
-
-    if (this.data.userInputFocus) {
-      console.log('用户input聚焦')
-    }
 
     //用户输入框： Y轴移动，并缩放，以及透明度--还原
     this.userInputAnimation.translateY(0).opacity(1).step()
@@ -123,7 +116,7 @@ Page({
 
   },
 
-  bindPwdInputTap:function(){
+  pwdBindtap:function(){
 
     if (this.data.animating) {
       setTimeout(function () {
@@ -133,20 +126,9 @@ Page({
       return;
     }
 
-    if (this.data.userName.length <8){
+    if (this.data.user.length <8){
       return;
     }
-    //屏蔽所有
-    this.disableAllInput()
-
-    if (this.data.pwdInputFocus) {
-      console.log('密码input聚焦')
-    }
-
-    if (this.data.userInputFocus) {
-      console.log('用户input聚焦')
-    }
-
 
     //用户输入框：Y轴移动、缩放、透明度
     this.userInputAnimation.translateY(-50).opacity(0.65).step()
@@ -204,7 +186,7 @@ Page({
   },
 
   //密码输入事件
-  pwdInputEvent:function(e){
+  pwdBindinput:function(e){
     this.setData({
       pwd: e.detail.value,
     })
@@ -214,9 +196,53 @@ Page({
   },
 
 
-  //登录按钮
-  loginBtnOnClick:function(e){
+  //登录
+  loginBindtap:function(e){
 
+    wx.showLoading({
+      title: '提交中',
+    })
+    var encryptString = des(this.data.pwd, app.globalData.loginSecretKey);//vuOShIfoI8SuPqjTlU+csw==
+    console.log(encryptString )
+
+    var url = 'https://angel.bluemoon.com.cn/bluemoon-control/user/ssoLogin'
+    var queryString = app.getPublicQueryString();
+    url = url + '?' + queryString
+    wx.request({
+      url: url,
+      method:'POST',
+      data:{
+        'account':this.data.user,
+        'password': encryptString,
+        'deviceNum': app.globalData.deviceNum,
+      },
+      success: function (res){
+        console.log(res)
+        var responseCode = res.data.responseCode
+        var responseMsg = res.data.responseMsg
+        if (responseCode != 0) {
+          wx.showToast({
+            title: res.data.responseMsg,
+            icon: 'none',
+          })
+        }else{
+          wx.showToast({
+            title: res.data.responseMsg,
+            icon: 'success',
+          })
+        }
+
+      },
+      fail: function (res){
+        wx.showToast({
+          title: '请求失败',
+          icon: 'none',
+        })
+      },
+
+    })
+    
   },
+
 
 })
