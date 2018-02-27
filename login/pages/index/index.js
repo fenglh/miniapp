@@ -1,7 +1,9 @@
 //index.js
 //获取应用实例
-const des = require('../../utils/des.js')
-const app = getApp()
+
+const request = require('../../utils/request.js')
+const app     = getApp()
+
 
 Page({
   data: {
@@ -14,6 +16,17 @@ Page({
     loginBtndisable: true,
     animating:false,
   },
+
+  //页面加载，先后顺序:onLoad->onShow->onReady
+  onLoad: function () {
+    console.log('onLoad')
+  },
+
+  //页面显示，先后顺序:onLoad->onShow->onReady
+  onShow: function () {
+    console.log('onShow')
+  },
+
   //页面初次渲染完成，先后顺序:onLoad->onShow->onReady
   onReady:function () {
     console.log('onReady')
@@ -40,15 +53,7 @@ Page({
 
   },
 
-  //页面显示，先后顺序:onLoad->onShow->onReady
-  onShow: function () {
-    console.log('onShow')
-  },
 
-  //页面加载，先后顺序:onLoad->onShow->onReady
-  onLoad: function () {
-    console.log('onLoad')
-  },
 
   //用户名输入事件
   userBindinput:function(e){
@@ -195,54 +200,44 @@ Page({
 
   },
 
-
   //登录
-  loginBindtap:function(e){
-
+  loginBindtap: function (e) {
     wx.showLoading({
       title: '提交中',
     })
-    var encryptString = des(this.data.pwd, app.globalData.loginSecretKey);//vuOShIfoI8SuPqjTlU+csw==
-    console.log(encryptString )
-
-    var url = 'https://angel.bluemoon.com.cn/bluemoon-control/user/ssoLogin'
-    var queryString = app.getPublicQueryString();
-    url = url + '?' + queryString
-    wx.request({
-      url: url,
-      method:'POST',
-      data:{
-        'account':this.data.user,
-        'password': encryptString,
-        'deviceNum': app.globalData.deviceNum,
-      },
-      success: function (res){
-        console.log(res)
-        var responseCode = res.data.responseCode
-        var responseMsg = res.data.responseMsg
-        if (responseCode != 0) {
+  request.login({
+    user:this.data.user,
+    pwd:this.data.pwd,
+    success:function(res){
+      var responseCode = res.data.responseCode
+      var responseMsg = res.data.responseMsg
+      if (responseCode != 0) {
           wx.showToast({
             title: res.data.responseMsg,
             icon: 'none',
           })
-        }else{
+      } else {
           wx.showToast({
             title: res.data.responseMsg,
             icon: 'success',
           })
-        }
+      }
 
-      },
-      fail: function (res){
+    },
+    fail:function(res){
         wx.showToast({
           title: '请求失败',
           icon: 'none',
         })
-      },
-
-    })
-    
+    }
+  })
   },
+
+
+
+
+  
+
 
 
 })
