@@ -2,8 +2,7 @@ var MD5 = require('../lib/md5.js');
 const des = require('./des.js')
 const userManager = require('./userManager.js');
 const systemInfo = require('./systemInfo.js');
-import '../app'
-const app = getApp()
+
 
 import { LoginStatusNormal, LoginStatusUnLogin, LoginStatusTokenInvalid } from './userManager.js'
 
@@ -127,39 +126,36 @@ var request = {
     })
   },
 
-  getLoginUserInfo:function(token){
-    console.log('获取用户信息')
-  },
 
-      // getUserInfo:function({token, success, fail}){
-      //   var url = 'https://angel.bluemoon.com.cn/bluemoon-control/user/getUserInfo'
-      //   var queryString = this.getPublicQueryString();
-      //   url = url + '?' + queryString
-      //   wx.request({
-      //     url: url,
-      //     method: 'POST',
-      //     data:{
-      //       token:token,
-      //     },
-      //     success:function(res){
-      //       var responseCode = res.data.responseCode
-      //       var responseMsg = res.data.responseMsg
-      //       if (responseCode == 0) {
-      //           console.log(res)
-      //           // app.userInfo.account =
-      //           // app.userInfo.blood =
-      //           // app.userInfo.empType =
-      //           // app.userInfo.mobileNo =
-      //           // app.userInfo.realName =
-      //           // app.userInfo.sex =
-      //       }
-      //       if(success){success(res)}
-      //     },
-      //     fail:function(res){
-      //       if (fail) { fail(res) }
-      //     },
-      //   })
-      // },
+
+  getUserInfo:function({token, success, fail}){
+    var url = 'https://angel.bluemoon.com.cn/bluemoon-control/user/getUserInfo'
+    var queryString = this.getPublicQueryString();
+    url = url + '?' + queryString
+    wx.request({
+      url: url,
+      method: 'POST',
+      data:{
+        token:token,
+      },
+      success:function(res){
+        var responseCode = res.data.responseCode
+        var responseMsg = res.data.responseMsg
+        if (responseCode == 0) {
+            userManager.userInfo.account = res.data.user.account
+            userManager.userInfo.blood = res.data.user.blood
+            userManager.userInfo.empType = res.data.user.empType
+            userManager.userInfo.mobileNo = res.data.user.mobileNo
+            userManager.userInfo.realName = res.data.user.realName
+            userManager.userInfo.sex = res.data.user.sex
+        }
+        if(success){success(res)}
+      },
+      fail:function(res){
+        if (fail) { fail(res) }
+      },
+    })
+  },
 }
 
 module.exports = request;

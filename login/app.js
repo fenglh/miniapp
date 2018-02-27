@@ -3,6 +3,7 @@
 
 const userManager = require('./utils/userManager.js');
 const systemInfo = require('./utils/systemInfo.js');
+const request = require('./utils/request.js')
 
 
 
@@ -28,8 +29,16 @@ App({
     }
 
   //获取用户信息
+    request.getUserInfo({
+      token:userManager.userInfo.token,
+      success:function(){
+        console.log(userManager.userInfo);
+      },
+      fail:function(){
+        console.log('获取用户信息失败')
+      },
+    })
 
-    console.log(userManager.userInfo)
   },
 
  
