@@ -12,10 +12,11 @@ Page({
     pwd:'',
     pwdInputDisabled:true,
     pwdInputFocus:false,
-    userInputFocus: true,
+    userInputFocus: false,
     userInputDisabled: false,
     loginBtndisable: true,
     animating:false,
+    animationDuration:400,
   },
 
   //页面加载，先后顺序:onLoad->onShow->onReady
@@ -34,13 +35,13 @@ Page({
 
     //初始化动画
     this.pwdInputAnimation = wx.createAnimation({
-      duration:400,
+      duration: this.data.animationDuration,
       timingFunction:'ease',
       delay:0,
     })
 
     this.userInputAnimation = wx.createAnimation({
-      duration: 400,
+      duration: this.data.animationDuration,
       timingFunction: 'ease',
       delay: 0,
     })
@@ -55,7 +56,7 @@ Page({
     //初始化
     if (this.data.user.length >= 8) {
       this.animationPwdInputShow(true)
-      // this.animationMoveUp()
+
     } else {
       this.animationPwdInputShow(false)
       //清空密码
@@ -90,7 +91,10 @@ Page({
     } else {
       this.animationPwdInputShow(false)
       //清空密码
-      this.setData({ pwd: '' })
+      this.setData({
+         pwd: '' ,
+         userInputFocus:true,
+      })
     }
   },
 
