@@ -234,7 +234,8 @@ Page({
   //登录
   loginBindtap: function (e) {
     wx.showLoading({
-      title: '提交中',
+      title: '登录中...',
+      mask:true,
     })
   request.login({
     user:this.data.user,
