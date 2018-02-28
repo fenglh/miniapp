@@ -94,6 +94,8 @@ var request = {
     var url = 'https://angel.bluemoon.com.cn/bluemoon-control/user/ssoLogin'
     var queryString = this.getPublicQueryString();
     url = url + '?' + queryString
+
+    var that = this
     wx.request({
       url: url,
       method: 'POST',
@@ -113,7 +115,7 @@ var request = {
           userManager.cacheUserInfo()
 
           //获取用户信息
-          this.getUserInfo({token: token})
+          that.getUserInfo({ token: userManager.userInfo.token })
         }
         if(success){
           success(res)
