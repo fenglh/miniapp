@@ -17,6 +17,11 @@ Page({
     loginBtndisable: true,
     animating:false,
     animationDuration:400,
+    scrollindex: 0,  //当前页面的索引值
+    totalnum: 5,  //总共页面数
+    starty: 0,  //开始的位置x
+    endy: 0, //结束的位置y
+    margintop: 0,  //滑动下拉距离
   },
 
   //页面加载，先后顺序:onLoad->onShow->onReady
@@ -34,13 +39,20 @@ Page({
     console.log('onReady')
 
     //初始化动画
+
+    this.userInputAnimation = wx.createAnimation({
+      duration: this.data.animationDuration,
+      timingFunction: 'ease',
+      delay: 0,
+    })
+
     this.pwdInputAnimation = wx.createAnimation({
       duration: this.data.animationDuration,
       timingFunction:'ease',
       delay:0,
     })
 
-    this.userInputAnimation = wx.createAnimation({
+    this.inputViewAnimation = wx.createAnimation({
       duration: this.data.animationDuration,
       timingFunction: 'ease',
       delay: 0,
@@ -56,6 +68,7 @@ Page({
     //初始化
     if (this.data.user.length >= 8) {
       this.animationPwdInputShow(true)
+
 
     } else {
       this.animationPwdInputShow(false)
@@ -110,26 +123,27 @@ Page({
     })
   },
   animationMoveReset:function(){
-    //用户输入框： Y轴移动，并缩放，以及透明度--还原
-    this.userInputAnimation.translateY(0).opacity(1).step()
-    //密码输入框：Y轴移动
-    this.pwdInputAnimation.translateY(0).step()
+    // Y轴移动，并缩放，以及透明度--还原
+    this.inputViewAnimation.translateY(0).opacity(1).step()
+    this.userInputAnimation.opacity(1).step()
+    this.pwdInputAnimation.opacity(0.65).step()
     this.setData({
-      // animating:true,
       userInputAnimation: this.userInputAnimation.export(),
+      inputViewAnimation: this.inputViewAnimation.export(),
       pwdInputAnimation: this.pwdInputAnimation.export(),
+
     })
   },
 
   animationMoveUp: function () {
     //用户输入框：Y轴移动、缩放、透明度
-    this.userInputAnimation.translateY(-50).opacity(0.65).step()
-    //密码输入框：Y轴移动
-    this.pwdInputAnimation.translateY(-54).step()
+    this.inputViewAnimation.translateY(-50).step()
+    this.userInputAnimation.opacity(0.65).step()
+    this.pwdInputAnimation.opacity(1).step()
     this.setData({
-      // animating: true,
+      userInputAnimation: this.userInputAnimation.export(),
+      inputViewAnimation: this.inputViewAnimation.export(),
       pwdInputAnimation: this.pwdInputAnimation.export(),
-      userInputAnimation: this.userInputAnimation.export()
     })
   },
 
@@ -170,7 +184,7 @@ Page({
 
     if (this.data.animating) {
       setTimeout(function () {
-        this.bindPwdInputTap()
+        this.pwdBindtap()
       }.bind(this), 100)
       console.log('动画中，延时执行')
       return;
@@ -181,6 +195,7 @@ Page({
     }
 
     this.animationMoveUp()
+
     if (this.data.pwd.length >= 8) {
       this.animationLoginBtnHeight(44)
     } else {
@@ -267,7 +282,43 @@ Page({
 
 
 
-
+/**滑动样式绑定时间 */
+  // scrollTouchstart: function (e) {
+  //   let py = e.touches[0].pageY;
+  //   this.setData({
+  //     starty: py
+  //   })
+  // },
+  // scrollTouchmove: function (e) {
+  //   let py = e.touches[0].pageY;
+  //   let d = this.data;
+  //   this.setData({
+  //     endy: py,
+  //   })
+  //   if (py - d.starty < 100 && py - d.starty > -100) {
+  //     console.log(py - d.starty)
+  //     this.setData({
+  //       margintop: py - d.starty
+  //     })
+  //   }
+  // },
+  // scrollTouchend: function (e) {
+  //   let d = this.data;
+  //   if (d.endy - d.starty > 100 && d.scrollindex > 0) {
+  //     this.setData({
+  //       scrollindex: d.scrollindex - 1
+  //     })
+  //   } else if (d.endy - d.starty < -100 && d.scrollindex < this.data.totalnum - 1) {
+  //     this.setData({
+  //       scrollindex: d.scrollindex + 1
+  //     })
+  //   }
+  //   this.setData({
+  //     starty: 0,
+  //     endy: 0,
+  //     margintop: 0
+  //   })
+  // },
   
 
 

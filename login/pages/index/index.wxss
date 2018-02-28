@@ -4,6 +4,7 @@
 }
 
 .title {
+  margin-top: 20px;
   color: #353535;
   font-size: 20px;
 }
@@ -16,12 +17,11 @@
 }
 
 .input-user {
-
-  margin-top: 60px;   
+ 
   margin-left: 20px;
   margin-right: 20px; 
   font-size: 28px;
-    /* background-color: red;     */
+     /* background-color: red;      */
   height: 44px;
 }
 
@@ -30,9 +30,9 @@
   margin-left: 20px;
   margin-right: 20px;
   opacity: 0.0;
-  font-size: 28px;
+  font-size: 24px;
   height: 44px;
-   /* background-color: red;    */
+    /* background-color: red;     */
 }
 
 .input-placeholder{
@@ -41,7 +41,6 @@
 }
 
 .separation-line {
-  /* height: 1px; */
   height: 0.5px;
   margin-top: -49px;
   margin-left: 20px;
@@ -53,6 +52,11 @@
   display: flex;
 }
 
+.input-view {
+  margin-top: 60px;
+   /* background-color: blue;  */
+}
+
 .login-text {
   color: white;
   font-size: 22px;
@@ -61,8 +65,38 @@
   font-weight: normal;
 }
 
+
+
 page{
   background-color: white;
   height:100%;
   text-align: center;
+}
+
+
+.scroll-fullpage{
+	height: 100%;
+	transition: all 0.3s;
+}
+
+.container-fill{
+	height: 100%;
+	 overflow: hidden; 
+    background-color: rebeccapurple; 
+}
+.section{
+	height: 100%;
+}
+
+.active .section-maintitle,
+.active .section-subtitle{
+	animation: mymove 0.8s;
+}
+@keyframes mymove{
+	from {
+		transform: translateY(-400rpx) scale(0.5) rotateY(90deg);
+	}
+	to {
+		transform: translateY(0) scale(1) rotateY(0);
+	}
 }

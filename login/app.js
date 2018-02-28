@@ -29,7 +29,7 @@ App({
     }
 
     if (userManager.userInfo.loginStatus == LoginStatusNormal){
-      console.log('用户已经登录，获取用户信息')
+      console.log('用户已登录')
       request.getUserInfo({ token: userManager.userInfo.token})
     }
 
