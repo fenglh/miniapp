@@ -2,14 +2,21 @@
 //获取应用实例
 
 const request = require('../../utils/request.js')
-const userManager = require('../../utils/userManager.js');
+
+const WxNotificationCenter = require("../../utils/WxNotificationCenter.js");
+const coordtransform = require('../../lib/coordtransform.js');
+import { LoginStatusUnLogin, LoginStatusNormal, LoginStatusTokenInvalid, userManager } from '../../utils/userManager.js'
 const app     = getApp()
+
+
 
 
 Page({
   data: {
     user: userManager.userInfo.account,
     pwd:'',
+
+    userInfo: userManager.userInfo,
     pwdInputDisabled:true,
     pwdInputFocus:false,
     userInputFocus: false,
@@ -22,11 +29,26 @@ Page({
     starty: 0,  //开始的位置x
     endy: 0, //结束的位置y
     margintop: 0,  //滑动下拉距离
+
+    //经纬度信息
+    latitude:0,
+    longitude:0,
+    altitude:0,
+    address:'',
+
   },
 
   //页面加载，先后顺序:onLoad->onShow->onReady
   onLoad: function () {
     console.log('onLoad')
+    var that = this
+    WxNotificationCenter.addNotification("userInfoChangeNotificationName", that.userInfoChangeNotificationFn, that)
+    WxNotificationCenter.addNotification("tokenInvalidNotificationName", that.tokenInvalidNotificationFn, that)
+    console.log('用户登录状态:')
+    console.log(userManager.userInfo.loginStatus)
+    if (userManager.userInfo.loginStatus == LoginStatusNormal){
+      this.scrollIndex(1)
+    }
   },
 
   //页面显示，先后顺序:onLoad->onShow->onReady
@@ -77,7 +99,28 @@ Page({
     }
   },
 
+  tokenInvalidNotificationFn:function(){
+    console.log('token无效')
+    //设置登录状态
+    userManager.userInfo.loginStatus = LoginStatusTokenInvalid;
+    console.log(LoginStatusTokenInvalid)
+    console.log(userManager.userInfo)
+    userManager.cacheUserInfo()
+    this.userInfoChangeNotificationFn()
+    var that = this 
+    setTimeout(function(){
+      that.scrollIndex(0)
+    }, 700)
+    
+  },
 
+  userInfoChangeNotificationFn:function(){
+    console.log('收到用户信息改变通知，刷新当前页面用户信息')
+      //刷新数据
+      this.setData({
+        userInfo: userManager.userInfo,
+      })
+  },
 
   animationPwdInputShow:function(show){
 
@@ -252,6 +295,8 @@ Page({
       title: '登录中...',
       mask:true,
     })
+
+  var that = this
   request.login({
     user:this.data.user,
     pwd:this.data.pwd,
@@ -264,10 +309,10 @@ Page({
             icon: 'none',
           })
       } else {
-          wx.showToast({
-            title: res.data.responseMsg,
-            icon: 'success',
-          })
+          //跳转到打卡界面
+        wx.hideLoading()
+        that.scrollIndex(1)
+
       }
 
     },
@@ -281,45 +326,60 @@ Page({
   },
 
 
+scrollIndex:function(index){
 
-/**滑动样式绑定时间 */
-  // scrollTouchstart: function (e) {
-  //   let py = e.touches[0].pageY;
-  //   this.setData({
-  //     starty: py
-  //   })
-  // },
-  // scrollTouchmove: function (e) {
-  //   let py = e.touches[0].pageY;
-  //   let d = this.data;
-  //   this.setData({
-  //     endy: py,
-  //   })
-  //   if (py - d.starty < 100 && py - d.starty > -100) {
-  //     console.log(py - d.starty)
-  //     this.setData({
-  //       margintop: py - d.starty
-  //     })
-  //   }
-  // },
-  // scrollTouchend: function (e) {
-  //   let d = this.data;
-  //   if (d.endy - d.starty > 100 && d.scrollindex > 0) {
-  //     this.setData({
-  //       scrollindex: d.scrollindex - 1
-  //     })
-  //   } else if (d.endy - d.starty < -100 && d.scrollindex < this.data.totalnum - 1) {
-  //     this.setData({
-  //       scrollindex: d.scrollindex + 1
-  //     })
-  //   }
-  //   this.setData({
-  //     starty: 0,
-  //     endy: 0,
-  //     margintop: 0
-  //   })
-  // },
-  
+  var title =''
+  if(index == 1){
+    title = '上班打卡'
+    this.getLocation()
+  }else if(index == 2){
+    title = '下班打卡'
+  }else{
+    title = ''
+  }
+  wx.setNavigationBarTitle({
+    title:title,
+  })
+  this.setData({
+    scrollindex: index
+  })
+},
+
+
+getLocation:function(){
+  var that = this
+  wx.getLocation({
+    success: function(res) {
+      //国测局坐标转百度经纬度坐标
+      var gcj02 = coordtransform.wgs84togcj02(res.longitude, res.latitude);
+      var bd09 = coordtransform.gcj02tobd09(gcj02[1], gcj02[0]);
+      
+      that.setData({
+        latitude: res.latitude,
+        longitude: res.longitude,
+        altitude: res.altitude,
+      })
+
+      request.getGpsAddress({
+        token: userManager.userInfo.token, 
+        altitude: res.altitude, 
+        latitude: bd09[0], 
+        longitude: bd09[1], 
+        success:function(res){
+          console.log('经纬度解释地理名称成功!')
+          console.log(res)
+          that.setData({
+            address: res.data.addressInfo.formattedAddress,
+          })
+        },
+        fail:function(res){
+          console.log(res)
+        }
+      })
+    },
+  })
+}
+
 
 
 

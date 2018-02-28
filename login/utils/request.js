@@ -1,10 +1,10 @@
 var MD5 = require('../lib/md5.js');
 const des = require('./des.js')
-const userManager = require('./userManager.js');
+
 const systemInfo = require('./systemInfo.js');
+const WxNotificationCenter = require("./WxNotificationCenter.js");
 
-
-import { LoginStatusNormal, LoginStatusUnLogin, LoginStatusTokenInvalid } from './userManager.js'
+import { LoginStatusUnLogin, LoginStatusNormal, LoginStatusTokenInvalid, userManager } from './userManager.js'
 
 
 
@@ -88,6 +88,7 @@ var request = {
 
   //登录
   login: function ({user, pwd, success, fail}) {
+    console.log(LoginStatusNormal)
     var encryptString = des(pwd, this.requestConfig.loginSecretKey);//vuOShIfoI8SuPqjTlU+csw==
     console.log(encryptString)
 
@@ -113,6 +114,7 @@ var request = {
           userManager.userInfo.token = res.data.token;
           userManager.userInfo.loginStatus = LoginStatusNormal;
           userManager.cacheUserInfo()
+          console.log('登录成功，前往获取用户信息')
 
           //获取用户信息
           that.getUserInfo({ token: userManager.userInfo.token })
@@ -153,6 +155,8 @@ var request = {
             userManager.userInfo.sex = res.data.user.sex
             userManager.cacheUserInfo()
         }
+        console.log('获取用户信息成功!')
+        WxNotificationCenter.postNotificationName("userInfoChangeNotificationName");
         if(success){success(res)}
       },
       fail:function(res){
@@ -160,6 +164,40 @@ var request = {
       },
     })
   },
+
+  getGpsAddress: function ({ token, altitude, latitude, longitude, success, fail}){
+    var url = 'https://angel.bluemoon.com.cn/bluemoon-control/attendance/getGpsAddress'
+    var queryString = this.getPublicQueryString();
+    url = url + '?' + queryString
+    wx.request({
+      url: url,
+      method:'POST',
+      data:{
+        token: token,
+        altitude: altitude,
+        latitude: latitude,
+        longitude: longitude,
+      },
+      success:function(res){
+        var responseCode = res.data.responseCode
+        var responseMsg = res.data.responseMsg
+        if (responseCode == 0) {
+          if (success) { success(res) }
+        } else if(responseCode == 2301){
+          wx.showToast({
+            title: responseMsg,
+            icon:'none',
+          })
+          WxNotificationCenter.postNotificationName("tokenInvalidNotificationName");
+        }
+        
+      },
+      fail:function(res){
+        if (fail) { fail(res) }
+      },
+    })
+  },
+
 }
 
 module.exports = request;
