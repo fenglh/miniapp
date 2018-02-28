@@ -2,7 +2,7 @@
 <view class='center'><text class='title'>登录</text></view>
 <image class='logo' src='../images/icon@2x.png' ></image>
 
-<input focus='{{userInputFocus}}' bindtap='userBindtap' disabled='{{userInputDisabled}}'  animation='{{userInputAnimation}}' class='input-user'  value='{{user}}'type='number' bindinput='userBindinput'   placeholder='输入员工编号' confirm-type='next' maxlength='8'></input>
+<input focus='{{userInputFocus}}'  bindtap='userBindtap' disabled='{{userInputDisabled}}'  animation='{{userInputAnimation}}' class='input-user'  value='{{user}}'type='number' bindinput='userBindinput'   placeholder='输入员工编号' confirm-type='next' maxlength='8'></input>
 
 <input bindtap='pwdBindtap' disabled='{{pwdInputDisabled}}' animation='{{pwdInputAnimation}}'  class='input-pwd' value='{{pwd}}' focus='{{pwdInputFocus}}' password='true' bindinput='pwdBindinput' placeholder='输入员工密码' confirm-type='done'></input>
 
