@@ -173,7 +173,9 @@ Page({
     // Y轴移动，并缩放，以及透明度--还原
     this.inputViewAnimation.translateY(0).opacity(1).step()
     this.userInputAnimation.opacity(1).step()
-    this.pwdInputAnimation.opacity(0.65).step()
+    var pwdOpacity = 0
+    if (this.data.user.length >= 8) { pwdOpacity = 0.65}
+    this.pwdInputAnimation.opacity(pwdOpacity).step()
     this.setData({
       userInputAnimation: this.userInputAnimation.export(),
       inputViewAnimation: this.inputViewAnimation.export(),
