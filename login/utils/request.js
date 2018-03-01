@@ -217,8 +217,12 @@ var request = {
         var responseMsg = res.data.responseMsg
         if (responseCode == 0) {
           if (success) { success(res) }
-        } else {
-          if (fail) { fail(res) }
+        } else if (responseCode == 2301) {
+          wx.showToast({
+            title: responseMsg,
+            icon: 'none',
+          })
+          WxNotificationCenter.postNotificationName("tokenInvalidNotificationName");
         }
       },
       fail: function (res) {

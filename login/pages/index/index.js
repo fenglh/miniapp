@@ -349,9 +349,15 @@ scrollIndex:function(index){
   wx.setNavigationBarTitle({
     title:title,
   })
+
   wx.setNavigationBarColor({
     frontColor: '#ffffff',
     backgroundColor: nagigationBarColor,
+    animation: {
+      duration: 400,
+      timingFunc: 'easeIn'
+    }
+
   })
   this.setData({
     scrollindex: index

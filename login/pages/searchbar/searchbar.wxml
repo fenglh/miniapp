@@ -18,8 +18,8 @@
             <view class="weui-search-bar__cancel-btn" hidden="{{!inputShowed}}" bindtap="hideInput">{{inputVal.length >0?'搜索':'取消'}}</view>
         </view>
         <view class=" searchbar-result" wx:if="{{searchResults.length > 0}}" >
-          <view wx:for-items="{{searchResults}}" wx:key='index' class="search-cell" hover-class="weui-cell_active">
-                <view class='search-result' >
+          <view wx:for-items="{{searchResults}}" wx:key='index' class="search-cell" >
+                <view class='search-result' hover-class="result-view-hover" bindtap='resultBindtap' >
                     <view style=';font-size:20px;color:#353535'>{{searchResults[index].workplaceName}}</view>
                     <view style='margin-top:8px;font-size:16px;color:#888888'>{{searchResults[index].workplaceCode}}</view>
                     <view style='margin-top:4px;font-size:16px;color:#888888'>{{searchResults[index].provinceName}}{{searchResults[index].cityName}}{{searchResults[index].countyName}}{{searchResults[index].address}}</view>

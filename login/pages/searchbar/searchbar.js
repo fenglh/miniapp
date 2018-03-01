@@ -55,6 +55,10 @@ Page({
     });
   },
 
+  resultBindtap:function(e){
+    console.log(e);
+  },
+
   /**
    * 生命周期函数--监听页面加载
    */
@@ -64,11 +68,7 @@ Page({
       })
       wx.setNavigationBarColor({
         frontColor: '#ffffff',
-        backgroundColor: '#ff0000',
-        animation: {
-          duration: 400,
-          timingFunc: 'easeIn'
-        }
+        backgroundColor: '#576b95',
       })
 
   },
@@ -84,7 +84,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    
+  
   },
 
   /**
