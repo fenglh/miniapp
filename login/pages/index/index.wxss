@@ -82,15 +82,62 @@ page{
 .container-fill{
 	height: 100%;
 	 overflow: hidden; 
-    background-color: rebeccapurple; 
+  background-color: white; 
 }
 .section{
 	height: 100%;
+  visibility:hidden; 
 }
 
 .active .section-maintitle,
 .active .section-subtitle{
 	animation: mymove 0.8s;
+}
+
+
+
+.card-box{
+  margin-top:10px;
+  padding: 10px ;
+  border-radius: 4px;
+  background-color: white;
+  text-align: left;
+  overflow: hidden;
+}
+
+
+.card-box text {
+  margin-left:10px;
+  font-size: 16px;
+}
+
+.card-box view {
+  text-align: left; 
+  /* padding-top:5px; */
+}
+.card-box-title {
+  text-align:left;
+  font-size:20px;
+  font-weight:bold;
+}
+
+.card-box-show {
+  height: auto;
+}
+
+.page0{
+  background:white;
+
+}
+.page1{
+  padding: 10px;
+  background:#576b95;
+  color:black; 
+  font-size:12px
+}
+
+.show {
+  visibility:visible;
 }
 @keyframes mymove{
 	from {
@@ -99,4 +146,34 @@ page{
 	to {
 		transform: translateY(0) scale(1) rotateY(0);
 	}
+}
+
+.small-logo{
+  width:14px;
+  height:14px;
+}
+
+
+
+.worktask-box{
+  margin: 20px 10px 10px;
+  background: white; 
+  border-radius: 4px;
+}
+
+.worktask-list {
+  margin-top: 0px;
+  display: flex;
+  /* padding: 5px; */
+  flex-direction: row ;
+  flex-wrap: wrap;
+
+}
+
+.workplace-text {
+  background-color: #f8f8f8;
+  margin:5px;
+  color: black;
+  padding: 8px; 
+  border-radius:4px;
 }

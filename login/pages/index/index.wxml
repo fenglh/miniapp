@@ -1,34 +1,64 @@
 <view class='container-fill'>
   <view class='scroll-fullpage' bindtouchstart="scrollTouchstart" bindtouchmove="scrollTouchmove" bindtouchend="scrollTouchend" style="transform:translateY(-{{scrollindex*100}}%)">
     <!-- 第一页 -->
-    <view class="section  {{scrollindex==0?'active':''}}" style="background: white;">
+    <view class="section page0 {{scrollindex==0?'active show':''}}">
       <view class='center'>
         <text class='title'>登录</text>
       </view>
       <image class='logo' src='../images/icon@2x.png'></image>
 
       <view class='input-view' animation='{{inputViewAnimation}}'>
-        <input animation='{{userInputAnimation}}' focus='{{userInputFocus}}'  catchtouchstart="userBindtap" disabled='{{userInputDisabled}}' class='input-user' value='{{user}}' type='number' bindinput='userBindinput' placeholder='输入员工编号' confirm-type='next' maxlength='8'></input>
+        <input animation='{{userInputAnimation}}' focus='{{userInputFocus}}' catchtouchstart="userBindtap" disabled='{{userInputDisabled}}' class='input-user' value='{{user}}' type='number' bindinput='userBindinput' placeholder='输入员工编号' confirm-type='next' maxlength='8'></input>
 
         <input catchtouchstart="pwdBindtap" disabled='{{pwdInputDisabled}}' animation='{{pwdInputAnimation}}' class='input-pwd' value='{{pwd}}' focus='{{pwdInputFocus}}' password='true' bindinput='pwdBindinput' placeholder='输入员工密码' confirm-type='done'></input>
       </view>
 
 
-      <view   catchtouchstart="loginBindtap" animation='{{loginAnimation}}' class='separation-line'>
+      <view catchtouchstart="loginBindtap" animation='{{loginAnimation}}' class='separation-line'>
         <text class='login-text'>登录</text>
       </view>
     </view>
 
     <!-- 第二页 -->
-    <view class="section {{scrollindex==1?'active':''}}" style="background: #00CC66;">
-      <view style='text-align: left;'>账号:{{userInfo.account}}</view> 
-      <view style='text-align: left;'>手机号:{{userInfo.mobileNo}}</view> 
-      <view style='text-align: left;'>姓名:{{userInfo.realName}}</view> 
-      <view style='text-align: left;'>员工类型:{{userInfo.empType}}</view> 
-      <view style='text-align: left;'>性别:{{userInfo.sex}}</view> 
-      <view style='text-align: left;'>经纬度:{{longitude}},{{latitude}},{{altitude}}</view> 
-      <view style='text-align: left;'>地理名称:{{address}}</view> 
+    <view class="section page1 {{scrollindex==1?'active  show':''}}" >
+
+      <!-- 个人信息 -->
+      <view class='card-box'>
+        <view class='card-box-title'>个人信息</view>
+        <view style='margin-left:10px'>
+          <view >
+            <image class='small-logo' src='../images/icon_customer_blue@2x.png'></image>
+            <text>{{userInfo.account}}</text>
+          </view>
+
+          <view>
+            <image class='small-logo' src='../images/icon_customer_blue@2x.png'></image>
+            <text>{{userInfo.realName}}</text>
+          </view>
+          <view>
+            <image class='small-logo' src='../images/icon_address_blue@2x.png'></image>
+            <text>{{address}}</text>
+          </view>
+        </view>
+        
+      </view>
+
+      <!-- 工作任务选择 -->
+      <view class='card-box' >
+       <navigator url='../searchbar/searchbar' style='display:flex;flex-direction: row;justify-content: space-between; text-align: center;'>
+        <text class='card-box-title' style='display:flex; '>工作任务</text>
+        <image style='height:20px; width:20px;;' src='../images/right.png'></image>
+      </navigator>
+
+      <view class='worktask-list'>
+        <block wx:for-items="{{list}}" >
+          <view class='workplace-text'>我是按钮{{index*100}}</view>
+        </block>
+      </view> 
+
+      </view>
 
     </view>
+
   </view>
 </view>

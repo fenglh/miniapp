@@ -15,7 +15,6 @@ Page({
   data: {
     user: '',
     pwd:'',
-
     userInfo: userManager.userInfo,
     pwdInputDisabled:true,
     pwdInputFocus:false,
@@ -25,7 +24,7 @@ Page({
     animating:false,
     animationDuration:400,
     scrollindex: 0,  //当前页面的索引值
-    totalnum: 5,  //总共页面数
+    totalnum: 2,  //总共页面数
     starty: 0,  //开始的位置x
     endy: 0, //结束的位置y
     margintop: 0,  //滑动下拉距离
@@ -35,6 +34,8 @@ Page({
     longitude:0,
     altitude:0,
     address:'',
+    //工作任务选择
+    list:[1,2,3,4],
 
   },
 
@@ -335,8 +336,10 @@ Page({
 scrollIndex:function(index){
 
   var title =''
+  var nagigationBarColor ='#ffffff'
   if(index == 1){
     title = '上班打卡'
+    nagigationBarColor = '#576b95'
     this.getLocation()
   }else if(index == 2){
     title = '下班打卡'
@@ -345,6 +348,10 @@ scrollIndex:function(index){
   }
   wx.setNavigationBarTitle({
     title:title,
+  })
+  wx.setNavigationBarColor({
+    frontColor: '#ffffff',
+    backgroundColor: nagigationBarColor,
   })
   this.setData({
     scrollindex: index
