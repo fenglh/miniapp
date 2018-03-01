@@ -13,7 +13,7 @@ const app     = getApp()
 
 Page({
   data: {
-    user: userManager.userInfo.account,
+    user: '',
     pwd:'',
 
     userInfo: userManager.userInfo,
@@ -44,8 +44,7 @@ Page({
     var that = this
     WxNotificationCenter.addNotification("userInfoChangeNotificationName", that.userInfoChangeNotificationFn, that)
     WxNotificationCenter.addNotification("tokenInvalidNotificationName", that.tokenInvalidNotificationFn, that)
-    console.log('用户登录状态:')
-    console.log(userManager.userInfo.loginStatus)
+    
     if (userManager.userInfo.loginStatus == LoginStatusNormal){
       this.scrollIndex(1)
     }
@@ -88,6 +87,11 @@ Page({
     })
 
     //初始化
+    if (userManager.userInfo.account != undefined){
+      this.setData({
+        user: userManager.userInfo.account
+      })
+    }
     if (this.data.user.length >= 8) {
       this.animationPwdInputShow(true)
 
@@ -355,8 +359,8 @@ getLocation:function(){
       var bd09 = coordtransform.gcj02tobd09(gcj02[1], gcj02[0]);
       
       that.setData({
-        latitude: res.latitude,
-        longitude: res.longitude,
+        latitude: bd09[0],
+        longitude: bd09[1],
         altitude: res.altitude,
       })
 
@@ -378,8 +382,9 @@ getLocation:function(){
       })
     },
   })
-}
+},
 
+  
 
 
 

@@ -27,14 +27,14 @@ var userManager = {
     //获取缓存数据
     try {
       var userInfo = wx.getStorageSync('userInfo')
-      if (userInfo) {
+      if (userInfo != '') {
         userManager.userInfo = userInfo
       }
     } catch (e) {
       //不做任何处理
       console.log("用户缓存数据被清空，请重新登录");
     }
-    return userInfo;
+    return userManager.userInfo;
   },
 
   cacheUserInfo: function () {
@@ -49,6 +49,6 @@ var userManager = {
 
 }
 
-userManager.userInfo = userManager.initUserInfoFromCache()
+var info = userManager.initUserInfoFromCache()
 
 module.exports = { LoginStatusUnLogin, LoginStatusNormal, LoginStatusTokenInvalid, userManager};
