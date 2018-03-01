@@ -51,7 +51,7 @@
       </navigator>
 
       <view class='worktask-list'>
-        <block wx:for-items="{{list}}" >
+        <block wx:for-items="{{list}}" wx:key='index' >
           <view class='workplace-text'>我是按钮{{index*100}}</view>
         </block>
       </view> 

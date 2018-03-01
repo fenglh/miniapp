@@ -198,6 +198,35 @@ var request = {
     })
   },
 
+  //获取上班地点，最多返回30条
+  getWorkplaceList: function ({ token, condition, count, success, fail }){
+    var url = 'https://angel.bluemoon.com.cn/bluemoon-control/attendance/getWorkplaceList'
+    var queryString = this.getPublicQueryString();
+    url = url + '?' + queryString
+    wx.request({
+      url: url,
+      method: 'POST',
+      data:{
+        token:token,
+        condition:condition,
+        count:count,
+        timestamp:0,
+      },
+      success: function (res) {
+        var responseCode = res.data.responseCode
+        var responseMsg = res.data.responseMsg
+        if (responseCode == 0) {
+          if (success) { success(res) }
+        } else {
+          if (fail) { fail(res) }
+        }
+      },
+      fail: function (res) {
+        if (fail) { fail(res) }
+      },
+    })
+  },
+
 }
 
 module.exports = request;

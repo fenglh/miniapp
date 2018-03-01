@@ -82,3 +82,25 @@
   color: #09BB07;
   white-space: nowrap;
 }
+
+.search-cell {
+  padding: 10px 15px;
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.search-result {
+  border-radius: 2px;
+  padding: 8px;
+  display:flex;
+  flex-direction:column;
+  background:white; 
+  border-bottom: 1rpx solid #D7D6DC;
+  width:100%;
+
+}

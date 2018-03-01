@@ -1,3 +1,7 @@
+
+const request = require('../../utils/request.js')
+import { LoginStatusUnLogin, LoginStatusNormal, LoginStatusTokenInvalid, userManager } from '../../utils/userManager.js'
+
 Page({
 
   /**
@@ -5,7 +9,8 @@ Page({
    */
   data: {
     inputShowed: false,
-    inputVal: ""
+    inputVal: "",
+    searchResults:[]
   },
   showInput: function () {
     this.setData({
@@ -13,10 +18,31 @@ Page({
     });
   },
   hideInput: function () {
-    this.setData({
-      inputVal: "",
-      inputShowed: false
-    });
+    var that = this;
+    if(this.data.inputVal.length>0){
+      request.getWorkplaceList ({
+        token: userManager.userInfo.token, 
+        condition:that.data.inputVal, 
+        count:30, 
+        success:function(res){
+          console.log(res)
+          that.setData({
+            searchResults: res.data.workplaceList,
+          })
+        },
+        fail:function(){
+          console.log(res)
+        } 
+      });
+
+    }else{
+      console.log('取消搜索');
+      this.setData({
+        inputVal: "",
+        inputShowed: false
+      });
+    }
+
   },
   clearInput: function () {
     this.setData({
