@@ -1,5 +1,5 @@
 <view class='container-fill'>
-  <view class='scroll-fullpage' bindtouchstart="scrollTouchstart"  style="transform:translateY(-{{scrollindex*100}}%)">
+  <view class='scroll-fullpage' bindtouchstart="scrollTouchstart" style="transform:translateY(-{{scrollindex*100}}%)">
     <!-- 第一页 -->
     <view class="section page0 {{scrollindex==0?'active show':''}}">
       <view class='center'>
@@ -20,13 +20,38 @@
     </view>
 
     <!-- 第二页 -->
-    <view class="section page1 {{scrollindex==1?'active  show':''}}" >
+    <view class="section page1 {{scrollindex==1?'active  show':''}}">
+
+
+
+      <!-- 工作地点 -->
+      <view class='card-box' style='padding:0px;'>
+        <navigator url='../searchbar/searchbar' style='display:flex;flex-direction: row;justify-content: space-between; text-align: center;'>
+          <text class='card-box-title' style='display:flex;line-height:44px; '>工作地点</text>
+          <view class='card-box-desc' style='display:flex;align-items:center;justify-content: center;'>
+            <text style='display:flex;position:relative;margin-right:10px;line-height:44px;color:{{workplace.workplaceCode.length >0 ?"#353535":"#999999"}}'>{{workplace.workplaceCode.length >0 ?(workplace.workplaceName +'('+ workplace.workplaceCode+')'):'请选择'}}</text>
+            <image style='height:20px; width:20px;margin-right:10px;' src='../images/right.png'></image>
+          </view>
+
+        </navigator>
+      </view>
+
+      <!-- 工作任务选择 -->
+      <view class='card-box' style='padding-left:0px;'>
+        <text class='card-box-title' style='display:flex; '>工作任务</text>
+        <view class='worktask-list'>
+          <block wx:for="{{workTaskList}}" wx:for-item="item" wx:key='index'>
+            <view catchtouchstart='taskBindtap' style='background-color:{{item.isSelected ? ("#576b95"):("#f8f8f8")}};color:{{item.isSelected ? ("white"):("black")}}' data-page='{{index}}' class='workplace-text'>{{item['taskName']}}</view>
+          </block>
+        </view>
+
+      </view>
 
       <!-- 个人信息 -->
       <view class='card-box'>
         <view class='card-box-title'>个人信息</view>
         <view class='card-box-desc' style='margin-top:10px;margin-left:10px'>
-          <view >
+          <view>
             <image class='small-logo' src='../images/icon_customer_blue@2x.png'></image>
             <text>{{userInfo.account}}</text>
           </view>
@@ -40,29 +65,6 @@
             <text>{{address}}</text>
           </view>
         </view>
-        
-      </view>
-
-      <!-- 工作地点 -->
-      <view class='card-box' style='padding:0px;'>
-        <navigator url='../searchbar/searchbar' style='display:flex;flex-direction: row;justify-content: space-between; text-align: center;'>
-          <text class='card-box-title' style='display:flex;line-height:44px; '>工作地点</text>
-          <view class='card-box-desc' style='display:flex;align-items:center;justify-content: center;'>
-            <text  style='display:flex;position:relative;margin-right:10px;line-height:44px;color:{{workplace.workplaceCode.length >0 ?"#353535":"#999999"}}'>{{workplace.workplaceCode.length >0 ?(workplace.workplaceName +'('+ workplace.workplaceCode+')'):'请选择'}}</text>
-            <image style='height:20px; width:20px;margin-right:10px;'  src='../images/right.png'></image> 
-          </view>
-
-        </navigator>
-      </view>
-
-      <!-- 工作任务选择 -->
-      <view class='card-box' style='padding-left:0px;'>
-      <text class='card-box-title' style='display:flex; '>工作任务</text>
-      <view class='worktask-list'>
-        <block  wx:for="{{workTaskList}}" wx:for-item="item" wx:for-index="index" >
-          <view catchtouchstart='taskBindtap' style='background-color:{{item.isSelected ? ("#576b95"):("#f8f8f8")}};color:{{item.isSelected ? ("white"):("black")}}' data-page='{{index}}' class='workplace-text'>{{item['taskName']}}</view>
-        </block>
-      </view> 
 
       </view>
 
