@@ -1,25 +1,4 @@
-<view class='container-fill'>
-  <view class='scroll-fullpage' bindtouchstart="scrollTouchstart" style="transform:translateY(-{{scrollindex*100}}%)">
-    <!-- 第一页 -->
-    <view class="section page0 {{scrollindex==0?'active show':''}}">
-      <view class='center'>
-        <text class='title'>登录</text>
-      </view>
-      <image class='logo' src='../images/icon@2x.png'></image>
-
-      <view class='input-view' animation='{{inputViewAnimation}}'>
-        <input animation='{{userInputAnimation}}' focus='{{userInputFocus}}' catchtouchstart="userBindtap" disabled='{{userInputDisabled}}' class='input-user' value='{{user}}' type='number' bindinput='userBindinput' placeholder='输入员工编号' confirm-type='next' maxlength='8'></input>
-
-        <input catchtouchstart="pwdBindtap" disabled='{{pwdInputDisabled}}' animation='{{pwdInputAnimation}}' class='input-pwd' value='{{pwd}}' focus='{{pwdInputFocus}}' password='true' bindinput='pwdBindinput' placeholder='输入员工密码' confirm-type='done'></input>
-      </view>
-
-
-      <view catchtouchstart="loginBindtap" animation='{{loginAnimation}}' class='separation-line'>
-        <text class='login-text'>登录</text>
-      </view>
-    </view>
-
-    <!-- 第二页 -->
+    <!-- //打卡页面 -->
     <view class="section page1 {{scrollindex==1?'active  show':''}}">
 
       <!-- 工作地点 -->
@@ -46,7 +25,7 @@
       </view>
 
        <!-- 个人信息  -->
-      <!-- <view class='card-box'>
+       <view class='card-box'>
         <view class='card-box-title'>个人信息</view>
         <view class='card-box-desc' style='margin-top:10px;margin-left:10px'>
           <view>
@@ -64,16 +43,18 @@
           </view>
         </view>
 
-      </view> -->
+      </view> 
 
       <!-- 打卡 -->
       <view class='punch-card-container'>
         <view class='punch-card-box'>
-          <!-- <canvas class='punch-card-canvas' canvas-id='canvasProgressbg'></canvas> -->
-          <!-- <view class="progress_text">
+            <canvas class='punch-card-canvas' canvas-id='canvasProgressbg'>
+            <view class="progress_text">
             <text class=''>打卡</text>
             <text class='progress_text_time'>14:30:58</text>
-          </view>  -->
+          </view>  
+            </canvas>   
+
         </view>
         <view class='address-text'>
             <image class='small-logo' src='../images/icon_address_blue@2x.png'></image>
@@ -83,6 +64,3 @@
 
 
     </view>
-
-  </view>
-</view>

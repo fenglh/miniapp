@@ -6,23 +6,15 @@ const request = require('../../utils/request.js')
 const WxNotificationCenter = require("../../utils/WxNotificationCenter.js");
 const coordtransform = require('../../lib/coordtransform.js');
 import { LoginStatusUnLogin, LoginStatusNormal, LoginStatusTokenInvalid, userManager } from '../../utils/userManager.js'
-const app     = getApp()
+const app = getApp()
 
 
 
 
 Page({
   data: {
-    user: '',
-    pwd:'',
     userInfo: userManager.userInfo,
-    pwdInputDisabled:true,
-    pwdInputFocus:false,
-    userInputFocus: false,
-    userInputDisabled: false,
-    loginBtndisable: true,
-    animating:false,
-    animationDuration:400,
+    animationDuration: 400,
     scrollindex: 0,  //当前页面的索引值
     totalnum: 2,  //总共页面数
     starty: 0,  //开始的位置x
@@ -30,13 +22,13 @@ Page({
     margintop: 0,  //滑动下拉距离
 
     //经纬度信息
-    latitude:0,
-    longitude:0,
-    altitude:0,
-    address:'',
+    latitude: 0,
+    longitude: 0,
+    altitude: 0,
+    address: '',
     //工作任务选择
-    workplace:{},//工作地点
-    workTaskList:[],
+    workplace: {},//工作地点
+    workTaskList: [],
 
   },
 
@@ -46,69 +38,32 @@ Page({
     var that = this
     WxNotificationCenter.addNotification("userInfoChangeNotificationName", that.userInfoChangeNotificationFn, that)
     WxNotificationCenter.addNotification("tokenInvalidNotificationName", that.tokenInvalidNotificationFn, that)
-    
-    if (userManager.userInfo.loginStatus == LoginStatusNormal){
-      this.scrollIndex(1)
-    }
+    wx.setNavigationBarTitle({
+      title: '上班打卡',
+    })
+    wx.setNavigationBarColor({
+      frontColor: '#ffffff',
+      backgroundColor: '#576b95',
+      animation: {
+        duration: 400,
+        timingFunc: 'easeIn'
+      }
+    })
+
+    this.getLocation();
   },
 
-  //页面显示，先后顺序:onLoad->onShow->onReady
-  onShow: function () {
-    console.log('onShow')
-  },
 
   //页面初次渲染完成，先后顺序:onLoad->onShow->onReady
-  onReady:function () {
+  onReady: function () {
     console.log('onReady')
-
-
     //画圆
     this.drawCircle();
     //初始化动画
 
-    this.userInputAnimation = wx.createAnimation({
-      duration: this.data.animationDuration,
-      timingFunction: 'ease',
-      delay: 0,
-    })
-
-    this.pwdInputAnimation = wx.createAnimation({
-      duration: this.data.animationDuration,
-      timingFunction:'ease',
-      delay:0,
-    })
-
-    this.inputViewAnimation = wx.createAnimation({
-      duration: this.data.animationDuration,
-      timingFunction: 'ease',
-      delay: 0,
-    })
-
-    //登录按钮动画
-    this.loginAnimation = wx.createAnimation({
-      duration: 700,
-      timingFunction: 'line',
-      delay: 0,
-    })
-
-    //初始化
-    if (userManager.userInfo.account != undefined){
-      this.setData({
-        user: userManager.userInfo.account
-      })
-    }
-    if (this.data.user.length >= 8) {
-      this.animationPwdInputShow(true)
-
-
-    } else {
-      this.animationPwdInputShow(false)
-      //清空密码
-      this.setData({ pwd: '' })
-    }
   },
 
-  tokenInvalidNotificationFn:function(){
+  tokenInvalidNotificationFn: function () {
     console.log('token无效')
     //设置登录状态
     userManager.userInfo.loginStatus = LoginStatusTokenInvalid;
@@ -116,262 +71,25 @@ Page({
     console.log(userManager.userInfo)
     userManager.cacheUserInfo()
     this.userInfoChangeNotificationFn()
-    var that = this;
-    wx.navigateBack({
-      delta: 1,
-    })
-    that.scrollIndex(0) 
+    wx.redirectTo({
+      url: '../login/login',
+    });
+
   },
 
-  userInfoChangeNotificationFn:function(){
+  userInfoChangeNotificationFn: function () {
     console.log('收到用户信息改变通知，刷新当前页面用户信息')
-      //刷新数据
-      this.setData({
-        userInfo: userManager.userInfo,
-      })
-  },
-
-  animationPwdInputShow:function(show){
-
-    var opacity = 0;
-    if (show) {
-      opacity = 1;
-    } else {
-      opacity = 0;
-    }
-
-    this.pwdInputAnimation.opacity(opacity).step()
+    //刷新数据
     this.setData({
-      pwdInputAnimation: this.pwdInputAnimation.export(),
+      userInfo: userManager.userInfo,
     })
   },
 
-  //用户名输入事件
-  userBindinput:function(e){
-    this.setData({
-      user:e.detail.value,
-    })
-    if (this.data.user.length >= 8) {
-      this.animationPwdInputShow(true)
-    } else {
-      this.animationPwdInputShow(false)
-      //清空密码
-      this.setData({
-         pwd: '' ,
-         userInputFocus:true,
-      })
-    }
-  },
 
 
 
 
-
-  animationLoginBtnHeight:function(value){
-    //登录按钮：高度变化
-    this.loginAnimation.height(value).step()
-    this.setData({
-      loginAnimation: this.loginAnimation.export()
-    })
-  },
-  animationMoveReset:function(){
-    // Y轴移动，并缩放，以及透明度--还原
-    this.inputViewAnimation.translateY(0).opacity(1).step()
-    this.userInputAnimation.opacity(1).step()
-    var pwdOpacity = 0
-    if (this.data.user.length >= 8) { pwdOpacity = 0.65}
-    this.pwdInputAnimation.opacity(pwdOpacity).step()
-    this.setData({
-      userInputAnimation: this.userInputAnimation.export(),
-      inputViewAnimation: this.inputViewAnimation.export(),
-      pwdInputAnimation: this.pwdInputAnimation.export(),
-
-    })
-  },
-
-  animationMoveUp: function () {
-    //用户输入框：Y轴移动、缩放、透明度
-    this.inputViewAnimation.translateY(-50).step()
-    this.userInputAnimation.opacity(0.65).step()
-    this.pwdInputAnimation.opacity(1).step()
-    this.setData({
-      userInputAnimation: this.userInputAnimation.export(),
-      inputViewAnimation: this.inputViewAnimation.export(),
-      pwdInputAnimation: this.pwdInputAnimation.export(),
-    })
-  },
-
-  userBindtap:function(){
-
-    if (this.data.animating) {
-      setTimeout(function () {
-        this.bindUserInputTap()
-      }.bind(this), 100)
-      console.log('动画中，延时执行')
-      return;
-    }
-    //屏蔽所有
-    this.disableAllInput()
-    this.animationMoveReset()
-    this.animationLoginBtnHeight(0.5)
-
-    setTimeout(function () {
-      this.setData({
-        userInputDisabled: false,
-        userInputFocus: true,
-  
-      })
-
-    }.bind(this), 400)
-
-    setTimeout(function () {
-      this.setData({
-        animating: false,
-      })
-
-    }.bind(this), 1300)
-
-  },
-
-
-  pwdBindtap:function(){
-
-    if (this.data.animating) {
-      setTimeout(function () {
-        this.pwdBindtap()
-      }.bind(this), 100)
-      console.log('动画中，延时执行')
-      return;
-    }
-
-    if (this.data.user.length <8){
-      return;
-    }
-
-    this.animationMoveUp()
-
-    if (this.data.pwd.length >= 8) {
-      this.animationLoginBtnHeight(44)
-    } else {
-      this.animationLoginBtnHeight(0.5)
-    }
-
-    setTimeout(function(){
-      this.setData({
-        pwdInputDisabled: false,
-        pwdInputFocus: true,
-
-      })
-
-    }.bind(this),400)
-
-    setTimeout(function () {
-      this.setData({
-        animating: false,
-      })
-
-    }.bind(this), 1300)
-
-  },
-
-
-
-  disableAllInput:function(){
-    this.setData({
-      pwdInputFocus: false,
-      userInputFocus: false,
-      userInputDisabled: true,
-      pwdInputDisabled: true,
-      animating:true,
-    })
-  },
-
-  //密码输入事件
-  pwdBindinput:function(e){
-    this.setData({
-      pwd: e.detail.value,
-    })
-
-    if (this.data.pwd.length >= 8) {
-      this.animationLoginBtnHeight(44)
-    } else {
-      this.animationLoginBtnHeight(0.5)
-    }
-
-  },
-
-  //登录
-  loginBindtap: function (e) {
-    wx.showLoading({
-      title: '登录中...',
-      mask:true,
-    })
-
-  var that = this
-  request.login({
-    user:this.data.user,
-    pwd:this.data.pwd,
-    success:function(res){
-      var responseCode = res.data.responseCode
-      var responseMsg = res.data.responseMsg
-      if (responseCode != 0) {
-          wx.showToast({
-            title: res.data.responseMsg,
-            icon: 'none',
-          })
-      } else {
-          //跳转到打卡界面
-        wx.hideLoading()
-        that.scrollIndex(1)
-
-      }
-
-    },
-    fail:function(res){
-        wx.showToast({
-          title: '请求失败',
-          icon: 'none',
-        })
-    }
-  })
-  },
-
-
-scrollIndex:function(index){
-
-  var title =''
-  var nagigationBarColor ='#ffffff'
-  if(index == 1){
-    title = '上班打卡'
-    nagigationBarColor = '#576b95'
-    this.getLocation()
-
-    // this.getWorkTaskInfo(this.workplace['workplaceCode'])
-    
-  }else if(index == 2){
-    title = '下班打卡'
-  }else{
-    title = ''
-  }
-  wx.setNavigationBarTitle({
-    title:title,
-  })
-
-  wx.setNavigationBarColor({
-    frontColor: '#ffffff',
-    backgroundColor: nagigationBarColor,
-    animation: {
-      duration: 400,
-      timingFunc: 'easeIn'
-    }
-
-  })
-  this.setData({
-    scrollindex: index
-  })
-},
-
-  refreshWorkTask: function (workplace){
+  refreshWorkTask: function (workplace) {
     console.log('选择工作地点')
     console.log(workplace)
     this.setData({
@@ -381,89 +99,89 @@ scrollIndex:function(index){
     this.getWorkTaskInfo(workplace.workplaceCode)
   },
 
-getWorkTaskInfo:function(workplaceCode){
+  getWorkTaskInfo: function (workplaceCode) {
 
-  if (workplaceCode.length <= 0) return;
+    if (workplaceCode.length <= 0) return;
 
-  var that = this;
+    var that = this;
     request.getWorkTask({
-      token: userManager.userInfo.token, 
+      token: userManager.userInfo.token,
       workplaceCode: workplaceCode,
-      success:function(res){
+      success: function (res) {
         console.log('获取工作任务信息')
         console.log(res)
         that.setData({
-          workTaskList:res.data.workTaskList,
+          workTaskList: res.data.workTaskList,
         })
 
       },
-      fail:function(res){
+      fail: function (res) {
         console.log(res)
       },
     })
-},
+  },
 
-getLocation:function(){
-  var that = this
-  wx.getLocation({
-    success: function(res) {
-      //国测局坐标转百度经纬度坐标
-      var gcj02 = coordtransform.wgs84togcj02(res.longitude, res.latitude);
-      var bd09 = coordtransform.gcj02tobd09(gcj02[1], gcj02[0]);
-      
-      that.setData({
-        latitude: bd09[0],
-        longitude: bd09[1],
-        altitude: res.altitude,
-      })
+  getLocation: function () {
+    var that = this
+    wx.getLocation({
+      success: function (res) {
+        //国测局坐标转百度经纬度坐标
+        var gcj02 = coordtransform.wgs84togcj02(res.longitude, res.latitude);
+        var bd09 = coordtransform.gcj02tobd09(gcj02[1], gcj02[0]);
 
-      request.getGpsAddress({
-        token: userManager.userInfo.token, 
-        altitude: res.altitude, 
-        latitude: bd09[0], 
-        longitude: bd09[1], 
-        success:function(res){
-          console.log('经纬度解释地理名称成功!')
-          console.log(res)
-          that.setData({
-            address: res.data.addressInfo.formattedAddress,
-          })
-        },
-        fail:function(res){
-          console.log(res)
-        }
-      })
-    },
-  })
-},
+        that.setData({
+          latitude: bd09[0],
+          longitude: bd09[1],
+          altitude: res.altitude,
+        })
 
-taskBindtap:function(e){
-  console.log('选中工作任务');
-  var index = e.currentTarget.dataset.page;
-  this.data.workTaskList[index].isSelected = !this.data.workTaskList[index].isSelected;
+        request.getGpsAddress({
+          token: userManager.userInfo.token,
+          altitude: res.altitude,
+          latitude: bd09[0],
+          longitude: bd09[1],
+          success: function (res) {
+            console.log('经纬度解释地理名称成功!')
+            console.log(res)
+            that.setData({
+              address: res.data.addressInfo.formattedAddress,
+            })
+          },
+          fail: function (res) {
+            console.log(res)
+          }
+        })
+      },
+    })
+  },
+
+  taskBindtap: function (e) {
+    console.log('选中工作任务');
+    var index = e.currentTarget.dataset.page;
+    this.data.workTaskList[index].isSelected = !this.data.workTaskList[index].isSelected;
 
 
-  var that = this;
-  this.setData({
-    workTaskList: that.data.workTaskList,
-  })
-  
-  console.log(this.data.workTaskList[index])
-},
+    var that = this;
+    this.setData({
+      workTaskList: that.data.workTaskList,
+    })
 
-//打卡-画圆圈
-drawCircle:function(){
-  var ctx = wx.createCanvasContext('canvasProgressbg', this);
-  ctx.setLineWidth(200);
-  ctx.setStrokeStyle('#ffffff');
-  ctx.setLineCap('round');
-  ctx.beginPath();
-  //设置一个原点(100,100)，半径为90的圆的路径到当前路径
-  // context.arc(x, y, radius, startAngle, endAngle, anticlockwise)
-  ctx.arc(110, 110, 0, 0, 2 * Math.PI, false);
-  ctx.stroke();
-  ctx.draw();
-}
+    console.log(this.data.workTaskList[index])
+  },
+
+  //打卡-画圆圈
+  drawCircle: function () {
+    var ctx = wx.createCanvasContext('canvasProgressbg', this);
+    ctx.setLineWidth(200);
+    ctx.setStrokeStyle('#ffffff');
+    ctx.setLineCap('round');
+    ctx.beginPath();
+    //设置一个原点(100,100)，半径为90的圆的路径到当前路径
+    // context.arc(x, y, radius, startAngle, endAngle, anticlockwise)
+    ctx.arc(110, 110, 0, 0, 2 * Math.PI, false);
+    ctx.stroke();
+    ctx.draw();
+  }
 
 
 })

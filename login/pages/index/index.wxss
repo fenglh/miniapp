@@ -1,69 +1,4 @@
 
-.center {
-  text-align: center;
-}
-
-.title {
-  margin-top: 20px;
-  color: #353535;
-  font-size: 20px;
-}
-
-.logo {
-  width: 60px;
-  height: 60px;
-  border-radius: 30px;
-  margin-top: 20px;
-}
-
-.input-user {
- 
-  margin-left: 20px;
-  margin-right: 20px; 
-  font-size: 28px;
-     /* background-color: red;      */
-  height: 44px;
-}
-
-.input-pwd {
-  margin-top: 10px;
-  margin-left: 20px;
-  margin-right: 20px;
-  opacity: 0.0;
-  font-size: 24px;
-  height: 44px;
-    /* background-color: red;     */
-}
-
-.input-placeholder{
-  font-size: 14px;
-  color: #999999;
-}
-
-.separation-line {
-  height: 0.5px;
-  margin-top: -49px;
-  margin-left: 20px;
-  margin-right: 20px;
-  background-color: #576b95;
-  border-radius: 4px;
-  overflow: hidden;
-  justify-content:center; 
-  display: flex;
-}
-
-.input-view {
-  margin-top: 60px;
-   /* background-color: blue;  */
-}
-
-.login-text {
-  color: white;
-  font-size: 22px;
-  /* background-color: red; */
-  line-height: 44px;
-  font-weight: normal;
-}
 
 
 
@@ -74,11 +9,6 @@ page{
 }
 
 
-.scroll-fullpage{
-	height: 100%;
-	transition: all 0.3s;
-}
-
 .container-fill{
 	height: 100%;
 	 overflow: hidden; 
@@ -86,13 +16,8 @@ page{
 }
 .section{
 	height: 100%;
-  visibility:hidden; 
 }
 
-.active .section-maintitle,
-.active .section-subtitle{
-	animation: mymove 0.8s;
-}
 
 
 
@@ -190,11 +115,10 @@ page{
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: red;
 }
 
 .punch-card-box{
-  position: relative;
+
   width:220px;
   height: 220px;  
   display: flex;  
@@ -203,10 +127,9 @@ page{
 
 }
 .punch-card-canvas{
-  position: absolute;
+  /* position: absolute; */
   width:220px;
   height: 220px; 
-  background-color: green;
 }
 .progress_text_time {
   font-size: 20px;
