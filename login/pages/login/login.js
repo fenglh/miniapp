@@ -14,7 +14,7 @@ Page({
    */
   data: {
     user: '',
-    pwd: '',
+    pwd: 'abc12345',
     userInfo: userManager.userInfo,
     pwdInputDisabled: true,
     pwdInputFocus: false,

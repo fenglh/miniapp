@@ -21,6 +21,7 @@ Page({
     endy: 0, //结束的位置y
     margintop: 0,  //滑动下拉距离
 
+    time:'00:00:00',
     //经纬度信息
     latitude: 0,
     longitude: 0,
@@ -51,6 +52,24 @@ Page({
     })
 
     this.getLocation();
+
+    var that = this;
+    var myDate = new Date();
+    var time = `${myDate.getHours()}:${myDate.getMinutes()}:${myDate.getSeconds()}`
+    that.setData({
+      time: time,
+    })
+
+    setInterval(function(){
+      console.log('显示当前时间')
+      var myDate = new Date();
+      var time = `${myDate.getHours()}:${myDate.getMinutes()}:${myDate.getSeconds()}`
+      that.setData({
+        time: time,
+      })
+
+
+    },1000);
   },
 
 
@@ -59,6 +78,7 @@ Page({
     console.log('onReady')
     //画圆
     this.drawCircle();
+
     //初始化动画
 
   },
@@ -172,16 +192,16 @@ Page({
   //打卡-画圆圈
   drawCircle: function () {
     var ctx = wx.createCanvasContext('canvasProgressbg', this);
-    ctx.setLineWidth(200);
-    ctx.setStrokeStyle('#ffffff');
+    ctx.setLineWidth(20);
+    ctx.setStrokeStyle('#676b95');
     ctx.setLineCap('round');
     ctx.beginPath();
-    //设置一个原点(100,100)，半径为90的圆的路径到当前路径
-    // context.arc(x, y, radius, startAngle, endAngle, anticlockwise)
-    ctx.arc(110, 110, 0, 0, 2 * Math.PI, false);
+    ctx.arc(110, 110, 100, 0, 2 * Math.PI, false);
     ctx.stroke();
     ctx.draw();
-  }
+
+  },
+
 
 
 })

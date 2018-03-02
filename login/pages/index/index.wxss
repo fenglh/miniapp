@@ -16,6 +16,9 @@ page{
 }
 .section{
 	height: 100%;
+  padding: 10px;
+  background:#576b95;
+  /* font-size: 16px; */
 }
 
 
@@ -59,12 +62,7 @@ page{
   background:white;
 
 }
-.page1{
-  padding: 10px;
-  background:#576b95;
-  color:black; 
-  font-size:12px
-}
+
 
 .show {
   visibility:visible;
@@ -97,6 +95,7 @@ page{
   /* padding: 5px; */
   flex-direction: row ;
   flex-wrap: wrap;
+  font-size: 14px;
 
 }
 
@@ -110,7 +109,7 @@ page{
 
 /**打卡****/
 .punch-card-container {
-  margin-top: 20px;
+  margin-top: 40px;
   display: flex;  
   flex-direction: column;
   align-items: center;
@@ -118,7 +117,7 @@ page{
 }
 
 .punch-card-box{
-
+  position: relative;
   width:220px;
   height: 220px;  
   display: flex;  
@@ -126,23 +125,42 @@ page{
   justify-content: center;
 
 }
-.punch-card-canvas{
+.punch-card-button{
   /* position: absolute; */
+  width:180px;
+  height: 180px; 
+  background-color: white;
+  border-radius: 90px;
+  overflow: hidden;
+}
+
+.punch-card-canvas{
+  position: absolute; 
+   /* background-color: green;  */
+   left: 0;
+   top: 0;
   width:220px;
   height: 220px; 
+  
 }
-.progress_text_time {
+
+.punch-card-time {
   font-size: 20px;
   color: #353535;
 }
-.progress_text{ 
+.punch-card-text{ 
   color: #576b95;
   position: absolute; 
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
   display: flex;  
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: 35px;
+  z-index: 20;
 }
 
 .address-text {
