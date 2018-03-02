@@ -119,10 +119,13 @@ page{
 .punch-card-box{
   position: relative;
   width:220px;
-  height: 220px;  
+  height: 220px;
+  border-radius: 110px;
+  overflow: hidden;
   display: flex;  
   align-items: center;
   justify-content: center;
+  background-color: #676b95;
 
 }
 .punch-card-button{

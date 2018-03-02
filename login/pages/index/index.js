@@ -8,7 +8,9 @@ const coordtransform = require('../../lib/coordtransform.js');
 import { LoginStatusUnLogin, LoginStatusNormal, LoginStatusTokenInvalid, userManager } from '../../utils/userManager.js'
 const app = getApp()
 
-
+// var interval;
+// var varName;
+// var ctx = wx.createCanvasContext('canvasProgressbg');
 
 
 Page({
@@ -30,6 +32,11 @@ Page({
     //工作任务选择
     workplace: {},//工作地点
     workTaskList: [],
+
+    //圆圈
+    count: 0,//计数器，初始值为0
+    maxCount: 100, // 绘制一个圆环所需的步骤 
+    countTimer: null,//定时器，初始值为null
 
   },
 
@@ -77,7 +84,10 @@ Page({
   onReady: function () {
     console.log('onReady')
     //画圆
-    this.drawCircle();
+    // this.drawCircle();
+
+    this.drawCircle('canvasProgressbg', 110, 20, 2); 
+    this.countInterval()
 
     //初始化动画
 
@@ -189,17 +199,36 @@ Page({
     console.log(this.data.workTaskList[index])
   },
 
-  //打卡-画圆圈
-  drawCircle: function () {
-    var ctx = wx.createCanvasContext('canvasProgressbg', this);
-    ctx.setLineWidth(20);
-    ctx.setStrokeStyle('#676b95');
-    ctx.setLineCap('round');
-    ctx.beginPath();
-    ctx.arc(110, 110, 100, 0, 2 * Math.PI, false);
-    ctx.stroke();
-    ctx.draw();
 
+
+  drawCircle: function (id, x, w, step) {
+    // 使用 wx.createContext 获取绘图上下文 context  绘制彩色进度条圆环
+    var context = wx.createCanvasContext(id);
+    // 设置渐变
+    var gradient = context.createLinearGradient(2 * x, x, 0);
+    gradient.addColorStop("0", "#2661DD"); gradient.addColorStop("0.5", "#40ED94"); gradient.addColorStop("1.0", "#5956CC");
+    context.setLineWidth(w); context.setStrokeStyle(gradient); context.setLineCap('round')
+    context.beginPath();//开始一个新的路径
+    // step 从0到2为一周
+    context.arc(x, x, x - w, -Math.PI / 2, step * Math.PI - Math.PI / 2, false);
+    context.stroke();//对当前路径进行描边
+    context.draw()
+  },
+
+  countInterval: function () {
+    // 设置倒计时 定时器 假设每隔100毫秒 count递增+1，当 count递增到两倍maxCount的时候刚好是一个圆环（ step 从0到2为一周），然后改变txt值并且清除定时器
+    this.countTimer = setInterval(() => {
+      if (this.data.count <= 2 * this.data.maxCount) {
+        // 绘制彩色圆环进度条
+        this.drawCircle('canvasProgressbg', 110, 10, this.data.count / this.data.maxCount)
+        this.data.count++;
+      } else {
+        this.setData({
+          txt: "匹配成功"
+        });
+        clearInterval(this.countTimer);
+      }
+    }, 10)
   },
 
 
