@@ -56,7 +56,15 @@ Page({
   },
 
   resultBindtap:function(e){
-    console.log(e);
+    var index = e.currentTarget.dataset.page;
+    let pages = getCurrentPages();
+    let prevPage = pages[pages.length-2];//上一页
+    var workplace = this.data.searchResults[index];
+    prevPage.refreshWorkTask(workplace)
+    wx.navigateBack({
+      delta:1,
+    })
+
   },
 
   /**

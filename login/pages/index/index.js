@@ -35,7 +35,8 @@ Page({
     altitude:0,
     address:'',
     //工作任务选择
-    list:[1,2,3,4],
+    workplace:{},//工作地点
+    workTaskList:[],
 
   },
 
@@ -341,6 +342,9 @@ scrollIndex:function(index){
     title = '上班打卡'
     nagigationBarColor = '#576b95'
     this.getLocation()
+
+    // this.getWorkTaskInfo(this.workplace['workplaceCode'])
+    
   }else if(index == 2){
     title = '下班打卡'
   }else{
@@ -364,6 +368,37 @@ scrollIndex:function(index){
   })
 },
 
+  refreshWorkTask: function (workplace){
+    console.log('选择工作地点')
+    console.log(workplace)
+    this.setData({
+      workplace: workplace,
+    })
+
+    this.getWorkTaskInfo(workplace.workplaceCode)
+  },
+
+getWorkTaskInfo:function(workplaceCode){
+
+  if (workplaceCode.length <= 0) return;
+
+  var that = this;
+    request.getWorkTask({
+      token: userManager.userInfo.token, 
+      workplaceCode: workplaceCode,
+      success:function(res){
+        console.log('获取工作任务信息')
+        console.log(res)
+        that.setData({
+          workTaskList:res.data.workTaskList,
+        })
+
+      },
+      fail:function(res){
+        console.log(res)
+      },
+    })
+},
 
 getLocation:function(){
   var that = this

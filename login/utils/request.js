@@ -86,6 +86,26 @@ var request = {
   },
 
 
+  isResponseCodeOk: function (res) {
+    var responseCode = res.data.responseCode
+    if (responseCode != 0) {
+      return false;
+    }
+    return true;
+  },
+
+  disposeTokenInvalid: function (res) {
+    var responseCode = res.data.responseCode
+    var responseMsg = res.data.responseMsg
+    if (responseCode == 2301) {
+      wx.showToast({
+        title: responseMsg,
+        icon: 'none',
+      })
+      WxNotificationCenter.postNotificationName("tokenInvalidNotificationName");
+    }
+  },
+
   //登录
   login: function ({user, pwd, success, fail}) {
     console.log(LoginStatusNormal)
@@ -169,6 +189,7 @@ var request = {
     var url = 'https://angel.bluemoon.com.cn/bluemoon-control/attendance/getGpsAddress'
     var queryString = this.getPublicQueryString();
     url = url + '?' + queryString
+    var that = this;
     wx.request({
       url: url,
       method:'POST',
@@ -179,18 +200,7 @@ var request = {
         longitude: longitude,
       },
       success:function(res){
-        var responseCode = res.data.responseCode
-        var responseMsg = res.data.responseMsg
-        if (responseCode == 0) {
-          if (success) { success(res) }
-        } else if(responseCode == 2301){
-          wx.showToast({
-            title: responseMsg,
-            icon:'none',
-          })
-          WxNotificationCenter.postNotificationName("tokenInvalidNotificationName");
-        }
-        
+        that.disposeResponse(res,success, fail)
       },
       fail:function(res){
         if (fail) { fail(res) }
@@ -198,11 +208,25 @@ var request = {
     })
   },
 
+
+
+  disposeResponse:function(res,success, fail){
+    if (this.isResponseCodeOk(res)) {
+      if (success) { success(res) }
+    } else {
+      if (fail) {fail(res)}
+      this.disposeTokenInvalid(res)
+    }
+  },
+
+
+
   //获取上班地点，最多返回30条
   getWorkplaceList: function ({ token, condition, count, success, fail }){
     var url = 'https://angel.bluemoon.com.cn/bluemoon-control/attendance/getWorkplaceList'
     var queryString = this.getPublicQueryString();
     url = url + '?' + queryString
+    var that = this;
     wx.request({
       url: url,
       method: 'POST',
@@ -213,23 +237,36 @@ var request = {
         timestamp:0,
       },
       success: function (res) {
-        var responseCode = res.data.responseCode
-        var responseMsg = res.data.responseMsg
-        if (responseCode == 0) {
-          if (success) { success(res) }
-        } else if (responseCode == 2301) {
-          wx.showToast({
-            title: responseMsg,
-            icon: 'none',
-          })
-          WxNotificationCenter.postNotificationName("tokenInvalidNotificationName");
-        }
+        that.disposeResponse(res,success, fail)
       },
       fail: function (res) {
         if (fail) { fail(res) }
       },
     })
   },
+
+  //获取工作任务
+  getWorkTask: function ({ token, workplaceCode, success, fail}){
+    var url = 'https://angel.bluemoon.com.cn/bluemoon-control/attendance/checkScanCode'
+    var queryString = this.getPublicQueryString();
+    url = url + '?' + queryString
+    var that = this;
+    wx.request({
+      url: url,
+      method:'POST',
+      data:{
+        token:token,
+        attendanceCode: workplaceCode,
+      },
+      success:function(res){
+        that.disposeResponse(res, success, fail)
+      },
+      fail:function(res){
+        if (fail) { fail(res) }
+      },
+    })
+  },
+
 
 }
 

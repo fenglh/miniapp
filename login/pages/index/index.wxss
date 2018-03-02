@@ -113,12 +113,16 @@ page{
 
 .card-box view {
   text-align: left; 
-  /* padding-top:5px; */
 }
 .card-box-title {
-  text-align:left;
+
   font-size:20px;
   font-weight:bold;
+}
+
+.card-box-desc {
+  text-align:left;
+  font-size:14px;
 }
 
 .card-box-show {

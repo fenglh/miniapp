@@ -25,7 +25,7 @@
       <!-- 个人信息 -->
       <view class='card-box'>
         <view class='card-box-title'>个人信息</view>
-        <view style='margin-left:10px'>
+        <view class='card-box-desc' style='margin-top:10px;margin-left:10px'>
           <view >
             <image class='small-logo' src='../images/icon_customer_blue@2x.png'></image>
             <text>{{userInfo.account}}</text>
@@ -42,17 +42,24 @@
         </view>
         
       </view>
+      <!-- 工作地点 -->
+      <view class='card-box' style='padding:0px;'>
+      <navigator url='../searchbar/searchbar' style='display:flex;flex-direction: row;justify-content: space-between; text-align: center;'>
+        <text class='card-box-title' style='display:flex;line-height:44px; '>工作地点</text>
+        <view class='card-box-desc' style='display:flex;align-items:center;justify-content: center;'>
+          <text  style='display:flex;position:relative;margin-right:10px;line-height:44px;color:{{workplace.workplaceCode.length >0 ?"#353535":"#999999"}}'>{{workplace.workplaceCode.length >0 ?(workplace.workplaceName +'('+ workplace.workplaceCode+')'):'请选择'}}</text>
+           <image style='height:20px; width:20px;margin-right:10px;'  src='../images/right.png'></image> 
+        </view>
+
+      </navigator>
+      </view>
 
       <!-- 工作任务选择 -->
-      <view class='card-box' >
-       <navigator url='../searchbar/searchbar' style='display:flex;flex-direction: row;justify-content: space-between; text-align: center;'>
-        <text class='card-box-title' style='display:flex; '>工作任务</text>
-        <image style='height:20px; width:20px;;' src='../images/right.png'></image>
-      </navigator>
-
+      <view class='card-box' style='padding-left:0px;'>
+      <text class='card-box-title' style='display:flex; '>工作任务</text>
       <view class='worktask-list'>
-        <block wx:for-items="{{list}}" wx:key='index' >
-          <view class='workplace-text'>我是按钮{{index*100}}</view>
+        <block wx:for-items="{{workTaskList}}" wx:key='index' >
+          <view class='workplace-text'>{{workTaskList[index]['taskName']}}</view>
         </block>
       </view> 
 

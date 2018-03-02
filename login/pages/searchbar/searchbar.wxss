@@ -106,6 +106,6 @@
 }
 
 .result-view-hover{
-  
+  background-color: whitesmoke;
 }
 
