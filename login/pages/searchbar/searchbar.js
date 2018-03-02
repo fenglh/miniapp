@@ -9,7 +9,7 @@ Page({
    */
   data: {
     inputShowed: false,
-    inputVal: "",
+    inputVal: "BM003",
     searchResults:[]
   },
   showInput: function () {
@@ -18,23 +18,8 @@ Page({
     });
   },
   hideInput: function () {
-    var that = this;
     if(this.data.inputVal.length>0){
-      request.getWorkplaceList ({
-        token: userManager.userInfo.token, 
-        condition:that.data.inputVal, 
-        count:30, 
-        success:function(res){
-          console.log(res)
-          that.setData({
-            searchResults: res.data.workplaceList,
-          })
-        },
-        fail:function(res){
-          console.log(res)
-        } 
-      });
-
+      this.search();
     }else{
       console.log('取消搜索');
       this.setData({
@@ -44,6 +29,24 @@ Page({
     }
 
   },
+  search:function(){
+    var that = this;
+    request.getWorkplaceList({
+      token: userManager.userInfo.token,
+      condition: that.data.inputVal,
+      count: 30,
+      success: function (res) {
+        console.log(res)
+        that.setData({
+          searchResults: res.data.workplaceList,
+        })
+      },
+      fail: function (res) {
+        console.log(res)
+      }
+    });
+  },
+
   clearInput: function () {
     this.setData({
       inputVal: ""
@@ -85,7 +88,10 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    
+    if (this.data.inputVal.length > 0){
+      this.showInput();
+      this.search();
+    }
   },
 
   /**
