@@ -434,7 +434,19 @@ getLocation:function(){
   })
 },
 
+taskBindtap:function(e){
+  console.log('选中工作任务');
+  var index = e.currentTarget.dataset.page;
+  this.data.workTaskList[index].isSelected = !this.data.workTaskList[index].isSelected;
+
+
+  var that = this;
+  this.setData({
+    workTaskList: that.data.workTaskList,
+  })
   
+  console.log(this.data.workTaskList[index])
+}
 
 
 
