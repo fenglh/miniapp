@@ -94,15 +94,34 @@ var request = {
     return true;
   },
 
+
+  disposeResponse: function (res, success, fail) {
+    if (this.isResponseCodeOk(res)) {
+      if (success) { success(res) }
+    } else {
+      this.disposeTokenInvalid(res)
+    }
+  },
+
+
+
   disposeTokenInvalid: function (res) {
+
+    console.log('处理token过期')
     var responseCode = res.data.responseCode
     var responseMsg = res.data.responseMsg
     if (responseCode == 2301) {
-      wx.showToast({
-        title: responseMsg,
-        icon: 'none',
+      wx.showModal({
+        title: '登录失效',
+        content: '登录已失效，请重新登录',
+        showCancel: false,
+        success: function (res) {
+          if (res.confirm) {
+            WxNotificationCenter.postNotificationName("tokenInvalidNotificationName");
+          }
+        }
       })
-      WxNotificationCenter.postNotificationName("tokenInvalidNotificationName");
+      
     }
   },
 
@@ -208,16 +227,6 @@ var request = {
     })
   },
 
-
-
-  disposeResponse:function(res,success, fail){
-    if (this.isResponseCodeOk(res)) {
-      if (success) { success(res) }
-    } else {
-      if (fail) {fail(res)}
-      this.disposeTokenInvalid(res)
-    }
-  },
 
 
 

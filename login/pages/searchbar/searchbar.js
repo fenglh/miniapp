@@ -30,7 +30,7 @@ Page({
             searchResults: res.data.workplaceList,
           })
         },
-        fail:function(){
+        fail:function(res){
           console.log(res)
         } 
       });

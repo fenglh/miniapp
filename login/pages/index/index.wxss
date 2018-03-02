@@ -45,7 +45,7 @@
   margin-top: -49px;
   margin-left: 20px;
   margin-right: 20px;
-  background-color: #1fb8ff;
+  background-color: #576b95;
   border-radius: 4px;
   overflow: hidden;
   justify-content:center; 
@@ -123,6 +123,7 @@ page{
 .card-box-desc {
   text-align:left;
   font-size:14px;
+  color: #576b95;
 }
 
 .card-box-show {
@@ -181,3 +182,48 @@ page{
   padding: 8px; 
   border-radius:4px;
 }
+
+/**打卡****/
+.punch-card-container {
+  margin-top: 20px;
+  display: flex;  
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: red;
+}
+
+.punch-card-box{
+  position: relative;
+  width:220px;
+  height: 220px;  
+  display: flex;  
+  align-items: center;
+  justify-content: center;
+
+}
+.punch-card-canvas{
+  position: absolute;
+  width:220px;
+  height: 220px; 
+  background-color: green;
+}
+.progress_text_time {
+  font-size: 20px;
+  color: #353535;
+}
+.progress_text{ 
+  color: #576b95;
+  position: absolute; 
+  display: flex;  
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 35px;
+}
+
+.address-text {
+  color: white;
+  font-size: 16px;
+}
+

@@ -61,6 +61,9 @@ Page({
   onReady:function () {
     console.log('onReady')
 
+
+    //画圆
+    this.drawCircle();
     //初始化动画
 
     this.userInputAnimation = wx.createAnimation({
@@ -113,11 +116,11 @@ Page({
     console.log(userManager.userInfo)
     userManager.cacheUserInfo()
     this.userInfoChangeNotificationFn()
-    var that = this 
-    setTimeout(function(){
-      that.scrollIndex(0)
-    }, 700)
-    
+    var that = this;
+    wx.navigateBack({
+      delta: 1,
+    })
+    that.scrollIndex(0) 
   },
 
   userInfoChangeNotificationFn:function(){
@@ -446,8 +449,21 @@ taskBindtap:function(e){
   })
   
   console.log(this.data.workTaskList[index])
-}
+},
 
+//打卡-画圆圈
+drawCircle:function(){
+  var ctx = wx.createCanvasContext('canvasProgressbg', this);
+  ctx.setLineWidth(200);
+  ctx.setStrokeStyle('#ffffff');
+  ctx.setLineCap('round');
+  ctx.beginPath();
+  //设置一个原点(100,100)，半径为90的圆的路径到当前路径
+  // context.arc(x, y, radius, startAngle, endAngle, anticlockwise)
+  ctx.arc(110, 110, 0, 0, 2 * Math.PI, false);
+  ctx.stroke();
+  ctx.draw();
+}
 
 
 })
