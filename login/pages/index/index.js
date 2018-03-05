@@ -24,6 +24,7 @@ Page({
     margintop: 0,  //滑动下拉距离
 
     time:'00:00:00',
+    punchCardName:'打卡',
     //经纬度信息
     latitude: 0,
     longitude: 0,
@@ -32,12 +33,17 @@ Page({
     //工作任务选择
     workplace: {},//工作地点
     workTaskList: [],
+    
+    //
+    locating:false,//定位中
+    locateFail:false,
+    addressParseFail: false,
 
     //圆圈
     count: 0,//计数器，初始值为0
-    maxCount: 100, // 绘制一个圆环所需的步骤 
+    maxCount: 50, // 绘制一个圆环所需的步骤 
     countTimer: null,//定时器，初始值为null
-
+    KeepPressing: false,//持续按住
   },
 
   //页面加载，先后顺序:onLoad->onShow->onReady
@@ -80,18 +86,24 @@ Page({
   },
 
 
+
   //页面初次渲染完成，先后顺序:onLoad->onShow->onReady
   onReady: function () {
     console.log('onReady')
-    //画圆
-    // this.drawCircle();
-
-    this.drawCircle('canvasProgressbg', 110, 20, 2); 
-    this.countInterval()
-
-    //初始化动画
-
+    // this.drawCircle('canvasProgressbg', 110, 10, 2);
+    
   },
+
+  onShow:function() {
+    console.log('页面显示了');
+    this.countUpInterval()
+  },
+
+  onHide:function () {
+    console.log('页面隐藏了')
+    clearInterval(this.countTimer);
+  },
+
 
   tokenInvalidNotificationFn: function () {
     console.log('token无效')
@@ -117,7 +129,12 @@ Page({
 
 
 
-
+refreshAddress:function(){
+  this.setData({
+    address:'获取地址...',
+  })
+  this.getLocation();
+},
 
   refreshWorkTask: function (workplace) {
     console.log('选择工作地点')
@@ -152,6 +169,12 @@ Page({
   },
 
   getLocation: function () {
+    this.setData({
+      locating:true,
+      locateFail:false,
+      addressParseFail: false,
+
+    })
     var that = this
     wx.getLocation({
       success: function (res) {
@@ -163,6 +186,7 @@ Page({
           latitude: bd09[0],
           longitude: bd09[1],
           altitude: res.altitude,
+          locateFail: false,
         })
 
         request.getGpsAddress({
@@ -174,14 +198,32 @@ Page({
             console.log('经纬度解释地理名称成功!')
             console.log(res)
             that.setData({
+              locating: false,
+              addressParseFail: false,
               address: res.data.addressInfo.formattedAddress,
             })
           },
           fail: function (res) {
-            console.log(res)
+            console.log(res);
+            that.setData({
+              locating: false,
+              locateFail: false,
+              addressParseFail: true,
+              address: '地理名称解析失败'
+            })
           }
         })
       },
+      fail: function(res){
+
+        that.setData({
+          locating: false,
+          locateFail: true,
+          address:'定位失败'
+        })
+        console.log('定位失败')
+      },
+
     })
   },
 
@@ -200,6 +242,29 @@ Page({
   },
 
 
+  bindPunchCardBtnTouchStart:function(e) {
+    console.log('bindPunchCardBtnTouchStart')
+    this.setData({
+      keepPressing:true,
+    })
+
+
+    this.countDownInterval();
+  },
+
+
+  bindPunchCardBtnTouchEnd:function (e) {
+    console.log('bindPunchCardBtnTouchEnd')
+    this.setData({
+      keepPressing: false,
+    })
+    this.countUpInterval();
+
+  },
+
+  bindPunchCardBtnTouchCancel:function (e) {
+    console.log('bindPunchCardBtnTouchCancel')
+  },
 
   drawCircle: function (id, x, w, step) {
     // 使用 wx.createContext 获取绘图上下文 context  绘制彩色进度条圆环
@@ -215,21 +280,40 @@ Page({
     context.draw()
   },
 
-  countInterval: function () {
-    // 设置倒计时 定时器 假设每隔100毫秒 count递增+1，当 count递增到两倍maxCount的时候刚好是一个圆环（ step 从0到2为一周），然后改变txt值并且清除定时器
+  countUpInterval: function () {
+    clearInterval(this.countTimer);
+    if (this.data.count < 0) this.data.count = 0;
+    // 设置倒计时 定时器 假设每隔10毫秒 count递增+1，当 count递增到两倍maxCount的时候刚好是一个圆环（ step 从0到2为一周），然后改变txt值并且清除定时器
     this.countTimer = setInterval(() => {
       if (this.data.count <= 2 * this.data.maxCount) {
         // 绘制彩色圆环进度条
         this.drawCircle('canvasProgressbg', 110, 10, this.data.count / this.data.maxCount)
         this.data.count++;
+        console.log(this.data.count);
       } else {
-        this.setData({
-          txt: "匹配成功"
-        });
+        console.log('按钮递增动画完成');
+        clearInterval(this.countTimer);
+        
+      }
+    }, 10)
+  },
+
+  countDownInterval: function () {
+    clearInterval(this.countTimer);
+    // 设置倒计时 定时器 假设每隔10毫秒 count递增+1，当 count递增到两倍maxCount的时候刚好是一个圆环（ step 从0到2为一周），然后改变txt值并且清除定时器
+    this.countTimer = setInterval(() => {
+      if (this.data.count >= 0) {
+        // 绘制彩色圆环进度条
+        this.drawCircle('canvasProgressbg', 110, 10, this.data.count / this.data.maxCount)
+        this.data.count--;
+        console.log(this.data.count);
+      } else {
         clearInterval(this.countTimer);
       }
     }, 10)
   },
+
+
 
 
 

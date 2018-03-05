@@ -8,6 +8,12 @@ page{
   text-align: center;
 }
 
+.flex-center {
+  display:flex;
+  align-items:center;
+  justify-content: center;
+}
+
 
 .container-fill{
 	height: 100%;
@@ -67,6 +73,7 @@ page{
 .show {
   visibility:visible;
 }
+
 @keyframes mymove{
 	from {
 		transform: translateY(-400rpx) scale(0.5) rotateY(90deg);
@@ -75,6 +82,31 @@ page{
 		transform: translateY(0) scale(1) rotateY(0);
 	}
 }
+
+@keyframes FFFFFF-DeDeDe {
+   0% {background-color: #ffffff;}
+  100% {background-color: #dedede;}
+}
+
+@keyframes DeDeDe-FFFFFF {
+   0% {background-color: #dedede;}
+  100% {background-color: #ffffff;}
+}
+
+.pressDownAnimation {
+  animation:FFFFFF-DeDeDe 0.5s;
+  animation-fill-mode: forwards;
+  -o-animation-fill-mode: forwards;
+  -webkit-animation-fill-mode: forwards;
+}
+
+.pressUpAnimation {
+  animation:DeDeDe-FFFFFF 0.5s;
+  animation-fill-mode: forwards;
+  -o-animation-fill-mode: forwards;
+  -webkit-animation-fill-mode: forwards;
+}
+
 
 .small-logo{
   width:14px;
@@ -106,6 +138,19 @@ page{
   padding: 8px; 
   border-radius:4px;
 }
+.refresh-btn {
+  margin-right: 10px;
+  width: 44px;
+}
+
+.located-refresh {
+  color: #dedede;
+  font-size: 12px;
+}
+.located-fail {
+  color: red;
+  font-size: 14px;
+}
 
 /**打卡****/
 .punch-card-container {
@@ -114,6 +159,7 @@ page{
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  /* background-color: blue; */
 }
 
 .punch-card-box{
@@ -136,6 +182,21 @@ page{
   border-radius: 90px;
   overflow: hidden;
 }
+.punch-card-text{ 
+  color: #576b95;
+   /* background-color: red;  */
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  display: flex;  
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 35px;
+  /* z-index: 20; */
+  overflow: hidden;
+}
 
 .punch-card-canvas{
   position: absolute; 
@@ -151,20 +212,7 @@ page{
   font-size: 20px;
   color: #353535;
 }
-.punch-card-text{ 
-  color: #576b95;
-  position: absolute; 
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top: 0;
-  display: flex;  
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: 35px;
-  z-index: 20;
-}
+
 
 .address-text {
   color: white;

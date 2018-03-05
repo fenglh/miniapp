@@ -1,13 +1,15 @@
+
+
 <!-- //打卡页面 -->
-<view class="section }">
+<view class="section">
 
   <!-- 工作地点 -->
   <view class='card-box' style='padding:0px;'>
     <navigator url='../searchbar/searchbar' style='display:flex;flex-direction: row;justify-content: space-between; text-align: center;'>
       <text class='card-box-title' style='display:flex;line-height:44px; '>工作地点</text>
-      <view class='card-box-desc' style='display:flex;align-items:center;justify-content: center;'>
+      <view class='card-box-desc flex-center' >
         <text style='display:flex;position:relative;margin-right:10px;line-height:44px;color:{{workplace.workplaceCode.length >0 ?"#576b95":"#999999"}}'>{{workplace.workplaceCode.length >0 ?(workplace.workplaceName +'('+ workplace.workplaceCode+')'):'请选择'}}</text>
-        <image style='height:20px; width:20px;margin-right:10px;' src='../images/right.png'></image>
+        <image style='height:11px; width:6px;margin-right:10px;' src='../images/icon_right@2x.png'></image>
       </view>
 
     </navigator>
@@ -15,7 +17,7 @@
     <!-- <text class='card-box-title' style='display:flex; '>工作任务</text> -->
     <view class='worktask-list'>
       <block wx:for="{{workTaskList}}" wx:for-item="item" wx:key='index'>
-        <view bindtap='taskBindtap' style='background-color:{{item.isSelected ? ("#576b95"):("#f8f8f8")}};color:{{item.isSelected ? ("white"):("black")}}' data-page='{{index}}' class='workplace-text'>{{item['taskName']}}</view>
+        <view bindtap='taskBindtap' style='background-color:{{item.isSelected ? "#576b95":"#f8f8f8"}};color:{{item.isSelected ? ("white"):("black")}}' data-page='{{index}}' class='workplace-text'>{{item['taskName']}}</view>
       </block>
     </view>
 
@@ -35,9 +37,16 @@
         <image class='small-logo' src='../images/icon_customer_blue@2x.png'></image>
         <text>{{userInfo.realName}}</text>
       </view>
-      <view>
+      <view style='display:flex; flex-direction:row'>
+      <!-- 地址和icon-->
+      <view>        
         <image class='small-logo' src='../images/icon_address_blue@2x.png'></image>
-        <text>{{address}}</text>
+        <text class='{{(locateFail || addressParseFail) ? "located-fail" : "" }} {{locating ? "located-refresh" : ""}} '>{{address}}</text>
+      </view>
+        <!-- 刷新按钮 -->
+      <view class='flex-center refresh-btn' bindtap='refreshAddress'>
+        <image  style='height:14px; width:14px;' src='../images/refresh@3x.png'></image>
+      </view>
       </view>
     </view>
 
@@ -45,16 +54,20 @@
 
   <!-- 打卡 -->
   <view class='punch-card-container'>
-    <view class='punch-card-box'>
-      <view class='punch-card-button'></view>
-      <view class="punch-card-text">
-        <text class=''>打卡</text>
-        <text class='punch-card-time'>{{time}}</text>
+    <view class='punch-card-box' bindtouchstart='bindPunchCardBtnTouchStart' bindtouchend='bindPunchCardBtnTouchEnd' bindtouchcancel='bindPunchCardBtnTouchCancel'>
+      
+      <view class='punch-card-button {{keepPressing ? "pressDownAnimation":"pressUpAnimation"}}'  >
+        <view class=" punch-card-text">
+          <text class=''>{{punchCardName}}</text>
+          <text class='punch-card-time'>{{time}}</text>
+        </view>
       </view>
-       <canvas class='punch-card-canvas' canvas-id='canvasProgressbg'></canvas>  
+      <canvas class='punch-card-canvas'  canvas-id='canvasProgressbg'></canvas>
+
     </view>
 
   </view>
 
-
 </view>
+
+
