@@ -2,7 +2,7 @@
 //获取应用实例
 
 const request = require('../../utils/request.js')
-
+const localData = require('../data/localdata.js')
 const WxNotificationCenter = require("../../utils/WxNotificationCenter.js");
 const coordtransform = require('../../lib/coordtransform.js');
 import { LoginStatusUnLogin, LoginStatusNormal, LoginStatusTokenInvalid, userManager } from '../../utils/userManager.js'
@@ -63,9 +63,18 @@ Page({
         timingFunc: 'easeIn'
       }
     })
+    //初始化默认数据
+    console.log('初始化默认数据');
+    this.setData({
+      workplace: localData.data.defaultWorkplace,
+    })
+
+    if (this.data.workplace.workplaceCode != undefined){
+      //初始化工作任务
+      this.getWorkTaskInfo(this.data.workplace.workplaceCode);
+    }
 
     this.getLocation();
-
     var that = this;
     var myDate = new Date();
     var time = `${myDate.getHours()}:${myDate.getMinutes()}:${myDate.getSeconds()}`
@@ -74,7 +83,7 @@ Page({
     })
 
     setInterval(function(){
-      console.log('显示当前时间')
+      // console.log('显示当前时间')
       var myDate = new Date();
       var time = `${myDate.getHours()}:${myDate.getMinutes()}:${myDate.getSeconds()}`
       that.setData({
@@ -182,6 +191,10 @@ refreshAddress:function(){
         var gcj02 = coordtransform.wgs84togcj02(res.longitude, res.latitude);
         var bd09 = coordtransform.gcj02tobd09(gcj02[1], gcj02[0]);
 
+        console.log(res)
+        console.log(gcj02)
+        console.log(bd09)
+
         that.setData({
           latitude: bd09[0],
           longitude: bd09[1],
@@ -241,9 +254,41 @@ refreshAddress:function(){
     console.log(this.data.workTaskList[index])
   },
 
+  getSelectedWrokTaskCode:function(){
+
+    var arr = [];
+    for (var index in this.data.workTaskList) {
+      var selected = this.data.workTaskList[index]['isSelected']
+      if(selected){
+        console.log(this.data.workTaskList[index]['taskName'])
+        console.log(this.data.workTaskList[index]['taskCode'])
+        arr.push(this.data.workTaskList[index]['taskCode'])
+      }
+    }
+    console.log('选中的任务code:')
+    console.log(arr)
+    return arr;
+  },
 
   bindPunchCardBtnTouchStart:function(e) {
-    console.log('bindPunchCardBtnTouchStart')
+    
+
+    if (this.data.workplace['workplaceCode'] == undefined){
+      wx.showToast({
+        title: '请选择工作地点',
+        icon:'none',
+      });
+      return;
+    }
+    var arr = this.getSelectedWrokTaskCode()
+    if (arr.length == 0){
+      wx.showToast({
+        title: '请选择工作任务',
+        icon: 'none',
+      });
+      return;
+    }
+
     this.setData({
       keepPressing:true,
     })
@@ -289,9 +334,9 @@ refreshAddress:function(){
         // 绘制彩色圆环进度条
         this.drawCircle('canvasProgressbg', 110, 10, this.data.count / this.data.maxCount)
         this.data.count++;
-        console.log(this.data.count);
+        // console.log(this.data.count);
       } else {
-        console.log('按钮递增动画完成');
+        // console.log('按钮递增动画完成');
         clearInterval(this.countTimer);
         
       }
@@ -306,7 +351,7 @@ refreshAddress:function(){
         // 绘制彩色圆环进度条
         this.drawCircle('canvasProgressbg', 110, 10, this.data.count / this.data.maxCount)
         this.data.count--;
-        console.log(this.data.count);
+        // console.log(this.data.count);
       } else {
         clearInterval(this.countTimer);
       }

@@ -1,5 +1,4 @@
-var localData ={
-
+export var data = {
   "defaultWorkplace": {
     "workplaceCode": "BM003",
     "workplaceName": "总部颜莊",
@@ -13,3 +12,4 @@ var localData ={
     "countyCode": "440112"
   }
 }
+
