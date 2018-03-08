@@ -13,8 +13,12 @@ const app = getApp()
 // var ctx = wx.createCanvasContext('canvasProgressbg');
 
 
+const historyCacheDataListKey = 'historyCacheDataListKey'
+
 Page({
   data: {
+
+
     userInfo: userManager.userInfo,
     animationDuration: 400,
     scrollindex: 0,  //当前页面的索引值
@@ -22,6 +26,8 @@ Page({
     starty: 0,  //开始的位置x
     endy: 0, //结束的位置y
     margintop: 0,  //滑动下拉距离
+
+    historyCacheDataList:{},//历史缓存数据
 
     time:'00:00:00',
     punchCardName:'打卡',
@@ -33,11 +39,15 @@ Page({
     //工作任务选择
     workplace: {},//工作地点
     workTaskList: [],
+    selectedWorkTaskList: [],//选中工作地点
     
-    //
+    //定位
     locating:false,//定位中
     locateFail:false,
     addressParseFail: false,
+
+    //时间显示
+    dateTimer:null,
 
     //圆圈
     count: 0,//计数器，初始值为0
@@ -63,11 +73,11 @@ Page({
         timingFunc: 'easeIn'
       }
     })
-    //初始化默认数据
-    console.log('初始化默认数据');
-    this.setData({
-      workplace: localData.data.defaultWorkplace,
-    })
+
+    //初始化缓存数据
+    console.log('初始化缓存数据：')
+    this.initHistoryCacheData()
+
 
     if (this.data.workplace.workplaceCode != undefined){
       //初始化工作任务
@@ -82,7 +92,7 @@ Page({
       time: time,
     })
 
-    setInterval(function(){
+    this.data.dateTimer = setInterval(() =>{
       // console.log('显示当前时间')
       var myDate = new Date();
       var time = `${myDate.getHours()}:${myDate.getMinutes()}:${myDate.getSeconds()}`
@@ -110,7 +120,7 @@ Page({
 
   onHide:function () {
     console.log('页面隐藏了')
-    clearInterval(this.countTimer);
+    clearInterval(this.data.countTimer);
   },
 
 
@@ -146,8 +156,7 @@ refreshAddress:function(){
 },
 
   refreshWorkTask: function (workplace) {
-    console.log('选择工作地点')
-    console.log(workplace)
+    console.log("选择工作地点:",workplace)
     this.setData({
       workplace: workplace,
     })
@@ -164,18 +173,42 @@ refreshAddress:function(){
       token: userManager.userInfo.token,
       workplaceCode: workplaceCode,
       success: function (res) {
-        console.log('获取工作任务信息')
-        console.log(res)
+        console.log("获取工作任务信息", res)
         that.setData({
           workTaskList: res.data.workTaskList,
         })
-
+        that.didMatchSelectWorkTaskCodeFromHistory(workplaceCode);
       },
       fail: function (res) {
         console.log(res)
       },
     })
   },
+
+  didMatchSelectWorkTaskCodeFromHistory: function (workplaceCode){
+   //匹配历史数据，是否有历史选中任务
+   var historyObject = this.data.historyCacheDataList[workplaceCode];
+   if (historyObject != undefined) {
+     var taskCodes = historyObject['selectedWorkTaskList'];
+     if (taskCodes != undefined) {
+       console.log('匹配选中工作任务:', taskCodes)
+       for (var index in taskCodes){
+         var selectedTaskCode = taskCodes[index]
+         for (var index in this.data.workTaskList) {
+           var taskCode = this.data.workTaskList[index]['taskCode']
+           if (selectedTaskCode == taskCode) {
+             this.data.workTaskList[index].isSelected = true;
+             var that = this;
+             this.setData({
+               workTaskList: that.data.workTaskList,
+             })
+           }
+         }
+       }
+     }
+   }
+ },
+
 
   getLocation: function () {
     this.setData({
@@ -190,11 +223,6 @@ refreshAddress:function(){
         //国测局坐标转百度经纬度坐标
         var gcj02 = coordtransform.wgs84togcj02(res.longitude, res.latitude);
         var bd09 = coordtransform.gcj02tobd09(gcj02[1], gcj02[0]);
-
-        console.log(res)
-        console.log(gcj02)
-        console.log(bd09)
-
         that.setData({
           latitude: bd09[0],
           longitude: bd09[1],
@@ -208,8 +236,7 @@ refreshAddress:function(){
           latitude: bd09[0],
           longitude: bd09[1],
           success: function (res) {
-            console.log('经纬度解释地理名称成功!')
-            console.log(res)
+            console.log('经纬度解释地理名称成功:', res)
             that.setData({
               locating: false,
               addressParseFail: false,
@@ -241,17 +268,14 @@ refreshAddress:function(){
   },
 
   taskBindtap: function (e) {
-    console.log('选中工作任务');
+
     var index = e.currentTarget.dataset.page;
     this.data.workTaskList[index].isSelected = !this.data.workTaskList[index].isSelected;
-
-
     var that = this;
     this.setData({
       workTaskList: that.data.workTaskList,
     })
-
-    console.log(this.data.workTaskList[index])
+    console.log("选中工作任务:",this.data.workTaskList[index])
   },
 
   getSelectedWrokTaskCode:function(){
@@ -265,14 +289,11 @@ refreshAddress:function(){
         arr.push(this.data.workTaskList[index]['taskCode'])
       }
     }
-    console.log('选中的任务code:')
-    console.log(arr)
     return arr;
   },
 
   bindPunchCardBtnTouchStart:function(e) {
     
-
     if (this.data.workplace['workplaceCode'] == undefined){
       wx.showToast({
         title: '请选择工作地点',
@@ -280,8 +301,9 @@ refreshAddress:function(){
       });
       return;
     }
-    var arr = this.getSelectedWrokTaskCode()
-    if (arr.length == 0){
+    this.data.selectedWorkTaskList = this.getSelectedWrokTaskCode()
+    console.log("选中工作任务:",this.data.selectedWorkTaskList)
+    if (this.data.selectedWorkTaskList.length == 0){
       wx.showToast({
         title: '请选择工作任务',
         icon: 'none',
@@ -303,7 +325,12 @@ refreshAddress:function(){
     this.setData({
       keepPressing: false,
     })
-    this.countUpInterval();
+    if(this.data.count >= 0){//还原圆环
+      this.countUpInterval();
+    }else{
+      this.requesPunchCard();//进行打卡
+    }
+    
 
   },
 
@@ -325,35 +352,77 @@ refreshAddress:function(){
     context.draw()
   },
 
+  requesPunchCard:function(){
+      wx.showModal({
+        title: '恭喜',
+        showCancel:false,
+        content: '打卡成功!',
+      })
+      this.setData({
+        punchCardName:'已打卡',
+      })
+      //缓存选择数据
+      this.cacheHistoryData();
+      //停止时间计数器
+      clearInterval(this.data.dateTimer);
+  },
+
+  //缓存选择数据
+  cacheHistoryData:function () {
+    //缓存当前选择的工作任务
+    var oneCacheKey = this.data.workplace.workplaceCode
+    var oneCacheObject = {}
+    oneCacheObject['workplace'] = this.data.workplace;
+    oneCacheObject['selectedWorkTaskList'] = this.data.selectedWorkTaskList;
+    this.data.historyCacheDataList[oneCacheKey] = oneCacheObject;
+    wx.setStorageSync(historyCacheDataListKey, this.data.historyCacheDataList)
+    console.log(this.data.historyCacheDataList)
+  },
+
+  //获取缓存选择数据
+  initHistoryCacheData:function(){
+    this.data.historyCacheDataList = wx.getStorageSync(historyCacheDataListKey)
+    console.log('初始化缓存工作数据:', this.data.historyCacheDataList)
+    //如果历史数据不为空，默认初始化第一条历史数据
+    var keys = Object.keys(this.data.historyCacheDataList);
+    if (keys.length > 0) {
+      var key = keys[0];
+      var oneObject = this.data.historyCacheDataList[key]
+      this.setData({
+        workplace: oneObject['workplace'],
+      })
+    }
+  },
+
+
   countUpInterval: function () {
-    clearInterval(this.countTimer);
+    clearInterval(this.data.countTimer);
     if (this.data.count < 0) this.data.count = 0;
     // 设置倒计时 定时器 假设每隔10毫秒 count递增+1，当 count递增到两倍maxCount的时候刚好是一个圆环（ step 从0到2为一周），然后改变txt值并且清除定时器
-    this.countTimer = setInterval(() => {
+    this.data.countTimer = setInterval(() => {
       if (this.data.count <= 2 * this.data.maxCount) {
         // 绘制彩色圆环进度条
         this.drawCircle('canvasProgressbg', 110, 10, this.data.count / this.data.maxCount)
         this.data.count++;
-        // console.log(this.data.count);
       } else {
-        // console.log('按钮递增动画完成');
-        clearInterval(this.countTimer);
+        clearInterval(this.data.countTimer);
         
       }
     }, 10)
   },
 
   countDownInterval: function () {
-    clearInterval(this.countTimer);
+    clearInterval(this.data.countTimer);
     // 设置倒计时 定时器 假设每隔10毫秒 count递增+1，当 count递增到两倍maxCount的时候刚好是一个圆环（ step 从0到2为一周），然后改变txt值并且清除定时器
-    this.countTimer = setInterval(() => {
+    this.data.countTimer = setInterval(() => {
       if (this.data.count >= 0) {
         // 绘制彩色圆环进度条
         this.drawCircle('canvasProgressbg', 110, 10, this.data.count / this.data.maxCount)
         this.data.count--;
         // console.log(this.data.count);
       } else {
-        clearInterval(this.countTimer);
+        clearInterval(this.data.countTimer);
+       
       }
     }, 10)
   },
