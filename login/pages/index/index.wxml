@@ -29,7 +29,7 @@
     <view class='card-box-title'>个人信息</view>
     <view class='card-box-desc' style='margin-left:20rpx'>
       <view>
-        <image class='small-logo' src='../images/icon_customer_blue@2x.png'></image>
+        <image class='small-logo' src='../images/icon_staff@2x.png'></image>
         <text>{{userInfo.account}}</text>
       </view>
 
