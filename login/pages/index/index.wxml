@@ -5,7 +5,7 @@
 
   <!-- 工作地点 -->
   <view class='card-box' style='padding:0px;'>
-    <navigator url='../searchbar/searchbar' style='display:flex;flex-direction: row;justify-content: space-between; text-align: center;'>
+    <navigator url='../searchbar/searchbar?workplaceCode={{workplace.workplaceCode}}' style='display:flex;flex-direction: row;justify-content: space-between; text-align: center;'>
       <text class='card-box-title' style='display:flex;line-height:44px; '>工作地点</text>
       <view class='card-box-desc flex-center' >
         <text style='display:flex;position:relative;margin-right:10px;line-height:44px;color:{{workplace.workplaceCode.length >0 ?"#576b95":"#999999"}}'>{{workplace.workplaceCode.length >0 ?(workplace.workplaceName +'('+ workplace.workplaceCode+')'):'请选择'}}</text>

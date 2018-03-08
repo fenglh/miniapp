@@ -82,6 +82,12 @@ Page({
         backgroundColor: '#576b95',
       })
 
+      if (options.workplaceCode != ''){
+        this.setData({
+          inputVal: options.workplaceCode,
+        })
+      }
+
   },
 
   /**
