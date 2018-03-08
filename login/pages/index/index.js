@@ -2,7 +2,6 @@
 //获取应用实例
 
 const request = require('../../utils/request.js')
-const localData = require('../data/localdata.js')
 const WxNotificationCenter = require("../../utils/WxNotificationCenter.js");
 const coordtransform = require('../../lib/coordtransform.js');
 import { LoginStatusUnLogin, LoginStatusNormal, LoginStatusTokenInvalid, userManager } from '../../utils/userManager.js'
@@ -381,17 +380,24 @@ refreshAddress:function(){
 
   //获取缓存选择数据
   initHistoryCacheData:function(){
-    this.data.historyCacheDataList = wx.getStorageSync(historyCacheDataListKey)
-    console.log('初始化缓存工作数据:', this.data.historyCacheDataList)
-    //如果历史数据不为空，默认初始化第一条历史数据
-    var keys = Object.keys(this.data.historyCacheDataList);
-    if (keys.length > 0) {
-      var key = keys[0];
-      var oneObject = this.data.historyCacheDataList[key]
-      this.setData({
-        workplace: oneObject['workplace'],
-      })
+    var value = wx.getStorageSync(historyCacheDataListKey)
+    if(value !=''){
+      this.data.historyCacheDataList = value;
+
+      //如果历史数据不为空，默认初始化第一条历史数据
+      var keys = Object.keys(this.data.historyCacheDataList);
+      if (keys.length > 0) {
+        var key = keys[0];
+        var oneObject = this.data.historyCacheDataList[key]
+        this.setData({
+          workplace: oneObject['workplace'],
+        })
+      }
+    }else {
+      console.log('value:::',value)
     }
+
+    
   },
 
 
