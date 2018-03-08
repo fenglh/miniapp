@@ -7,8 +7,12 @@ const WxNotificationCenter = require("./WxNotificationCenter.js");
 import { LoginStatusUnLogin, LoginStatusNormal, LoginStatusTokenInvalid, userManager } from './userManager.js'
 
 
-
-
+const host                    = 'https://angel.bluemoon.com.cn'
+var   url_login               = host + '/bluemoon-control/user/ssoLogin'
+var   url_get_user_info       = host + '/bluemoon-control/user/getUserInfo'
+var   url_get_gps_address     = host + '/bluemoon-control/attendance/getGpsAddress'
+var   url_get_workplace_list  = host + '/bluemoon-control/attendance/getWorkplaceList'
+var   url_check_scan_code     = host + '/bluemoon-control/attendance/checkScanCode'
 
 var request = {
 
@@ -131,7 +135,7 @@ var request = {
     var encryptString = des(pwd, this.requestConfig.loginSecretKey);//vuOShIfoI8SuPqjTlU+csw==
     console.log(encryptString)
 
-    var url = 'https://angel.bluemoon.com.cn/bluemoon-control/user/ssoLogin'
+    var url = url_login
     var queryString = this.getPublicQueryString();
     url = url + '?' + queryString
 
@@ -173,7 +177,7 @@ var request = {
 
 
   getUserInfo:function({token, success, fail}){
-    var url = 'https://angel.bluemoon.com.cn/bluemoon-control/user/getUserInfo'
+    var url = url_get_user_info
     var queryString = this.getPublicQueryString();
     url = url + '?' + queryString
     wx.request({
@@ -205,7 +209,7 @@ var request = {
   },
 
   getGpsAddress: function ({ token, altitude, latitude, longitude, success, fail}){
-    var url = 'https://angel.bluemoon.com.cn/bluemoon-control/attendance/getGpsAddress'
+    var url = url_get_gps_address
     var queryString = this.getPublicQueryString();
     url = url + '?' + queryString
     var that = this;
@@ -232,7 +236,7 @@ var request = {
 
   //获取上班地点，最多返回30条
   getWorkplaceList: function ({ token, condition, count, success, fail }){
-    var url = 'https://angel.bluemoon.com.cn/bluemoon-control/attendance/getWorkplaceList'
+    var url = url_get_workplace_list
     var queryString = this.getPublicQueryString();
     url = url + '?' + queryString
     var that = this;
@@ -256,7 +260,7 @@ var request = {
 
   //获取工作任务
   getWorkTask: function ({ token, workplaceCode, success, fail}){
-    var url = 'https://angel.bluemoon.com.cn/bluemoon-control/attendance/checkScanCode'
+    var url = url_check_scan_code
     var queryString = this.getPublicQueryString();
     url = url + '?' + queryString
     var that = this;
