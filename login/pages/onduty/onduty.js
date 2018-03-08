@@ -68,7 +68,6 @@ Page({
     console.log('onLoad')
     var that = this
     WxNotificationCenter.addNotification("userInfoChangeNotificationName", that.userInfoChangeNotificationFn, that)
-    WxNotificationCenter.addNotification("tokenInvalidNotificationName", that.tokenInvalidNotificationFn, that)
     wx.setNavigationBarTitle({
       title: '上班打卡',
     })
@@ -130,19 +129,6 @@ Page({
   },
 
 
-  tokenInvalidNotificationFn: function () {
-    console.log('token无效')
-    //设置登录状态
-    userManager.userInfo.loginStatus = LoginStatusTokenInvalid;
-    console.log(LoginStatusTokenInvalid)
-    console.log(userManager.userInfo)
-    userManager.cacheUserInfo()
-    this.userInfoChangeNotificationFn()
-    wx.redirectTo({
-      url: '../login/login',
-    });
-
-  },
 
   userInfoChangeNotificationFn: function () {
     console.log('收到用户信息改变通知，刷新当前页面用户信息')

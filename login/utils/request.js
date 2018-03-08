@@ -16,6 +16,9 @@ var   url_check_scan_code     = host + '/bluemoon-control/attendance/checkScanCo
 var   url_punch_card_in       = host + '/bluemoon-control/attendance/addPunchCardIn'
 
 
+
+var isDisposeTokenInvalid = false;
+
 var request = {
 
   requestConfig :{
@@ -122,7 +125,9 @@ var request = {
 
 
   disposeTokenInvalid: function (res) {
+    if (isDisposeTokenInvalid) return;
 
+    isDisposeTokenInvalid = true;
     console.log('处理token过期:', res)
     var responseCode = res.data.responseCode
     var responseMsg = res.data.responseMsg
@@ -133,7 +138,16 @@ var request = {
         showCancel: false,
         success: function (res) {
           if (res.confirm) {
-            WxNotificationCenter.postNotificationName("tokenInvalidNotificationName");
+            //设置登录状态
+            userManager.userInfo.loginStatus = LoginStatusTokenInvalid;
+            console.log(LoginStatusTokenInvalid)
+            console.log(userManager.userInfo)
+            userManager.cacheUserInfo()
+            WxNotificationCenter.postNotificationName("userInfoChangeNotificationName");
+            wx.redirectTo({
+              url: '../login/login',
+            });
+            isDisposeTokenInvalid = false;
           }
         }
       })
