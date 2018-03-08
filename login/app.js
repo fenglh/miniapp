@@ -13,6 +13,7 @@ App({
     var system = wx.getSystemInfo({
       success: function (res) {
         systemInfo.systemInfo = res
+        console.log(res)
       }
     })
 

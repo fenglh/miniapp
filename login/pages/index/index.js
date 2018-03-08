@@ -1,18 +1,27 @@
 //index.js
 //获取应用实例
 
+const systemInfo = require('../../utils/systemInfo.js');
 const request = require('../../utils/request.js')
 const WxNotificationCenter = require("../../utils/WxNotificationCenter.js");
 const coordtransform = require('../../lib/coordtransform.js');
 import { LoginStatusUnLogin, LoginStatusNormal, LoginStatusTokenInvalid, userManager } from '../../utils/userManager.js'
 const app = getApp()
 
-// var interval;
-// var varName;
-// var ctx = wx.createCanvasContext('canvasProgressbg');
-
+const rpxToPx = function(size){
+  return size * systemInfo.systemInfo.screenWidth / 750.0
+}
 
 const historyCacheDataListKey = 'historyCacheDataListKey'
+const iphone5_Radiu_rpx = 218.8;
+const canvas_circle_radiu = rpxToPx(iphone5_Radiu_rpx)
+
+
+
+
+
+
+
 
 Page({
   data: {
@@ -107,7 +116,6 @@ Page({
   //页面初次渲染完成，先后顺序:onLoad->onShow->onReady
   onReady: function () {
     console.log('onReady')
-    // this.drawCircle('canvasProgressbg', 110, 10, 2);
     
   },
 
@@ -433,13 +441,17 @@ refreshAddress:function(){
 
 
   countUpInterval: function () {
+
+
+
+
     clearInterval(this.data.countTimer);
     if (this.data.count < 0) this.data.count = 0;
     // 设置倒计时 定时器 假设每隔10毫秒 count递增+1，当 count递增到两倍maxCount的时候刚好是一个圆环（ step 从0到2为一周），然后改变txt值并且清除定时器
     this.data.countTimer = setInterval(() => {
       if (this.data.count <= 2 * this.data.maxCount) {
         // 绘制彩色圆环进度条
-        this.drawCircle('canvasProgressbg', 110, 10, this.data.count / this.data.maxCount)
+        this.drawCircle('canvasProgressbg', canvas_circle_radiu, 10, this.data.count / this.data.maxCount)
         this.data.count++;
       } else {
         clearInterval(this.data.countTimer);
@@ -454,7 +466,7 @@ refreshAddress:function(){
     this.data.countTimer = setInterval(() => {
       if (this.data.count >= 0) {
         // 绘制彩色圆环进度条
-        this.drawCircle('canvasProgressbg', 110, 10, this.data.count / this.data.maxCount)
+        this.drawCircle('canvasProgressbg', canvas_circle_radiu, 10, this.data.count / this.data.maxCount)
         this.data.count--;
         // console.log(this.data.count);
       } else {

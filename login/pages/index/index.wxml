@@ -4,17 +4,17 @@
 <view class="section">
 
   <!-- 工作地点 -->
-  <view class='card-box' style='padding:0px;'>
+  <view class='card-box' >
     <navigator url='../searchbar/searchbar?workplaceCode={{workplace.workplaceCode}}' style='display:flex;flex-direction: row;justify-content: space-between; text-align: center;'>
-      <text class='card-box-title' style='display:flex;line-height:44px; '>工作地点</text>
+      <view class='card-box-title' >工作地点</view>
       <view class='card-box-desc flex-center' >
-        <text style='display:flex;position:relative;margin-right:10px;line-height:44px;color:{{workplace.workplaceCode.length >0 ?"#576b95":"#999999"}}'>{{workplace.workplaceCode.length >0 ?(workplace.workplaceName +'('+ workplace.workplaceCode+')'):'请选择'}}</text>
-        <image style='height:11px; width:6px;margin-right:10px;' src='../images/icon_right@2x.png'></image>
+        <text style='display:flex;position:relative;margin-right:20rpx;line-height:88rpx;color:{{workplace.workplaceCode.length >0 ?"#576b95":"#999999"}}'>{{workplace.workplaceCode.length >0 ?(workplace.workplaceName +'('+ workplace.workplaceCode+')'):'请选择'}}</text>
+        <image style='height:22rpx; width:12rpx;margin-right:20rpx;' src='../images/icon_right@2x.png'></image>
       </view>
 
     </navigator>
 
-    <!-- <text class='card-box-title' style='display:flex; '>工作任务</text> -->
+    <!-- 工作任务 -->
     <view class='worktask-list'>
       <block wx:for="{{workTaskList}}" wx:for-item="item" wx:key='index'>
         <view bindtap='taskBindtap' style='background-color:{{item.isSelected ? "#576b95":"#f8f8f8"}};color:{{item.isSelected ? ("white"):("black")}}' data-page='{{index}}' class='workplace-text'>{{item['taskName']}}</view>
@@ -27,7 +27,7 @@
   <!-- 个人信息  -->
   <view class='card-box'>
     <view class='card-box-title'>个人信息</view>
-    <view class='card-box-desc' style='margin-top:10px;margin-left:10px'>
+    <view class='card-box-desc' style='margin-left:20rpx'>
       <view>
         <image class='small-logo' src='../images/icon_customer_blue@2x.png'></image>
         <text>{{userInfo.account}}</text>
@@ -45,7 +45,7 @@
       </view>
         <!-- 刷新按钮 -->
       <view class='flex-center refresh-btn' bindtap='refreshAddress'>
-        <image  style='height:14px; width:14px;' src='../images/refresh@3x.png'></image>
+        <image  style='height:28rpx; width:28rpx;' src='../images/refresh@3x.png'></image>
       </view>
       </view>
     </view>
