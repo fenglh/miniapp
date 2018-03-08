@@ -7,12 +7,14 @@ const WxNotificationCenter = require("./WxNotificationCenter.js");
 import { LoginStatusUnLogin, LoginStatusNormal, LoginStatusTokenInvalid, userManager } from './userManager.js'
 
 
-const host                    = 'https://angel.bluemoon.com.cn'
+const host                    = 'https://angelapi.bluemoon.com.cn'
 var   url_login               = host + '/bluemoon-control/user/ssoLogin'
 var   url_get_user_info       = host + '/bluemoon-control/user/getUserInfo'
 var   url_get_gps_address     = host + '/bluemoon-control/attendance/getGpsAddress'
 var   url_get_workplace_list  = host + '/bluemoon-control/attendance/getWorkplaceList'
 var   url_check_scan_code     = host + '/bluemoon-control/attendance/checkScanCode'
+var   url_punch_card_in       = host + '/bluemoon-control/attendance/addPunchCardIn'
+
 
 var request = {
 
@@ -98,12 +100,22 @@ var request = {
     return true;
   },
 
+  isTokenInvalid: function (res) {
+    var responseCode = res.data.responseCode
+    if (responseCode == 2301) {
+      return true;
+    }
+    return false;
+  },
+
 
   disposeResponse: function (res, success, fail) {
     if (this.isResponseCodeOk(res)) {
       if (success) { success(res) }
-    } else {
+    } else if (this.isTokenInvalid(res)) {
       this.disposeTokenInvalid(res)
+    }else{
+      if (fail) { fail(res) }
     }
   },
 
@@ -111,7 +123,7 @@ var request = {
 
   disposeTokenInvalid: function (res) {
 
-    console.log('处理token过期')
+    console.log('处理token过期:', res)
     var responseCode = res.data.responseCode
     var responseMsg = res.data.responseMsg
     if (responseCode == 2301) {
@@ -156,6 +168,8 @@ var request = {
           //设置登录状态
           userManager.userInfo.token = res.data.token;
           userManager.userInfo.loginStatus = LoginStatusNormal;
+          userManager.userInfo.account = user;
+          userManager.userInfo.pwd = pwd;
           userManager.cacheUserInfo()
           console.log('登录成功，前往获取用户信息')
 
@@ -279,6 +293,54 @@ var request = {
       },
     })
   },
+
+  //上班打卡
+  submitPunchCardIn: function ({ token, altitude, latitude, longitude, attendanceCode, workTasks, success, fail, complete}){
+
+
+
+    console.log()
+    var workTasksString = '';
+
+    for (var index in workTasks) {
+      workTasksString = workTasks[index] + "," + workTasksString  
+    }
+    console.log('拼接的workstask 字符串:', workTasksString);
+
+    var url = url_punch_card_in
+    var queryString = this.getPublicQueryString();
+    url = url + '?' + queryString
+    var that = this;
+    wx.request({
+      url: url,
+      method: 'POST',
+      data: {
+        token:token,
+        punchCard:{
+          // address:'',
+          altitude: altitude,
+          attendanceCode: attendanceCode,
+          // cityName: cityName,
+          // countyName: countyName,
+          latitude: latitude,
+          longitude: longitude,
+          // provinceName: provinceName,
+          punchCardType: 'code'
+        },
+        workTask: workTasksString
+      },
+      success: function (res) {
+        that.disposeResponse(res, success, fail)
+      },
+      fail: function (res) {
+        if (fail) { fail(res) }
+      },
+      complete:function(res){
+        if (complete) { complete(res) }
+      },
+    })
+  },
+
 
 
 }

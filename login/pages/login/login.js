@@ -14,7 +14,7 @@ Page({
    */
   data: {
     user: '',
-    pwd: 'abc12345',
+    pwd: '',
     userInfo: userManager.userInfo,
     pwdInputDisabled: true,
     pwdInputFocus: false,
@@ -66,10 +66,15 @@ Page({
         user: userManager.userInfo.account
       })
     }
+    
+    if (userManager.userInfo.pwd != undefined) {
+      this.setData({
+        pwd: userManager.userInfo.pwd
+      })
+    }
+
     if (this.data.user.length >= 8) {
       this.animationPwdInputShow(true)
-
-
     } else {
       this.animationPwdInputShow(false)
       //清空密码

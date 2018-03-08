@@ -38,7 +38,6 @@ Page({
     //工作任务选择
     workplace: {},//工作地点
     workTaskList: [],
-    selectedWorkTaskList: [],//选中工作地点
     
     //定位
     locating:false,//定位中
@@ -283,8 +282,6 @@ refreshAddress:function(){
     for (var index in this.data.workTaskList) {
       var selected = this.data.workTaskList[index]['isSelected']
       if(selected){
-        console.log(this.data.workTaskList[index]['taskName'])
-        console.log(this.data.workTaskList[index]['taskCode'])
         arr.push(this.data.workTaskList[index]['taskCode'])
       }
     }
@@ -300,9 +297,9 @@ refreshAddress:function(){
       });
       return;
     }
-    this.data.selectedWorkTaskList = this.getSelectedWrokTaskCode()
-    console.log("选中工作任务:",this.data.selectedWorkTaskList)
-    if (this.data.selectedWorkTaskList.length == 0){
+    var list = this.getSelectedWrokTaskCode()
+    console.log("选中工作任务:", list)
+    if (list.length == 0){
       wx.showToast({
         title: '请选择工作任务',
         icon: 'none',
@@ -320,7 +317,6 @@ refreshAddress:function(){
 
 
   bindPunchCardBtnTouchEnd:function (e) {
-    console.log('bindPunchCardBtnTouchEnd')
     this.setData({
       keepPressing: false,
     })
@@ -334,7 +330,7 @@ refreshAddress:function(){
   },
 
   bindPunchCardBtnTouchCancel:function (e) {
-    console.log('bindPunchCardBtnTouchCancel')
+
   },
 
   drawCircle: function (id, x, w, step) {
@@ -352,27 +348,62 @@ refreshAddress:function(){
   },
 
   requesPunchCard:function(){
-      wx.showModal({
-        title: '恭喜',
-        showCancel:false,
-        content: '打卡成功!',
+      wx.showLoading({
+        title: '提交中...',
+        mask:true,
       })
-      this.setData({
-        punchCardName:'已打卡',
+
+      var that = this 
+      var workTasks = this.getSelectedWrokTaskCode()
+      request.submitPunchCardIn({ 
+        token: userManager.userInfo.token, 
+        altitude: that.data.altitude, 
+        latitude: that.data.latitude, 
+        longitude: that.data.longitude, 
+        attendanceCode: that.data.workplace.workplaceCode, 
+        workTasks: workTasks, 
+        success:function(res){
+          that.setData({
+          punchCardName: '已打卡',
+          })
+          wx.showModal({
+            title: '打卡成功',
+          })
+          //缓存数据
+          that.cacheUserWrokInfoToHistory();
+          //停止时间计数器
+          clearInterval(that.data.dateTimer);
+        } ,
+        fail:function(res){
+          
+          var responseMsg = res.data.responseMsg
+          wx.showModal({
+            title: responseMsg,
+            showCancel:false,
+            success: function (res) {
+              if (res.confirm) {
+                that.countUpInterval();
+              } 
+            }
+          })
+        } ,
+        complete:function(res){
+          wx.hideLoading();
+        },
       })
-      //缓存选择数据
-      this.cacheHistoryData();
-      //停止时间计数器
-      clearInterval(this.data.dateTimer);
+
+
+
   },
 
+
   //缓存选择数据
-  cacheHistoryData:function () {
+  cacheUserWrokInfoToHistory:function () {
     //缓存当前选择的工作任务
     var oneCacheKey = this.data.workplace.workplaceCode
     var oneCacheObject = {}
     oneCacheObject['workplace'] = this.data.workplace;
-    oneCacheObject['selectedWorkTaskList'] = this.data.selectedWorkTaskList;
+    oneCacheObject['selectedWorkTaskList'] = this.getSelectedWrokTaskCode();
     this.data.historyCacheDataList[oneCacheKey] = oneCacheObject;
     wx.setStorageSync(historyCacheDataListKey, this.data.historyCacheDataList)
     console.log(this.data.historyCacheDataList)
