@@ -1,0 +1,31 @@
+
+page{
+  background-color: #576b95;
+  height:100%;
+  text-align: center;
+    display: flex;
+  flex-direction: column;
+}
+
+.shake {
+  display: flex;
+  flex-direction: row;
+  justify-content:center;
+  align-items: center;
+  width: 100%;
+  margin-top: 120rpx;
+
+}
+.shake-image {
+  width:412rpx; 
+  height:412rpx;
+   /* background-color: red;  */
+}
+
+.location {
+  display:flex; 
+  flex-direction:row;
+  justify-content:center; 
+  background-color:green;
+  margin-top:60rpx;
+}

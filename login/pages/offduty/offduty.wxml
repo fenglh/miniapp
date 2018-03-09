@@ -1,0 +1,18 @@
+<view class='shake'>
+  <image class='shake-image' src='../images/shake_2@3x.png'></image>
+</view>
+
+
+  <!-- 定位信息 -->
+  <view class='location'>
+    <!-- 地址和icon-->
+    <view>
+      <image class='small-logo' src='../images/icon_address_blue@2x.png'></image>
+      <text class='{{(locateFail || addressParseFail) ? "located-fail" : "" }} {{locating ? "located-refresh" : ""}} '>{{address}}</text>
+    </view>
+    <!-- 刷新按钮 -->
+    <view class='flex-center refresh-btn' bindtap='refreshAddress'>
+      <image style='height:28rpx; width:28rpx;' src='../images/refresh@3x.png'></image>
+    </view>
+  </view>
+<view>摇一摇下班打卡</view>

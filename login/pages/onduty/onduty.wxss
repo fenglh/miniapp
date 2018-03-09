@@ -8,11 +8,7 @@ page{
   text-align: center;
 }
 
-.flex-center {
-  display:flex;
-  align-items:center;
-  justify-content: center;
-}
+
 
 
 .container-fill{
@@ -109,10 +105,6 @@ page{
 }
 
 
-.small-logo{
-  width:28rpx;
-  height:28rpx;
-}
 
 
 
@@ -138,85 +130,6 @@ page{
   padding: 10rpx; 
   border-radius:8rpx;
 }
-.refresh-btn {
-  margin-right: 30rpx;
-  width: 88rpx;
-}
-
-.located-refresh {
-  color: #dedede;
-  font-size: 24rpx;
-}
-.located-fail {
-  color: red;
-  font-size: 28rpx;
-}
-
-/**打卡****/
-.punch-card-container {
-  margin-top: 40rpx;
-  display: flex;  
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  /* background-color: blue; */
-}
-
-.punch-card-box{
-  position: relative;
-  width:440rpx;
-  height: 440rpx;
-  border-radius: 220rpx;
-  overflow: hidden;
-  display: flex;  
-  align-items: center;
-  justify-content: center;
-   background-color: #676b95; 
-  /* background-color:greenyellow; */
-
-}
-.punch-card-button{
-  /* position: absolute; */
-  width:360rpx;
-  height: 360rpx; 
-  background-color: white;
-  border-radius: 180rpx;
-  overflow: hidden;
-}
-.punch-card-text{ 
-   color: #576b95; 
-  /* background-color: red;    */
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top: 0;
-  display: flex;  
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: 70rpx;
-  /* z-index: 20; */
-  overflow: hidden;
-}
-
-.punch-card-canvas{
-  position: absolute; 
-    /* background-color: green;   */
-   left: 0;
-   top: 0;
-  width:440rpx;
-  height: 440rpx; 
-  
-}
-
-.punch-card-time {
-  font-size: 40rpx;
-  color: #353535;
-}
 
 
-.address-text {
-  color: white;
-  font-size: 28rpx;
-}
 

@@ -1,6 +1,6 @@
 var MD5 = require('../lib/md5.js');
 const des = require('./des.js')
-
+const coordtransform = require('../lib/coordtransform.js');
 const systemInfo = require('./systemInfo.js');
 const WxNotificationCenter = require("./WxNotificationCenter.js");
 
@@ -236,6 +236,7 @@ var request = {
     })
   },
 
+//经纬度解析地理名称
   getGpsAddress: function ({ token, altitude, latitude, longitude, success, fail}){
     var url = url_get_gps_address
     var queryString = this.getPublicQueryString();
@@ -259,7 +260,47 @@ var request = {
     })
   },
 
+  getLocation: function ({ token, success, fail }){
 
+  var that = this
+  var latitude =0;
+  var longitude = 0;
+  var altitude = 0;
+  var address=null;
+  wx.getLocation({
+    success: function (res) {
+      //国测局坐标转百度经纬度坐标
+      var gcj02 = coordtransform.wgs84togcj02(res.longitude, res.latitude);
+      var bd09 = coordtransform.gcj02tobd09(gcj02[1], gcj02[0]);
+
+      latitude = bd09[0],
+      longitude = bd09[1],
+      altitude = res.altitude,
+      //解析地理名称
+      that.getGpsAddress({
+      token: token,
+      altitude: altitude,
+      latitude: latitude,
+      longitude: longitude,
+      success: function (res) {
+        console.log('经纬度解释地理名称成功:', res)
+        address = res.data.addressInfo.formattedAddress
+        if (success) success({ "latitude": latitude, "longitude": longitude, "altitude": altitude, "address": address })
+      },
+      fail: function (res) {
+        console.log("经纬度解释地理名称失败:",res);
+        if (fail) fail({ "latitude": latitude, "longitude": longitude, "altitude": altitude, "address": address})
+      }
+      })
+    },
+    fail: function (res) {
+      console.log("获取定位失败:", res);
+      if (fail) fail({ "latitude": latitude, "longitude": longitude, "altitude": altitude, "address": address })
+    },
+
+  })
+
+},
 
 
   //获取上班地点，最多返回30条

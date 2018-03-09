@@ -1,13 +1,11 @@
-
-
 <!-- //打卡页面 -->
 <view class="section">
 
   <!-- 工作地点 -->
-  <view class='card-box' >
+  <view class='card-box'>
     <navigator url='../searchbar/searchbar?workplaceCode={{workplace.workplaceCode}}' style='display:flex;flex-direction: row;justify-content: space-between; text-align: center;'>
-      <view class='card-box-title' >工作地点</view>
-      <view class='card-box-desc flex-center' >
+      <view class='card-box-title'>工作地点</view>
+      <view class='card-box-desc flex-center'>
         <text style='display:flex;position:relative;margin-right:20rpx;line-height:88rpx;color:{{workplace.workplaceCode.length >0 ?"#576b95":"#999999"}}'>{{workplace.workplaceCode.length >0 ?(workplace.workplaceName +'('+ workplace.workplaceCode+')'):'请选择'}}</text>
         <image style='height:22rpx; width:12rpx;margin-right:20rpx;' src='../images/icon_right@2x.png'></image>
       </view>
@@ -37,16 +35,17 @@
         <image class='small-logo' src='../images/icon_customer_blue@2x.png'></image>
         <text>{{userInfo.realName}}</text>
       </view>
+      
       <view style='display:flex; flex-direction:row'>
-      <!-- 地址和icon-->
-      <view>        
-        <image class='small-logo' src='../images/icon_address_blue@2x.png'></image>
-        <text class='{{(locateFail || addressParseFail) ? "located-fail" : "" }} {{locating ? "located-refresh" : ""}} '>{{address}}</text>
-      </view>
+        <!-- 地址和icon-->
+        <view>
+          <image class='small-logo' src='../images/icon_address_blue@2x.png'></image>
+          <text class='{{(locateFail || addressParseFail) ? "located-fail" : "" }} {{locating ? "located-refresh" : ""}} '>{{address}}</text>
+        </view>
         <!-- 刷新按钮 -->
-      <view class='flex-center refresh-btn' bindtap='refreshAddress'>
-        <image  style='height:28rpx; width:28rpx;' src='../images/refresh@3x.png'></image>
-      </view>
+        <view class='flex-center refresh-btn' bindtap='refreshAddress'>
+          <image style='height:28rpx; width:28rpx;' src='../images/refresh@3x.png'></image>
+        </view>
       </view>
     </view>
 
@@ -55,19 +54,17 @@
   <!-- 打卡 -->
   <view class='punch-card-container'>
     <view class='punch-card-box' bindtouchstart='bindPunchCardBtnTouchStart' bindtouchend='bindPunchCardBtnTouchEnd' bindtouchcancel='bindPunchCardBtnTouchCancel'>
-      
-      <view class='punch-card-button {{keepPressing ? "pressDownAnimation":"pressUpAnimation"}}'  >
+
+      <view class='punch-card-button {{keepPressing ? "pressDownAnimation":"pressUpAnimation"}}'>
         <view class=" punch-card-text">
           <text class=''>{{punchCardName}}</text>
           <text class='punch-card-time'>{{time}}</text>
         </view>
       </view>
-      <canvas class='punch-card-canvas'  canvas-id='canvasProgressbg'></canvas>
+      <canvas class='punch-card-canvas' canvas-id='canvasProgressbg'></canvas>
 
     </view>
 
   </view>
 
 </view>
-
-
