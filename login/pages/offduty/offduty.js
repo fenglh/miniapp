@@ -19,6 +19,9 @@ Page({
     //工作任务
     workTaskList: [],
     open:false,
+    //打卡id
+    punchCardId:null,
+    workLog:'下班打卡',
 
   },
 
@@ -40,13 +43,8 @@ Page({
     this.getPunchCardInfo();
     this.getLocation();
     
-    // if (this.data.workplace.workplaceCode != undefined) {
-    //   //初始化工作任务
-    //   this.getWorkTaskInfo(this.data.workplace.workplaceCode);
-    // }
 
     
-
 
   },
 
@@ -85,6 +83,7 @@ Page({
         console.log('获取打卡信息成功:', res);
         that.setData({
           workTaskList:res.data.workTaskList,
+          punchCardId: res.data.punchCard.punchCardId,
         })
       },
       fail:function(res){
