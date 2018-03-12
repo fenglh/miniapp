@@ -28,7 +28,6 @@ page{
 
 .card-box{
   margin-top:20rpx;
-  padding: 10rpx 20rpx 20rpx 20rpx;
   border-radius: 8rpx;
   background-color: white;
   text-align: left;
@@ -44,12 +43,7 @@ page{
 .card-box view {
   text-align: left; 
 }
-.card-box-title {
 
-  font-size:38rpx;
-  font-weight:bold;
-  display:flex;line-height:88rpx;
-}
 
 .card-box-desc {
   text-align:left;
@@ -105,31 +99,23 @@ page{
 }
 
 
+.card-box-title {
+  margin-left: 20rpx;
+  font-size:30rpx;
+   font-weight:bold; 
+  display:flex;line-height:88rpx;
+}
 
 
-
-.worktask-box{
+/* .worktask-box{
   margin: 40rpx 30rpx 30rpx;
   background: white; 
   border-radius: 8rpx;
-}
+} */
 
-.worktask-list {
-  margin-left:10rpx;
-  display: flex;
-  flex-direction: row ;
-  flex-wrap: wrap;
-  font-size: 26rpx;
 
-}
 
-.workplace-text {
-  background-color: #f8f8f8;
-  margin:10rpx;
-  color: black;
-  padding: 10rpx; 
-  border-radius:8rpx;
-}
+
 
 
 

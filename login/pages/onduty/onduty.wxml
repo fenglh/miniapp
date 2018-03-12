@@ -13,9 +13,9 @@
     </navigator>
 
     <!-- 工作任务 -->
-    <view class='worktask-list'>
+    <view class='work-task-list'>
       <block wx:for="{{workTaskList}}" wx:for-item="item" wx:key='index'>
-        <view bindtap='taskBindtap' style='background-color:{{item.isSelected ? "#576b95":"#f8f8f8"}};color:{{item.isSelected ? ("white"):("black")}}' data-page='{{index}}' class='workplace-text'>{{item['taskName']}}</view>
+        <view bindtap='taskBindtap' style='background-color:{{item.isSelected ? "#576b95":"#f8f8f8"}};color:{{item.isSelected ? ("white"):("black")}}' data-page='{{index}}' class='work-task-text-view'>{{item['taskName']}}</view>
       </block>
     </view>
 
@@ -23,7 +23,7 @@
 
 
   <!-- 个人信息  -->
-  <view class='card-box'>
+  <view class='card-box' style='padding-bottom:20rpx;'>
     <view class='card-box-title'>个人信息</view>
     <view class='card-box-desc' style='margin-left:20rpx'>
       <view>
@@ -36,7 +36,7 @@
         <text>{{userInfo.realName}}</text>
       </view>
       
-      <view style='display:flex; flex-direction:row'>
+      <view style='display:flex; flex-direction:row; justify-content: space-between;'>
         <!-- 地址和icon-->
         <view>
           <image class='small-logo' src='../images/icon_address_blue@2x.png'></image>

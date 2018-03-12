@@ -16,6 +16,10 @@ Page({
     locating: false,//定位中
     locateFail: false,
     addressParseFail: false,
+    //工作任务
+    workTaskList: [],
+    open:false,
+
   },
 
 
@@ -33,7 +37,17 @@ Page({
       }
     })
 
+    this.getPunchCardInfo();
     this.getLocation();
+    
+    // if (this.data.workplace.workplaceCode != undefined) {
+    //   //初始化工作任务
+    //   this.getWorkTaskInfo(this.data.workplace.workplaceCode);
+    // }
+
+    
+
+
   },
 
   onReady:function(e){
@@ -44,8 +58,52 @@ Page({
     })
   },
 
+  taskBindtap: function (e) {
+
+    var index = e.currentTarget.dataset.page;
+    this.data.workTaskList[index].isSelected = !this.data.workTaskList[index].isSelected;
+    var that = this;
+    this.setData({
+      workTaskList: that.data.workTaskList,
+    })
+    console.log("选中工作任务:", this.data.workTaskList[index])
+  },
+  carBoxBindTap:function(e){
+    var that = this;
+    this.setData({
+      open: !that.data.open,
+    })
+    this.data.open ? console.log('展开') : console.log('收缩')
+  },
+
+  //获取打卡信息
+  getPunchCardInfo:function(){
+    var that = this;
+    request.getPunchCardInfo({
+      token: userManager.userInfo.token,
+      success:function(res){
+        console.log('获取打卡信息成功:', res);
+        that.setData({
+          workTaskList:res.data.workTaskList,
+        })
+      },
+      fail:function(res){
+        console.log('获取打卡信息失败:', res);
+        this.setData({
+          addressParseFail: true,
+        })
+      },
+    })
+  },
+
+  //获取定位信息
   getLocation:function(){
     var that = this;
+    this.setData({
+      locating:true,
+      locateFail: false,
+      addressParseFail: false,
+    })
     request.getLocation({
       token: userManager.userInfo.token,
       success: function (res) {
@@ -55,10 +113,22 @@ Page({
           longitude: res.longitude,
           altitude: res.altitude,
           address: res.address,
+          locating: false,
+          locateFail: false,
+          addressParseFail: false,
         })
       },
       fail: function (res) {
         console.log('定位失败', res);
+        that.setData({
+          latitude: res.latitude,
+          longitude: res.longitude,
+          altitude: res.altitude,
+          address: res.address,
+          locating: false,
+          addressParseFail: true,
+          locateFail:res.latitude == 0,
+        })
       }
     })
   },

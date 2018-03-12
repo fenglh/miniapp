@@ -11,7 +11,8 @@ Page({
       console.log('用户已登录')
       request.getUserInfo({ token: userManager.userInfo.token })
       wx.redirectTo({
-        url: '../onduty/onduty',
+        url: '../offduty/offduty',
+        // url: '../onduty/onduty',
       })
     } else {
       console.log('用户未登录')

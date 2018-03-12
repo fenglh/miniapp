@@ -1,18 +1,36 @@
-<view class='shake'>
-  <image class='shake-image' src='../images/shake_2@3x.png'></image>
+
+<!-- 工作日志  -->
+<view style='display:flex;  flex-direction: column;align-items: center;margin-top:10rpx;'>
+  <view style='display:flex;  flex-direction:row; margin-top:80rpx; width:90%;'>
+    <image class='small-logo' src='../images/icon_work_log@3x.png'></image>
+      <input placeholder='请填写今日工作日志'  placeholder-style='color:#eeeeee;' style=' width:100%;margin-left:20rpx;font-size:34rpx; color:white'>
+    </input> 
+  </view> 
+
+  <view style='background-color:white; width:90%; height:1px;opacity:0.85; margin-top:4rpx;'></view>
 </view>
 
 
+
+<view class='shake-view'>
+  <image class='shake-image' src='../images/shake_2@3x.png'></image>
   <!-- 定位信息 -->
   <view class='location'>
     <!-- 地址和icon-->
     <view>
       <image class='small-logo' src='../images/icon_address_blue@2x.png'></image>
-      <text class='{{(locateFail || addressParseFail) ? "located-fail" : "" }} {{locating ? "located-refresh" : ""}} '>{{address}}</text>
+      <text class='{{(locateFail || addressParseFail) ? "located-fail" : "" }} {{locating ? "located-refresh" : ""}} ' style='margin-left:20rpx;'>{{address}}</text>
     </view>
-    <!-- 刷新按钮 -->
+    <!-- 刷新按钮  -->
     <view class='flex-center refresh-btn' bindtap='refreshAddress'>
       <image style='height:28rpx; width:28rpx;' src='../images/refresh@3x.png'></image>
     </view>
   </view>
-<view>摇一摇下班打卡</view>
+
+</view>
+
+<view class="weui-footer weui-footer_fixed-bottom">
+  <view class="weui-footer__links">
+    <navigator url="" class="weui-footer__link">摇一摇下班打卡</navigator>
+  </view>
+</view>

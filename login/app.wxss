@@ -19,18 +19,8 @@ page {
 }
 
 
+/**卡片 start ****/
 
-
-
-/**打卡 start ****/
-.punch-card-container {
-  margin-top: 40rpx;
-  display: flex;  
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  /* background-color: blue; */
-}
 
 .punch-card-box{
   position: relative;
@@ -45,6 +35,20 @@ page {
   /* background-color:greenyellow; */
 
 }
+
+/**卡片 end ****/
+
+/**打卡 start ****/
+.punch-card-container {
+  margin-top: 40rpx;
+  display: flex;  
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* background-color: blue; */
+}
+
+
 .punch-card-button{
   /* position: absolute; */
   width:360rpx;
@@ -97,6 +101,25 @@ page {
 }
 /**打卡 end ****/
 
+/**工作任务 start ****/
+.work-task-text-view {
+  background-color: #f8f8f8;
+  margin:10rpx;
+  padding: 10rpx; 
+  border-radius:8rpx;
+}
+
+.work-task-list {
+  margin-left:10rpx;
+  display: flex;
+  flex-direction: row ;
+  flex-wrap: wrap;
+  font-size: 26rpx;
+
+}
+
+/**工作任务 end ****/
+
 /**定位获取 start ****/
 .located-refresh {
   color: #dedede;
@@ -108,7 +131,6 @@ page {
 }
 
 .refresh-btn {
-  margin-right: 30rpx;
   width: 88rpx;
   /* background-color: red; */
 }
@@ -123,3 +145,31 @@ page {
   justify-content: center;
 }
 /**垂直水平居中 end ****/
+
+.weui-footer{
+  margin-bottom: 50px;
+  color: #eeeeee;
+  font-size: 14px;
+  text-align: center;
+}
+.weui-footer_fixed-bottom{
+    margin-bottom: 0;
+      position: fixed;
+  bottom: .52em;
+  left: 0;
+  right: 0;
+}
+
+  .weui-footer__link {
+   display: inline-block;
+  vertical-align: top;
+  margin: 0 .62em;
+  position: relative; 
+   font-size: 12px; 
+   color: #eeeeee; 
+}  
+
+.weui-footer__text {
+  padding: 0 .34em;
+  font-size: 12px;
+}

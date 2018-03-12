@@ -7,13 +7,21 @@ page{
   flex-direction: column;
 }
 
-.shake {
+.shake-title {
+  margin-top: 40rpx;
+  font-size: 60rpx;
+  color: #eeeeee;
+  opacity:0.75;
+}
+
+.shake-view {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content:center;
   align-items: center;
   width: 100%;
   margin-top: 120rpx;
+  
 
 }
 .shake-image {
@@ -24,8 +32,38 @@ page{
 
 .location {
   display:flex; 
-  flex-direction:row;
-  justify-content:center; 
-  background-color:green;
-  margin-top:60rpx;
+  margin-top: 40rpx;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-left: 20rpx;
+  color: #eeeeee;
+  align-content: center;
+  font-size: 28rpx;
+
+}
+
+.task-title {
+  color: #576b95;
+}
+
+.card-box-title {
+  margin-left: 20rpx;
+  font-size:30rpx;
+  display:flex;
+}
+
+.card-box{
+   margin:1rpx 40rpx 0rpx 40rpx; 
+  padding: 10rpx;
+  /* border-radius: 8rpx; */
+  background-color: white;
+  opacity: 0.85;
+  text-align: left;
+  overflow: hidden;
+  transition: all 1s linear;
+}
+.card-box-no-show{
+
+  height: 44rpx;
+  transition: all 1s linear;
 }

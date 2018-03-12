@@ -14,6 +14,8 @@ var   url_get_gps_address     = host + '/bluemoon-control/attendance/getGpsAddre
 var   url_get_workplace_list  = host + '/bluemoon-control/attendance/getWorkplaceList'
 var   url_check_scan_code     = host + '/bluemoon-control/attendance/checkScanCode'
 var   url_punch_card_in       = host + '/bluemoon-control/attendance/addPunchCardIn'
+var   url_get_punch_card_info = host + '/bluemoon-control/ attendance/getPunchCard'
+
 
 
 
@@ -396,7 +398,26 @@ var request = {
     })
   },
 
-
+  //获取打卡信息
+  getPunchCardInfo: function ({ token, success, fail}){
+    var url = url_get_punch_card_info
+    var queryString = this.getPublicQueryString();
+    url = url + '?' + queryString
+    var that = this;
+    wx.request({
+      url: url,
+      method: 'POST',
+      data: {
+        token: token,
+      },
+      success: function (res) {
+        that.disposeResponse(res, success, fail)
+      },
+      fail: function (res) {
+        if (fail) { fail(res) }
+      },
+    })
+  }
 
 }
 
