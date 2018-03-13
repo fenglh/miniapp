@@ -3,9 +3,9 @@ const des = require('./des.js')
 const coordtransform = require('../lib/coordtransform.js');
 const systemInfo = require('./systemInfo.js');
 const WxNotificationCenter = require("./WxNotificationCenter.js");
-
 import { LoginStatusUnLogin, LoginStatusNormal, LoginStatusTokenInvalid, userManager } from './userManager.js'
 
+const app = getApp()
 
 const host                    = 'https://angelapi.bluemoon.com.cn'
 var   url_login               = host + '/bluemoon-control/user/ssoLogin'

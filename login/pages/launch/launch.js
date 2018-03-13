@@ -11,7 +11,24 @@ Page({
   onReady: function () {
     if (userManager.userInfo.loginStatus == LoginStatusNormal){
       request.getUserInfo({ token: userManager.userInfo.token })
-      app.showPunchCard()
+
+      var that = this;
+      request.isPunchCard({
+        token: userManager.userInfo.token,
+        success: function (res) {
+          var isPunchCard = res.data.isPunchCard
+          if (isPunchCard) {
+            app.redirectToOffDuty()
+          } else {
+            app.redirectToHome()
+          }
+        },
+        fial: function (res) {
+          that.redirectToHome()
+        },
+
+      })
+
     }else{
       app.redirectToLogin();
     }

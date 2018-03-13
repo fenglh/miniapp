@@ -176,10 +176,20 @@ Page({
       workTasks: list,
       success: function (res) {
         wx.hideLoading();
+        // wx.showModal({
+        //   title: '下班打卡',
+        //   content:'您已下班打卡成功!',
+        //   showCancel: false,
+        // })
         wx.showModal({
           title: '下班打卡',
-          content:'您已下班打卡成功!',
+          content: '打卡成功!',
           showCancel: false,
+          success: function (res) {
+            if (res.confirm) {
+              app.redirectToHome();
+            }
+          }
         })
       },
       fail: function (res) {

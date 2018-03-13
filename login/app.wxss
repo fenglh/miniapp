@@ -168,6 +168,7 @@ page {
   position: relative; 
    font-size: 12px; 
    color: #eeeeee; 
+   opacity: 0.75;
 }  
 
 .weui-footer__text {

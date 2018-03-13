@@ -7,8 +7,11 @@ const request = require('./utils/request.js')
 
 import { LoginStatusUnLogin, LoginStatusNormal, LoginStatusTokenInvalid, userManager} from './utils/userManager.js'
 
+
+
 App({
 
+  finishedPunchCard: false,
 
   onLaunch: function () {
     //获取系统信息
@@ -28,7 +31,6 @@ App({
 
   showPunchCard:function(){
     var that = this;
-    var that = this;
     request.isPunchCard({
       token: userManager.userInfo.token,
       success: function (res) {
@@ -37,9 +39,9 @@ App({
         if (isPunchCard) {
           that.redirectToOffDuty()
         } else {
-          that.redirectToOnDuty()
+          that.redirectToHome()
         }
-      },
+      }, 
       fial: function (res) {
         that.redirectToLogin()
       },
@@ -48,6 +50,11 @@ App({
   },
 
 
+  redirectToHome: function () {
+    wx.redirectTo({
+      url: '../home/home',
+    })
+  },
   redirectToLogin: function () {
     wx.redirectTo({
       url: '../login/login',

@@ -359,15 +359,24 @@ refreshAddress:function(){
           that.setData({
           punchCardName: '已打卡',
           })
-          wx.showModal({
-            title: '上班打卡',
-            content: '您已上班打卡成功!',
-            showCancel:false,
-          })
           //缓存数据
           that.cacheUserWrokInfoToHistory();
           //停止时间计数器
           clearInterval(that.data.dateTimer);
+          
+          wx.showModal({
+            title: '上班打卡',
+            content: '打卡成功!',
+            showCancel:false,
+            success: function (res) {
+              if (res.confirm) {
+                app.redirectToHome();
+              }
+            }
+          })
+          
+          
+
         } ,
         fail:function(res){
           

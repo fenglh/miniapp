@@ -1,0 +1,7 @@
+<view class="container">
+    <image class="avatar" src="{{avatarUrl}}"></image>
+    <text class="motto">Hello {{nickName}}，您现在要打卡吗？</text>
+    <view catchtap="onTapJump" class="journey-container">
+        <text class="journey">我要打卡</text>
+    </view>
+</view>

@@ -11,9 +11,9 @@ const app = getApp()
 const MinUserLength = 5
 const MaxUserLength = 8
 
-
 const MinPwdLength = 8
 const MaxPwdLength = 16
+
 Page({
 
   /**
@@ -307,8 +307,8 @@ Page({
             icon: 'none',
           })
         } else {
-          //跳转到打卡界面
-          app.showPunchCard();
+          //跳转到首页
+          app.redirectToHome();
         }
 
       },

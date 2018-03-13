@@ -1,6 +1,7 @@
 {
   "pages":[
     "pages/launch/launch",
+    "pages/home/home",
     "pages/login/login",
     "pages/offduty/offduty",
     "pages/onduty/onduty",
