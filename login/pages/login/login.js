@@ -43,6 +43,10 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
+
+
+
+
     this.userInputAnimation = this.initAnimation(0,350);
     this.tipsAnimation = this.initAnimation(0, 700);
     this.pwdInputAnimation = this.initAnimation(0, 350);

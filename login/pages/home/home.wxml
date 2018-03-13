@@ -5,3 +5,9 @@
         <text class="journey">我要打卡</text>
     </view>
 </view>
+
+  <view class="weui-footer weui-footer_fixed-bottom">
+    <view class="weui-footer__links">
+      <navigator open-type='redirect' url="../login/login" class="weui-footer__link underline">注销</navigator>
+    </view>
+  </view>
