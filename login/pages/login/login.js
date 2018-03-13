@@ -22,6 +22,7 @@ Page({
     userInputDisabled: false,
     loginBtndisable: true,
     animating: false,
+    inputTips:'',
   },
 
   /**
@@ -35,30 +36,12 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    this.userInputAnimation = wx.createAnimation({
-      duration: this.data.animationDuration,
-      timingFunction: 'ease',
-      delay: 0,
-    })
-
-    this.pwdInputAnimation = wx.createAnimation({
-      duration: this.data.animationDuration,
-      timingFunction: 'ease',
-      delay: 0,
-    })
-
-    this.inputViewAnimation = wx.createAnimation({
-      duration: this.data.animationDuration,
-      timingFunction: 'ease',
-      delay: 0,
-    })
-
+    this.userInputAnimation = this.initAnimation(0,450);
+    this.tipsAnimation = this.initAnimation(0, 350);
+    this.pwdInputAnimation = this.initAnimation(0, 450);
+    this.inputViewAnimation = this.initAnimation(0, 450);
     //登录按钮动画
-    this.loginAnimation = wx.createAnimation({
-      duration: 700,
-      timingFunction: 'line',
-      delay: 0,
-    })
+    this.loginAnimation = this.initAnimation(0, 700);
 
     //初始化
     if (userManager.userInfo.account != undefined) {
@@ -103,8 +86,10 @@ Page({
       user: e.detail.value,
     })
     if (this.data.user.length >= 8) {
+      this.hideInputTips(); 
       this.animationPwdInputShow(true)
     } else {
+      this.showInputTips();
       this.animationPwdInputShow(false)
       //清空密码
       this.setData({
@@ -114,8 +99,31 @@ Page({
     }
   },
 
+  //密码输入事件
+  pwdBindinput: function (e) {
+    this.setData({
+      pwd: e.detail.value,
+    })
 
+    if (this.data.pwd.length >= 8) {
+      this.hideInputTips(); 
+      this.animationLoginBtnHeight(44)
+    } else {
+      this.showInputTips();
+      this.animationLoginBtnHeight(0.5)
+    }
 
+  },
+
+  initAnimation: function (delay,duration){
+
+    var animation = wx.createAnimation({
+      duration: duration,
+      timingFunction: 'ease',
+      delay: delay,
+    })
+    return animation;
+  },
 
 
   animationLoginBtnHeight: function (value) {
@@ -130,7 +138,10 @@ Page({
     this.inputViewAnimation.translateY(0).opacity(1).step()
     this.userInputAnimation.opacity(1).step()
     var pwdOpacity = 0
-    if (this.data.user.length >= 8) { pwdOpacity = 0.65 }
+    if (this.data.user.length >= 8) { 
+      
+      pwdOpacity = 0.65 
+    }
     this.pwdInputAnimation.opacity(pwdOpacity).step()
     this.setData({
       userInputAnimation: this.userInputAnimation.export(),
@@ -152,11 +163,36 @@ Page({
     })
   },
 
+  
+
+  hideInputTips:function() {
+    this.tipsAnimation.height(0).opacity(0).step();
+    this.setData({
+      tipsAnimation: this.tipsAnimation.export()
+    })
+  },
+  showInputTips:function(){
+    if (this.data.pwdInputFocus){
+      this.setData({
+        inputTips:'请输入8-16位员工密码'
+      })
+    }else{
+      this.setData({
+        inputTips: '请输入1-8位员工密码'
+      })
+    }
+      this.tipsAnimation.height(30).opacity(1).step();
+      this.setData({
+        tipsAnimation: this.tipsAnimation.export()
+      })
+
+  },
   userBindtap: function () {
 
     if (this.data.animating) {
+      var that = this;
       setTimeout(function () {
-        this.bindUserInputTap()
+        that.bindUserInputTap()
       }.bind(this), 100)
       console.log('动画中，延时执行')
       return;
@@ -237,19 +273,7 @@ Page({
     })
   },
 
-  //密码输入事件
-  pwdBindinput: function (e) {
-    this.setData({
-      pwd: e.detail.value,
-    })
 
-    if (this.data.pwd.length >= 8) {
-      this.animationLoginBtnHeight(44)
-    } else {
-      this.animationLoginBtnHeight(0.5)
-    }
-
-  },
 
   //登录
   loginBindtap: function (e) {

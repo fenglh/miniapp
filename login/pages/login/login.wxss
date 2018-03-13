@@ -1,7 +1,7 @@
 page{
-  background-color: red;
+  background-color: white;
   height:100%;
-  text-align: center;
+   text-align: center; 
 }
 
 .center {
@@ -22,18 +22,16 @@ page{
 }
 
 .input-user {
- 
-  margin-left: 20px;
-  margin-right: 20px; 
   font-size: 28px;
-     /* background-color: red;      */
+  margin-left: 40rpx;
+  margin-right: 40rpx;
   height: 44px;
 }
 
 .input-pwd {
+  margin-left: 40rpx;
+  margin-right: 40rpx;
   margin-top: 10px;
-  margin-left: 20px;
-  margin-right: 20px;
   opacity: 0.0;
   font-size: 24px;
   height: 44px;
@@ -59,7 +57,8 @@ page{
 
 .input-view {
   margin-top: 60px;
-   /* background-color: blue;  */
+  
+  /* background-color: blue;   */
 }
 
 .login-text {
@@ -70,13 +69,6 @@ page{
   font-weight: normal;
 }
 
-
-
-page{
-  background-color: white;
-  height:100%;
-  text-align: center;
-}
 
 
 .scroll-fullpage{
@@ -91,10 +83,22 @@ page{
 }
 .section{
 	height: 100%;
-  /* visibility:hidden;  */
 }
 
-.active .section-maintitle,
-.active .section-subtitle{
+.active {
 	animation: mymove 0.8s;
+}
+
+.tips-view {
+    display: flex;
+    flex-direction: row;
+    margin-left: 40rpx;
+  margin-right: 40rpx;
+  height: 0rpx;
+  overflow: hidden;
+  opacity: 0;
+}
+.tips-text{
+  font-size: 20rpx;
+  color: grey;
 }

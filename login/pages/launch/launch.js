@@ -15,9 +15,5 @@ Page({
     }else{
       app.redirectToLogin();
     }
-
   },
-
-
-  
 })
