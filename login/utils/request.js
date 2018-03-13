@@ -14,8 +14,9 @@ var   url_get_gps_address     = host + '/bluemoon-control/attendance/getGpsAddre
 var   url_get_workplace_list  = host + '/bluemoon-control/attendance/getWorkplaceList'
 var   url_check_scan_code     = host + '/bluemoon-control/attendance/checkScanCode'
 var   url_punch_card_in       = host + '/bluemoon-control/attendance/addPunchCardIn'
-var   url_get_punch_card_info = host + '/bluemoon-control/ attendance/getPunchCard'
-
+var   url_punch_card_out      = host + '/bluemoon-control/attendance/addPunchCardOut'
+var   url_get_punch_card_info = host + '/bluemoon-control/attendance/getPunchCard'
+var   url_submit_work_diary   = host + '/bluemoon-control/attendance/confirmWorkDiary'
 
 
 
@@ -354,9 +355,6 @@ var request = {
   //上班打卡
   submitPunchCardIn: function ({ token, altitude, latitude, longitude, attendanceCode, workTasks, success, fail, complete}){
 
-
-
-    console.log()
     var workTasksString = '';
 
     for (var index in workTasks) {
@@ -397,6 +395,68 @@ var request = {
       },
     })
   },
+
+//下班打卡
+  submitPunchCardOut: function ({ token, altitude, latitude, longitude, punchCardId, workTasks, success, fail}) {
+
+    var workTasksString = '';
+    for (var index in workTasks) {
+      workTasksString = workTasks[index] + "," + workTasksString
+    }
+    console.log('拼接的workstask 字符串:', workTasksString);
+
+    var url = url_punch_card_out
+    var queryString = this.getPublicQueryString();
+    url = url + '?' + queryString
+    var that = this;
+    wx.request({
+      url: url,
+      method: 'POST',
+      data: {
+        token: token,
+        punchCard: {
+          altitude: altitude,
+          punchCardId: punchCardId,
+          latitude: latitude,
+          longitude: longitude
+        },
+        workTask: workTasksString
+      },
+      success: function (res) {
+        that.disposeResponse(res, success, fail)
+      },
+      fail: function (res) {
+        if (fail) { fail(res) }
+      },
+    })
+  },
+
+  //提交工作日志
+  submitWorkDiary: function ({ token, diaryContent, success, fail}) {
+    var url = url_submit_work_diary
+    var queryString = this.getPublicQueryString();
+    url = url + '?' + queryString
+    var that = this;
+    wx.request({
+      url: url,
+      method: 'POST',
+      data: {
+        token: token,
+        diaryContent: diaryContent,
+      },
+      success: function (res) {
+        that.disposeResponse(res, success, fail)
+      },
+      fail: function (res) {
+        if (fail) { fail(res) }
+      },
+      complete: function (res) {
+        if (complete) { complete(res) }
+      },
+    })
+  },
+
+
 
   //获取打卡信息
   getPunchCardInfo: function ({ token, success, fail}){

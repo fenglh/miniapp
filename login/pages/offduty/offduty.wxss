@@ -25,8 +25,8 @@ page{
 
 }
 .shake-image {
-  width:412rpx; 
-  height:412rpx;
+  width:423rpx; 
+  height:380rpx;
    /* background-color: red;  */
 }
 
@@ -52,11 +52,25 @@ page{
   color: #576b95;
 }
 
+.card-box-title-view {
+  margin-top:10rpx;
+  display:flex;
+  flex-direction: row;
+  align-content:center;
+  justify-content: space-between;
+}
+
 .card-box-title {
   margin-left: 20rpx;
-  font-size:30rpx;
+  font-size:32rpx;
   display:flex;
-  font-weight: bold;
+  /* font-weight: bold; */
+  color: #576b95;
+}
+
+.card-box-title2 {
+   font-weight: bold; 
+   color: #353535;
 }
 
 .card-box{
@@ -72,4 +86,12 @@ page{
 
   height: 44rpx;
   transition: all 1s linear;
+}
+
+.task-view-hide{
+  height: 0rpx;
+}
+
+.task-view-show{
+  height: auto;
 }

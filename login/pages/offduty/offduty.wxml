@@ -1,7 +1,11 @@
  <!-- 工作任务  -->
 <view class='card-box'>
-  <view class='card-box-title'>工作任务</view>
-  <view class='work-task-list'>
+<view  class='card-box-title-view'>
+  <view  class='{{open ? "card-box-title2": "card-box-title"}}'>工作任务</view>
+  <image bindtap='workTaskSpreadBindTap' style='width:20px; height:20px;' src='../images/icon_nav_form@2x.png'></image>
+</view>
+
+  <view class='work-task-list {{open ? "task-view-show" : "task-view-hide"}}' >
     <block wx:for="{{workTaskList}}" wx:for-item="item" wx:key='index'>
       <view bindtap='taskBindtap' style='background-color:{{item.isSelected ? "#576b95":"#f8f8f8"}};color:{{item.isSelected ? ("white"):("black")}}' data-page='{{index}}' class='work-task-text-view'>{{item['taskName']}}</view>
     </block>
@@ -30,7 +34,7 @@
   </view>
 
   <view class='shake-view'>
-    <image class='shake-image' src='../images/shake_2@3x.png'></image>
+    <image class='shake-image' src='../images/shake@3x.png'></image>
   </view>
 
 
@@ -38,6 +42,7 @@
 
   <view class="weui-footer weui-footer_fixed-bottom">
     <view class="weui-footer__links">
+    <image style='width:16px; height:16px;' src='../images/wx_app_shake@2x.png'></image>
       <navigator url="" class="weui-footer__link">摇一摇下班打卡</navigator>
     </view>
   </view>

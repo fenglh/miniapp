@@ -274,7 +274,8 @@ Page({
           //跳转到打卡界面
           wx.hideLoading()
           wx.reLaunch({
-            url: '../onduty/onduty',
+            // url: '../onduty/onduty',
+            url: '../offduty/offduty',
           })
 
         }

@@ -115,6 +115,7 @@ page {
   flex-direction: row ;
   flex-wrap: wrap;
   font-size: 26rpx;
+  overflow: hidden;
 
 }
 
@@ -131,7 +132,7 @@ page {
 }
 
 .refresh-btn {
-  width: 88rpx;
+  width: 44rpx;
   /* background-color: red; */
 }
 

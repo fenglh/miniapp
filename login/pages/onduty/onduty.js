@@ -361,7 +361,8 @@ refreshAddress:function(){
           punchCardName: '已打卡',
           })
           wx.showModal({
-            title: '打卡成功',
+            title: '上班打卡成功',
+            showCancel:false,
           })
           //缓存数据
           that.cacheUserWrokInfoToHistory();
