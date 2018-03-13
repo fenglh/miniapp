@@ -147,7 +147,6 @@ var request = {
             console.log(userManager.userInfo)
             userManager.cacheUserInfo()
             WxNotificationCenter.postNotificationName("userInfoChangeNotificationName");
-            console.log('重跳转到登录')
             wx.redirectTo({
               url: '../login/login',
             });
