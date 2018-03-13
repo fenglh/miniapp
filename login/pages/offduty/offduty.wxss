@@ -74,7 +74,7 @@ page{
 }
 
 .card-box{
-  margin:0rpx 20rpx 20rpx 20rpx; 
+  margin:10rpx 20rpx 0rpx 20rpx; 
   padding: 16rpx;
    border-radius: 8rpx; 
   background-color: white;

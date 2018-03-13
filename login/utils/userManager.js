@@ -39,8 +39,7 @@ var userManager = {
 
   cacheUserInfo: function () {
     var that = this
-    console.log('缓存数据：')
-    console.log(this.userInfo)
+    console.log('缓存数据',this.userInfo)
     wx.setStorage({
       key: 'userInfo',
       data: that.userInfo,

@@ -33,6 +33,13 @@ Page({
   },
 
 
+  onShow: function () {
+    console.log('offdyty:页面显示了');
+  },
+
+  onHide: function () {
+    console.log('offdyty:页面隐藏了')
+  },
 
   onLoad: function (options) {
     wx.setNavigationBarTitle({
@@ -170,7 +177,8 @@ Page({
       success: function (res) {
         wx.hideLoading();
         wx.showModal({
-          title: '上班打卡成功',
+          title: '下班打卡',
+          content:'您已下班打卡成功!',
           showCancel: false,
         })
       },
@@ -188,8 +196,8 @@ Page({
   },
 
   checkSubmit:function(){
-
-    if (this.punchCardId == null){
+    console.log('punchCardIn:', this.punchCardId)
+    if (this.data.punchCardId == undefined){
       wx.showToast({
         title: '记录不存在，请先打班打卡',
         icon: 'none',
@@ -206,7 +214,7 @@ Page({
       return false;
     }
 
-    if (that.data.workLog.length == 0) {
+    if (this.data.workLog.length == 0) {
       wx.showToast({
         title: '请填写今日工作日志',
         icon: 'none',

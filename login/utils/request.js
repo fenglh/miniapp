@@ -17,7 +17,7 @@ var   url_punch_card_in       = host + '/bluemoon-control/attendance/addPunchCar
 var   url_punch_card_out      = host + '/bluemoon-control/attendance/addPunchCardOut'
 var   url_get_punch_card_info = host + '/bluemoon-control/attendance/getPunchCard'
 var   url_submit_work_diary   = host + '/bluemoon-control/attendance/confirmWorkDiary'
-
+var   url_is_punch_card       = host + '/bluemoon-control/attendance/isPunchCard'
 
 
 var isDisposeTokenInvalid = false;
@@ -147,6 +147,7 @@ var request = {
             console.log(userManager.userInfo)
             userManager.cacheUserInfo()
             WxNotificationCenter.postNotificationName("userInfoChangeNotificationName");
+            console.log('重跳转到登录')
             wx.redirectTo({
               url: '../login/login',
             });
@@ -304,7 +305,27 @@ var request = {
   })
 
 },
+  //是否打卡
 
+  isPunchCard: function ({ token, success, fail}) {
+    var url = url_is_punch_card;
+    var queryString = this.getPublicQueryString();
+    url = url + '?' + queryString
+    var that = this;
+    wx.request({
+      url: url,
+      method: 'POST',
+      data: {
+        token: token,
+      },
+      success: function (res) {
+        that.disposeResponse(res, success, fail)
+      },
+      fail: function (res) {
+        if (fail) { fail(res) }
+      },
+    })
+  },
 
   //获取上班地点，最多返回30条
   getWorkplaceList: function ({ token, condition, count, success, fail }){
@@ -477,7 +498,7 @@ var request = {
         if (fail) { fail(res) }
       },
     })
-  }
+  },
 
 }
 

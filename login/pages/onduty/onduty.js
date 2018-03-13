@@ -81,7 +81,6 @@ Page({
     })
 
     //初始化缓存数据
-    console.log('初始化缓存数据：')
     this.initHistoryCacheData()
 
 
@@ -119,12 +118,12 @@ Page({
   },
 
   onShow:function() {
-    console.log('页面显示了');
+    console.log('onduty:页面显示了');
     this.countUpInterval()
   },
 
   onHide:function () {
-    console.log('页面隐藏了')
+    console.log('onduty:页面隐藏了')
     clearInterval(this.data.countTimer);
   },
 
@@ -361,7 +360,8 @@ refreshAddress:function(){
           punchCardName: '已打卡',
           })
           wx.showModal({
-            title: '上班打卡成功',
+            title: '上班打卡',
+            content: '您已上班打卡成功!',
             showCancel:false,
           })
           //缓存数据
