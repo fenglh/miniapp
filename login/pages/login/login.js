@@ -7,6 +7,13 @@ const coordtransform = require('../../lib/coordtransform.js');
 import { LoginStatusUnLogin, LoginStatusNormal, LoginStatusTokenInvalid, userManager } from '../../utils/userManager.js'
 const app = getApp()
 
+
+
+const MaxUserLength = 8
+const MinUserLength = 5
+
+const MinPwdLength = 8
+const MaxPwdLength = 16
 Page({
 
   /**
@@ -36,10 +43,10 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    this.userInputAnimation = this.initAnimation(0,450);
-    this.tipsAnimation = this.initAnimation(0, 350);
-    this.pwdInputAnimation = this.initAnimation(0, 450);
-    this.inputViewAnimation = this.initAnimation(0, 450);
+    this.userInputAnimation = this.initAnimation(0,350);
+    this.tipsAnimation = this.initAnimation(0, 700);
+    this.pwdInputAnimation = this.initAnimation(0, 350);
+    this.inputViewAnimation = this.initAnimation(0, 350);
     //登录按钮动画
     this.loginAnimation = this.initAnimation(0, 700);
 
@@ -56,7 +63,7 @@ Page({
       })
     }
 
-    if (this.data.user.length >= 8) {
+    if (this.data.user.length >= 5) {
       this.animationPwdInputShow(true)
     } else {
       this.animationPwdInputShow(false)
@@ -85,7 +92,7 @@ Page({
     this.setData({
       user: e.detail.value,
     })
-    if (this.data.user.length >= 8) {
+    if (this.data.user.length >= MinUserLength) {
       this.hideInputTips(); 
       this.animationPwdInputShow(true)
     } else {
@@ -94,7 +101,7 @@ Page({
       //清空密码
       this.setData({
         pwd: '',
-        userInputFocus: true,
+        userInputFocus: true
       })
     }
   },
@@ -105,7 +112,7 @@ Page({
       pwd: e.detail.value,
     })
 
-    if (this.data.pwd.length >= 8) {
+    if (this.data.pwd.length >= MinPwdLength) {
       this.hideInputTips(); 
       this.animationLoginBtnHeight(44)
     } else {
@@ -138,7 +145,7 @@ Page({
     this.inputViewAnimation.translateY(0).opacity(1).step()
     this.userInputAnimation.opacity(1).step()
     var pwdOpacity = 0
-    if (this.data.user.length >= 8) { 
+    if (this.data.user.length >= MinUserLength) { 
       
       pwdOpacity = 0.65 
     }
@@ -172,15 +179,15 @@ Page({
     })
   },
   showInputTips:function(){
+    var tips = '';
     if (this.data.pwdInputFocus){
-      this.setData({
-        inputTips:'请输入8-16位员工密码'
-      })
+      tips = `请输入${MinPwdLength}-${MaxPwdLength}员工密码`
     }else{
-      this.setData({
-        inputTips: '请输入1-8位员工密码'
-      })
+      tips = `请输入${MinUserLength}-${MaxUserLength}员工编号`
     }
+    this.setData({
+      inputTips: tips
+    })
       this.tipsAnimation.height(30).opacity(1).step();
       this.setData({
         tipsAnimation: this.tipsAnimation.export()
@@ -231,13 +238,13 @@ Page({
       return;
     }
 
-    if (this.data.user.length < 8) {
+    if (this.data.user.length < MinUserLength) {
       return;
     }
 
     this.animationMoveUp()
 
-    if (this.data.pwd.length >= 8) {
+    if (this.data.pwd.length >= MinPwdLength) {
       this.animationLoginBtnHeight(44)
     } else {
       this.animationLoginBtnHeight(0.5)
