@@ -296,6 +296,7 @@ Page({
         //摇一摇成功 播放音乐
         if (that.data.shakeEnable) {
           that.data.shakeEnable = false;
+          wx.vibrateLong();
           that.playShakeAudio();
           console.log('摇一摇成功');
         }

@@ -8,9 +8,9 @@ import { LoginStatusUnLogin, LoginStatusNormal, LoginStatusTokenInvalid, userMan
 const app = getApp()
 
 
-
-const MaxUserLength = 8
 const MinUserLength = 5
+const MaxUserLength = 8
+
 
 const MinPwdLength = 8
 const MaxPwdLength = 16
@@ -181,9 +181,14 @@ Page({
   showInputTips:function(){
     var tips = '';
     if (this.data.pwdInputFocus){
-      tips = `请输入${MinPwdLength}-${MaxPwdLength}员工密码`
+      if (this.data.pwd.length < MinPwdLength){
+        tips = `请输入${MinPwdLength}-${MaxPwdLength}员工密码`
+      }
+      
     }else{
-      tips = `请输入${MinUserLength}-${MaxUserLength}员工编号`
+      if (this.data.user.length < MinUserLength) {
+        tips = `请输入${MinUserLength}-${MaxUserLength}员工编号`
+      }
     }
     this.setData({
       inputTips: tips
