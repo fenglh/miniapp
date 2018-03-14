@@ -26,7 +26,6 @@ const canvas_circle_radiu = rpxToPx(iphone5_Radiu_rpx)
 Page({
   data: {
 
-
     userInfo: userManager.userInfo,
     animationDuration: 400,
     scrollindex: 0,  //当前页面的索引值
@@ -37,7 +36,7 @@ Page({
 
     historyCacheDataList:{},//历史缓存数据
 
-    time:'00:00:00',
+    time: '',
     punchCardName:'打卡',
     //经纬度信息
     latitude: 0,
@@ -91,25 +90,31 @@ Page({
 
     this.getLocation();
     var that = this;
-    var myDate = new Date();
-    var time = `${myDate.getHours()}:${myDate.getMinutes()}:${myDate.getSeconds()}`
-    that.setData({
-      time: time,
-    })
-
+    this.setCurrentTime()
     this.data.dateTimer = setInterval(() =>{
-      // console.log('显示当前时间')
-      var myDate = new Date();
-      var time = `${myDate.getHours()}:${myDate.getMinutes()}:${myDate.getSeconds()}`
-      that.setData({
-        time: time,
-      })
-
-
+      that.setCurrentTime()
     },1000);
   },
 
+  setCurrentTime:function(){
+    this.setData({
+      time: this.currentTime(),
+    })
+  },
 
+  fix:function(num, length) {
+    return('' + num).length < length ? ((new Array(length + 1)).join('0') + num).slice(-length) : '' + num;
+},
+
+
+  currentTime:function(){
+    var now = new Date();
+    var hrs = now.getHours();
+    var min = now.getMinutes();
+    var sec = now.getSeconds();
+    var time = `${this.fix(hrs, 2)}:${this.fix(min, 2)}:${this.fix(sec, 2)}`
+    return time;
+  },
 
   //页面初次渲染完成，先后顺序:onLoad->onShow->onReady
   onReady: function () {
