@@ -47,7 +47,7 @@ Page({
     })
     wx.setNavigationBarColor({
       frontColor: '#ffffff',
-      backgroundColor: '#576b95',
+      backgroundColor: '#517fa4',
       animation: {
         duration: 400,
         timingFunc: 'easeIn'

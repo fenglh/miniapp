@@ -31,7 +31,7 @@ page {
   display: flex;  
   align-items: center;
   justify-content: center;
-   background-color: #676b95; 
+   background-color: #576b95; 
   /* background-color:greenyellow; */
 
 }
@@ -103,7 +103,7 @@ page {
 
 /**工作任务 start ****/
 .work-task-text-view {
-  background-color: #f8f8f8;
+   background-color: #f8f8f8; 
   margin:10rpx;
   padding: 10rpx; 
   border-radius:8rpx;
@@ -133,6 +133,7 @@ page {
 
 .refresh-btn {
   width: 44rpx;
+  margin-right: 10rpx;
   /* background-color: red; */
 }
 

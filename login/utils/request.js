@@ -18,7 +18,7 @@ var   url_punch_card_out      = host + '/bluemoon-control/attendance/addPunchCar
 var   url_get_punch_card_info = host + '/bluemoon-control/attendance/getPunchCard'
 var   url_submit_work_diary   = host + '/bluemoon-control/attendance/confirmWorkDiary'
 var   url_is_punch_card       = host + '/bluemoon-control/attendance/isPunchCard'
-
+var   url_get_punch_card_list = host + '/bluemoon-control/attendance/getPunchCardList'
 
 var isDisposeTokenInvalid = false;
 
@@ -499,6 +499,30 @@ var request = {
     })
   },
 
+  //获取打卡记录
+  getPunchCardRecord: function ({ token,timestamp, success, fail }) {
+    var url = url_get_punch_card_list
+    var queryString = this.getPublicQueryString();
+    url = url + '?' + queryString
+    var that = this;
+    wx.request({
+      url: url,
+      method: 'POST',
+      data: {
+        token: token,
+        timestamp: timestamp,
+      },
+      success: function (res) {
+        that.disposeResponse(res, success, fail)
+      },
+      fail: function (res) {
+        if (fail) { fail(res) }
+      },
+    })
+  },
+
 }
+
+
 
 module.exports = request;

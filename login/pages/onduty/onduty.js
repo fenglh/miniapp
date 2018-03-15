@@ -72,7 +72,7 @@ Page({
     })
     wx.setNavigationBarColor({
       frontColor: '#ffffff',
-      backgroundColor: '#576b95',
+      backgroundColor: '#517fa4',
       animation: {
         duration: 400,
         timingFunc: 'easeIn'
@@ -104,7 +104,7 @@ Page({
 
   fix:function(num, length) {
     return('' + num).length < length ? ((new Array(length + 1)).join('0') + num).slice(-length) : '' + num;
-},
+  },
 
 
   currentTime:function(){

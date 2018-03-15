@@ -1,10 +1,11 @@
 
 page{
-  background-color: #576b95;
+  /* background-color: #576b95; */
   height:100%;
   text-align: center;
     display: flex;
   flex-direction: column;
+  background-image: linear-gradient(to bottom, #517fa4 0%, #576b95 100%);
 }
 
 .shake-title {

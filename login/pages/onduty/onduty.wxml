@@ -15,7 +15,7 @@
     <!-- 工作任务 -->
     <view class='work-task-list'>
       <block wx:for="{{workTaskList}}" wx:for-item="item" wx:key='index'>
-        <view bindtap='taskBindtap' style='background-color:{{item.isSelected ? "#576b95":"#f8f8f8"}};color:{{item.isSelected ? ("white"):("black")}}' data-page='{{index}}' class='work-task-text-view'>{{item['taskName']}}</view>
+        <view bindtap='taskBindtap' style='background-color:{{item.isSelected ? "#517fa4":"#f8f8f8"}};color:{{item.isSelected ? ("white"):("black")}}' data-page='{{index}}' class='work-task-text-view'>{{item['taskName']}}</view>
       </block>
     </view>
 

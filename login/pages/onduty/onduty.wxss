@@ -6,6 +6,8 @@ page{
   background-color: white;
   height:100%;
   text-align: center;
+  /* background:#576b95; */
+  background-image: linear-gradient(to bottom, #517fa4 0%, #576b95 100%);
 }
 
 
@@ -19,7 +21,7 @@ page{
 .section{
 	height: 100%;
   padding: 30rpx;
-  background:#576b95;
+  
   /* font-size: 28rpx; */
 }
 
