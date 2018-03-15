@@ -18,17 +18,10 @@ page{
 	 overflow: hidden; 
   background-color: white; 
 }
-.section{
-	height: 100%;
-  padding: 30rpx;
-  
-  /* font-size: 28rpx; */
-}
-
-
-
 
 .card-box{
+  margin-left: 20rpx;
+  margin-right: 20rpx;
   margin-top:20rpx;
   border-radius: 8rpx;
   background-color: white;
