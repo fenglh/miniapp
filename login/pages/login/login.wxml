@@ -23,7 +23,7 @@
 
   <view class="weui-footer weui-footer_fixed-bottom">
     <view class="weui-footer__links">
-      <navigator url="" class="weui-footer__login">天使打卡</navigator>
+      <view  class="weui-footer__login">天使打卡</view>
     </view>
     <view class="weui-footer__text" style='color:#999999'>Copyright © 2018 fenglh</view>
   </view>

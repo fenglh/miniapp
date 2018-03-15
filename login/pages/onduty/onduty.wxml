@@ -72,7 +72,7 @@
   <view class="weui-footer weui-footer_fixed-bottom">
     <view class="weui-footer__links">
     <!-- <image style='width:16px; height:16px;' src='../images/wx_app_shake@2x.png'></image> -->
-      <navigator url="" class="weui-footer__link">长按打卡</navigator>
+      <view  class="weui-footer__link">长按打卡</view>
     </view>
     <view class="weui-footer__text">Copyright © 2018 fenglh</view>
   </view>
