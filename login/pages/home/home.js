@@ -15,7 +15,7 @@ Page({
    */
   onReady: function () {
     wx.setNavigationBarTitle({
-      title: '打卡主页',
+      title: '主页',
     })
     wx.setNavigationBarColor({
       frontColor: '#ffffff',

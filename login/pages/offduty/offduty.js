@@ -199,6 +199,11 @@ Page({
           title: '下班打卡失败',
           content: responseMsg,
           showCancel: false,
+          success: function (res) {
+            if (res.confirm) {
+              app.redirectToHome();
+            }
+          },
         })
       },
 

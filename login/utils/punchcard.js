@@ -6,6 +6,7 @@ export var punchcard = {
   today: {
     name: '今天',
     week: null,
+    timestampPunchIn: null,
     ondutyTime: null,
     offdutyTime: null,
     date: null,
@@ -14,6 +15,7 @@ export var punchcard = {
   yestoday: {
     name: '昨天',
     week: null,
+    timestampPunchIn: null,
     ondutyTime: null,
     offdutyTime: null,
     date: null,
@@ -22,12 +24,13 @@ export var punchcard = {
   beforeYestoday: {
     name: '前天',
     week: null,
+    timestampPunchIn: null,
     ondutyTime: null,
     offdutyTime: null,
     date: null,
   },
 
-  week:function(timestmap){
+  week: function (timestmap) {
     console.log('时间戳', timestmap)
     return "星期" + "日一二三四五六".charAt(new Date(timestmap).getDay());
   },
@@ -60,29 +63,40 @@ export var punchcard = {
         var punchCardList = res.data.punchCardList;
         for (var index in punchCardList) {
           var dict = punchCardList[index]
+
           //上班
-          var onduty = dict['punchInTime']
-          var ondutyMD = that.getYearMoonthDay(onduty)
-          var ondutyHM = that.getYearHourMinute(onduty)
+          var timestampPunchIn = dict['punchInTime']
+          var ondutyMD = that.getYearMoonthDay(timestampPunchIn)
+          var ondutyHM = that.getYearHourMinute(timestampPunchIn)
           //下班
-          var offduty = dict['punchOutTime']
+          var timestampPunchOut = dict['punchOutTime']
           var offdutyMD = ondutyMD
           var offdutyHM = ondutyHM
 
-          
+
           //如何使用指针引用?
           if (ondutyMD == today) { //是否是今天
-            punchcard.today.ondutyTime = that.getYearHourMinute(onduty);
-            punchcard.today.offdutyTime = that.getYearHourMinute(offduty);
-            punchcard.today.date = ondutyMD;
+            if (punchcard.today.timestampPunchIn == undefined || punchcard.today.timestampPunchIn < timestampPunchIn) {
+              punchcard.today.timestampPunchIn = timestampPunchIn;
+              punchcard.today.ondutyTime = that.getYearHourMinute(timestampPunchIn);
+              punchcard.today.offdutyTime = that.getYearHourMinute(timestampPunchOut);
+              punchcard.today.date = ondutyMD;
+            }
+
           } else if (ondutyMD == yestoday) {//是否是昨天
-            punchcard.yestoday.ondutyTime = that.getYearHourMinute(onduty);
-            punchcard.yestoday.offdutyTime = that.getYearHourMinute(offduty);
-            punchcard.yestoday.date = ondutyMD;
+            if (punchcard.yestoday.timestampPunchIn == undefined || punchcard.yestoday.timestampPunchIn < timestampPunchIn) {
+              punchcard.yestoday.timestampPunchIn = timestampPunchIn;
+              punchcard.yestoday.ondutyTime = that.getYearHourMinute(timestampPunchIn);
+              punchcard.yestoday.offdutyTime = that.getYearHourMinute(timestampPunchOut);
+              punchcard.yestoday.date = ondutyMD;
+            }
           } else if (ondutyMD == beforeYestoday) {//是否是前天
-            punchcard.beforeYestoday.ondutyTime = that.getYearHourMinute(onduty);
-            punchcard.beforeYestoday.offdutyTime = that.getYearHourMinute(offduty);
-            punchcard.beforeYestoday.date = ondutyMD;
+            if (punchcard.beforeYestoday.timestampPunchIn == undefined || punchcard.beforeYestoday.timestampPunchIn < timestampPunchIn) {
+              punchcard.beforeYestoday.timestampPunchIn = timestampPunchIn;
+              punchcard.beforeYestoday.ondutyTime = that.getYearHourMinute(timestampPunchIn);
+              punchcard.beforeYestoday.offdutyTime = that.getYearHourMinute(timestampPunchOut);
+              punchcard.beforeYestoday.date = ondutyMD;
+            }
           } else {
             //不做任何处理
           }
@@ -92,7 +106,7 @@ export var punchcard = {
         if (punchcard.today.ondutyTime == undefined) {
           request.isPunchCard({
             token: userManager.userInfo.token,
-            success:function(res){
+            success: function (res) {
               console.log("是否打卡", res)
               var isPunchCard = res.data.isPunchCard
               if (isPunchCard) {
@@ -101,11 +115,11 @@ export var punchcard = {
               }
               if (callback) callback(punchcard.today, punchcard.yestoday, punchcard.beforeYestoday);
             },
-            fail:function(res){
+            fail: function (res) {
               if (callback) callback(punchcard.today, punchcard.yestoday, punchcard.beforeYestoday);
             }
           })
-        }else{
+        } else {
           if (callback) callback(punchcard.today, punchcard.yestoday, punchcard.beforeYestoday);
         }
 
