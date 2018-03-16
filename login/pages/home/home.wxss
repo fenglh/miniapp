@@ -19,8 +19,8 @@
 }
 
 .journey-container{
-    margin-top: 200rpx;
-    border: 1px solid white;
+    margin-top: 20rpx;
+    border: 1px solid #DBDBDB;
     display: flex;
     justify-content: center;
     text-align:center;

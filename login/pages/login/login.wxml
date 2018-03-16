@@ -25,5 +25,5 @@
     <view class="weui-footer__links">
       <view  class="weui-footer__login">天使打卡</view>
     </view>
-    <view class="weui-footer__text" style='color:#999999'>Copyright © 2018 fenglh</view>
+    <view class="weui-footer__text" style='color:#999999'>Copyright © 2018 itx</view>
   </view>

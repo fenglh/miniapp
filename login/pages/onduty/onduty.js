@@ -125,6 +125,20 @@ Page({
   onShow:function() {
     console.log('onduty:页面显示了');
     this.countUpInterval()
+    var that = this;
+    request.isPunchCard({
+      token: userManager.userInfo.token,
+      success: function (res) {
+        var isPunchCard = res.data.isPunchCard
+        if (isPunchCard) {  //已经打了上班卡
+          app.redirectToOffDuty()
+        } 
+      },
+      fial: function (res) {
+        that.redirectToHome()
+      },
+
+    })
   },
 
   onHide:function () {

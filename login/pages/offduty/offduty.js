@@ -34,8 +34,23 @@ Page({
 
 
   onShow: function () {
-    console.log('offdyty:页面显示了');
+    console.log('offduty:页面显示了');
+    var that = this;
+    request.isPunchCard({
+      token: userManager.userInfo.token,
+      success: function (res) {
+        var isPunchCard = res.data.isPunchCard
+        if (isPunchCard == false) {  //还没打上班卡
+          app.redirectToHome()
+        }
+      },
+      fial: function (res) {
+        that.redirectToHome()
+      },
+
+    })
   },
+
 
   onHide: function () {
     console.log('offdyty:页面隐藏了')
