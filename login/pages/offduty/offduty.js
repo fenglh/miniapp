@@ -348,16 +348,15 @@ Page({
       that.data.shakeEnable = true;
 
       if (that.checkSubmit()){
-        // wx.showModal({
-        //   title: '下班打卡',
-        //   content: '您确定要下班打卡?',
-        //   success: function (res) {
-        //     if (res.confirm) {
-             
-        //     }
-        //   }
-        // })
-        that.submit();
+        wx.showModal({
+          title: '下班打卡',
+          content: '您确定要下班打卡?',
+          success: function (res) {
+            if (res.confirm) {
+              that.submit();              
+            }
+          }
+        })
       }
 
     })
