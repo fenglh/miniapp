@@ -202,6 +202,7 @@ Page({
           showCancel: false,
           success: function (res) {
             if (res.confirm) {
+              that.data.shakeEnable = true;
               app.redirectToHome();
             }
           }
@@ -265,11 +266,11 @@ Page({
       this.submitWrokDiary(that.data.workLog,
         //提交成功
         function (res) {
-
           that.submitPunchCardOut();
       },
         //提交失败
         function (res) {
+          that.data.shakeEnable = true;
           wx.hideLoading();
           var responseMsg = res.data.responseMsg
           wx.showToast({
@@ -344,9 +345,6 @@ Page({
       coverImgUrl: ''
     });
     wx.onBackgroundAudioStop(function () {
-      console.log('音乐播放结束');
-      that.data.shakeEnable = true;
-
       if (that.checkSubmit()){
         wx.showModal({
           title: '下班打卡',
@@ -354,6 +352,8 @@ Page({
           success: function (res) {
             if (res.confirm) {
               that.submit();              
+            }else if(res.cancel){
+              that.data.shakeEnable = true;
             }
           }
         })
