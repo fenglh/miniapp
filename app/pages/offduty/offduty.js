@@ -201,14 +201,15 @@ Page({
           content: '打卡成功!',
           showCancel: false,
           success: function (res) {
+            that.data.shakeEnable = true;
             if (res.confirm) {
-              that.data.shakeEnable = true;
               app.redirectToHome();
             }
           }
         })
       },
       fail: function (res) {
+        that.data.shakeEnable = true;
         wx.hideLoading();
         var responseMsg = res.data.responseMsg
         wx.showModal({
