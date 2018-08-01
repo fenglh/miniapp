@@ -7,8 +7,8 @@ import { LoginStatusUnLogin, LoginStatusNormal, LoginStatusTokenInvalid, userMan
 
 const app = getApp()
 
-// const host                    = 'https://angel.bluemoon.com.cn'
-const host                    = 'https://angelapi.bluemoon.com.cn'
+const host                    = 'https://angel.bluemoon.com.cn'
+// const host                    = 'https://angelapi.bluemoon.com.cn'
 var   url_login               = host + '/bluemoon-control/user/ssoLogin'
 var   url_get_user_info       = host + '/bluemoon-control/user/getUserInfo'
 var   url_get_gps_address     = host + '/bluemoon-control/attendance/getGpsAddress'

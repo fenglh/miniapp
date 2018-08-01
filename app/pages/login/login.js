@@ -20,8 +20,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    user: '',
-    pwd: '',
+    user: '80474124',
+    pwd: 'abc12345',
     userInfo: userManager.userInfo,
     pwdInputDisabled: true,
     pwdInputFocus: false,
